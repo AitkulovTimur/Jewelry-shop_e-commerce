@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- @ - default directory -->
+        <link th:href="@{/style.css}" rel="stylesheet">
+        <title>opal.com</title>
+        <meta charset="utf-8">
+    </head>
+    <body class="page">
+    <div class="container">
+            <header class="header">                
+                <div class="headopis">
+                    <div class="logo">
+                    <a href="index.html">
+                    <img src="img/logo.png">
+                    </a>
+                </div>
+                    <div class="headright">
+                        <a href="adress.html" class="bold">Санкт-Петербург</a>
+                        <br><a href="adress.html">Среднерогатская, 14к1, ст 1</a>
+                        <br><a href="adress.html">Каштановая аллея, 3</a>
+                    </div>
+                    <div class="headright">
+                        <p class="bold">+7 (900) 653-97-77</p>
+                        <p>c 10:00 до 21:00</p>
+                    </div>
+                    <div class="headright">
+                        <a href="shopping-cart.html" class="shop-cart-container">
+                           <img src="img/shopping-cart.png" class="cart-icon">
+                           <p>Корзина</p> 
+                        </a>                        
+                    </div>
+
+                </div>
+            </header>
+            <div class="cards">
+                <div class="cards-holder">
+                        <div class="card">
+                            <a th:href="@{/catalog}">
+                                <div class="card-image">
+                                    <img class="card-img" src="img/jewerly.png">
+                                </div>
+
+                                <div class="card-text">
+                                    <p>Ювелирные изделия</p>
+                                </div>
+                            </a>
+                        </div>
+                </div>
+            </div>
+    </div>
+    </body>
+    <footer class="footer">
+        <div class="social">
+            <div class="foottop">
+                <a th:href="@{/about}" class="bold">Санкт-Петербург</a>
+                <br><a href="adress.html">Среднерогатская, 14к1, ст 1</a>
+                <br><a href="adress.html">Каштановая аллея, 3</a>
+            </div>
+            <div class="soc">
+                <a href="..."><img src="img/vk 1.svg" alt="vk"></a>
+                <a href="..."><img src="img/telegram 1.svg" alt="tg"></a>
+                <a href="..."><img src="img/inst 1.svg" alt="inst"></a>
+            </div>
+            <div>
+            <p>+7 (900) 653-97-77</p>
+            <p class="fontgrey">c 10:00 до 21:00</p>
+            </div>
+        </div>
+        <div  class="foottop">
+            <p class="bold">Ювелирные изделия</p>
+            <a href="catalog.html">Каталог ювелирных изделий</a>
+        </div>
+        <div class="foottop">
+            <div class="footer-reight-menu">
+            <div class="footerlogo"> 
+                <a href="index.html">
+                <img src="img/logo.png" class="footerlogo">
+                </a>
+            </div>
+            <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
+            <a href="about.html"><br>© 2018-2022 “ОПАЛ”</a>
+            </div>
+        </div>
+    </footer>
+</html>

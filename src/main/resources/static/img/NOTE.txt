@@ -1,0 +1,1 @@
+DON'T FORGET ABOUT NAMING OF PRODUCTS. NAME IT IN FORMAT <vendor_code>.<extension>

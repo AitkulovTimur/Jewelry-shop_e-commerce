@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <!-- @ - default directory -->
+        <link th:href="@{/catalog.css}" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
+        <title>catalog</title>
+        <meta charset="utf-8">
+    </head>
+    <body class="page">
+        <div class="container">
+            <header class="header">                
+                <div class="headopis">
+                    <div class="logo">
+                    <a th:href="@{/main-page}">
+                        <img src="../static/img/logo.png" th:src="@{img/logo.png}"/>
+                    </a>
+                </div>
+                    <div class="headright">
+                        <a href="adress.html" class="bold">Санкт-Петербург</a>
+                        <br><a href="adress.html">Среднерогатская, 14к1, ст 1</a>
+                        <br><a href="adress.html">Каштановая аллея, 3</a>
+                    </div>
+                    <div class="headright">
+                        <p class="bold">+7 (900) 653-97-77</p>
+                        <p>c 10:00 до 21:00</p>
+                    </div>
+                    <div class="headright">
+                        <a href="shopping-cart.html" class="shop-cart-container">
+                           <img src="img/shopping-cart.png" class="cart-icon">
+                           <p>Корзина</p> 
+                        </a>                        
+                    </div>
+
+                </div>
+            </header>
+            <h1>Ювелирные изделия</h1>
+            <div class="sort">
+               <p>Сортировать по: </p>
+               <select class="select_sort">
+                    <option>Цене ↑</option>
+                    <option>Цене ↓</option>
+               </select>               
+            </div>
+            
+            <div class="category_and_search">
+                <div class="category">
+                    <button class="category-btn">
+                        +
+                    </button>
+                </div>                
+                <div class="search-box">
+                    <input class="search-txt" type="text" name="" placeholder="Поиск">
+                    <a class="search-btn" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="catalog-cards" th:each="product : ${products}">
+                <div class="card-item">
+<!--        Product page link bellow           -->
+                    <a th:href="'/product?id='+${product.id}">
+<!--            In the future it may be a problem due to extension hard-coding            -->
+                        <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="card-image" />
+                    </a>
+                    <div class="price-item">
+                        <p th:text="${product.name}"></p>
+                        <p th:text="'Цена: '+${product.price} + '₽'"></p>
+                    </div>
+                    <div class="description-item">
+                        <p class="text-description" th:text="${product.description}"></p>
+                        <p class="text-description" th:text="'Артикул: '+${product.vendorCode}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer class="footer">
+        <div class="social">
+            <div class="foottop">
+                <a href="adress.html" class="bold">Санкт-Петербург</a>
+                <br><a href="adress.html">Среднерогатская, 14к1, ст 1</a>
+                <br><a href="adress.html">Каштановая аллея, 3</a>
+            </div>
+            <div class="soc">
+                <a href="..."><img src="img/vk 1.svg" alt="vk"></a>
+                <a href="..."><img src="img/telegram 1.svg" alt="tg"></a>
+                <a href="..."><img src="img/inst 1.svg" alt="inst"></a>
+            </div>
+            <div>
+            <p>+7 (900) 653-97-77</p>
+            <p class="fontgrey">c 10:00 до 21:00</p>
+            </div>
+        </div>
+        <div  class="foottop">
+            <p class="bold">Ювелирные изделия</p>
+            <a href="catalog.html">Каталог ювелирных изделий</a>
+        </div>
+        <div class="foottop">
+            <div class="footer-reight-menu">
+            <div class="footerlogo"> 
+                <a href="catalog.html">
+                <img src="img/logo.png"class="footerlogo">
+                </a>
+            </div>
+            <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
+            <a href="about.html"><br>© 2018-2022 “ОПАЛ”</a>
+            </div>
+        </div>
+    </footer>
+</html>
