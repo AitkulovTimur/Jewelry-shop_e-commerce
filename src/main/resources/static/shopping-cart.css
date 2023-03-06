@@ -1,0 +1,295 @@
+@font-face {
+	font-family: 'Roboto';
+	src: url('fonts/Roboto-Regular.eot');
+	src: local('☺'), url('fonts/Roboto-Regular.woff') format('woff'), url('fonts/Roboto-Regular.ttf') format('truetype'), url('fonts/Roboto-Regular.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+*
+{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+}
+
+html {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body
+{    
+    margin: 0px;
+    width: 100%;
+    position: relative;
+}
+.header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: 150px;
+    margin-bottom: 50px;
+}
+.logo
+{
+    width: 313px;
+    height: 96px;
+    left: 0px;
+    top: 0px;
+}
+
+.footer
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    color: #FFFFFF;
+    background: #222222;
+    margin-top: 90px;
+    padding-bottom: 2em;
+}
+
+.headopis {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headopis p {
+    margin: 0px;
+    margin-top: 2px;
+    font-size: 20px;
+}
+.bold {
+    font-weight: bold;
+}
+
+.social p {
+    margin:0px;
+    margin-top: 4px;
+    font-size: 20px;
+}
+
+.social{
+    margin-left: 4em;
+}
+
+.footer-reight-menu{
+    margin-right: 4em;
+}
+
+.soc {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.soc a {
+    margin-right: 24px;
+}
+
+.fontgrey {
+    color:grey;
+}
+
+.foottop {
+     margin-top: 2em;
+     font-weight: 300;
+ }
+
+.foottop p {
+    margin: 0px;
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+.foottop a{
+    text-decoration: none;
+    color: white;
+    font-weight: 400;
+
+}
+
+.footerlogo
+{
+    width: 223px;
+    height: 74px;
+    margin-bottom: 1em;
+}
+
+.headright a {
+    text-decoration: none;
+    color: #222222;
+}
+
+.cart-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.shop-cart-container {
+    display: flex;  
+    flex-direction: column;  
+    height: 100%;
+    align-items: center;
+}
+
+.shop-cart-container p {
+    font-size: 15px;
+}
+
+.shopping-carts-container {
+    font-family: 'Inter';
+}
+
+.shopping-carts-container h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 2em;
+}
+
+.describtion-order {
+    width: 353px;
+    height: 100%;
+}
+
+.shopping-carts-menu {
+    display: flex;
+    justify-content: space-between;
+}
+
+.shopping-cart-container {
+    width: 716px;
+}
+
+
+.desc-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.desc-form p {
+    font-weight: bold;
+}
+
+#form-window-text {
+    width: 236px;
+    height: 33px;
+    border-radius: 8px;
+}
+
+.shop-sum-itog {
+    display: flex;
+}
+
+#sum-itog {
+    margin-right: 1em;
+}
+
+.shop-sum-itog p {
+    font-weight: bold;
+}
+
+.end-shop-button {
+    margin-top: 1em;
+    background: #FFA82F;
+    border-radius: 8px;
+    color: #FFFFFF;
+    border-color: #FFA82F;
+    height: 66px;
+    width: 213px;
+    font-weight: 700;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.div-end-shop {
+    display: flex;
+    justify-content: center;
+}
+
+.cart-items {
+    height: 100%;
+    width: 716px;
+}
+
+.cart-image-price {
+    width: 270px;
+    height: 330px;
+    background: #222222;
+    color: white;
+    border-radius: 25px;
+    margin-right: 1em;
+}
+
+.cart-desc-small {
+    display: flex;
+    margin: 0 1em 0 1em;
+    justify-content: space-between;
+}
+
+.small-img {
+    width: 100%;
+    height: 246.75px;
+    border-radius: 25px 25px 0 0;
+}
+
+.shop-cart-item {
+    display: flex;
+    margin: 0 0 2em 0;
+}
+
+.big-desc-cart p{
+    margin: 0 0 2em 0;
+    font-weight: bold;
+    max-width: 397px;
+}
+
+.big-desc-cart {
+    margin: 0;
+    width: 397px;
+}
+
+.two-buttons {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2em;
+}
+
+.two-buttons p {
+    margin: 0 1em 0 1em;
+    display: flex;
+    align-items: center;
+}
+
+.buttons-count {
+    width: 57px;
+    height: 57px;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button-delete {
+    background: #FF3B2F;
+    border-radius: 8px;
+    color: #FFFFFF;
+    height: 66px;
+    width: 213px;
+    font-weight: 700;
+    font-weight: bold;
+    cursor: pointer;
+    border-color: #FF3B2F;
+}
