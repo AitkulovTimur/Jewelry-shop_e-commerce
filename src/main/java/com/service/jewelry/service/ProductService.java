@@ -2,6 +2,7 @@ package com.service.jewelry.service;
 
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
+
 import com.service.jewelry.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,6 @@ public class ProductService {
     public ProductEntity createProduct(ProductEntity product) {
         return productRepository.save(product);
     }
+
 
 }
