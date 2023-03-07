@@ -1,11 +1,15 @@
 package com.service.jewelry.controller;
 
 import com.service.jewelry.model.ProductDto;
+import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Set;
 
@@ -32,4 +36,9 @@ public class PagesController {
     to add new product + to get new product(only this with ui)
      */
 
+    @PostMapping("/create")
+    public ResponseEntity create(@RequestBody ProductEntity product) {
+            productService.createProduct(product);
+            return ResponseEntity.ok("You have added a new product");
+    }
 }

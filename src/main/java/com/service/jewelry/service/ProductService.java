@@ -1,6 +1,7 @@
 package com.service.jewelry.service;
 
 import com.service.jewelry.model.ProductDto;
+import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,16 @@ public class ProductService {
 
     public Set<ProductDto> getAllProducts() {
         return productRepository.findAll().stream().map(productEntity -> new ProductDto(
-                productEntity.getId(),
+                productEntity.getVendorCode(),
                 productEntity.getName(),
                 productEntity.getPrice(),
                 productEntity.getDescription(),
-                productEntity.getPhotoPath(),
-                productEntity.getVendorCode()
+                productEntity.getPhotoPath()
         )).sorted(Comparator.comparing(ProductDto::vendorCode)).collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public ProductEntity createProduct(ProductEntity product) {
+        return productRepository.save(product);
     }
 
 }

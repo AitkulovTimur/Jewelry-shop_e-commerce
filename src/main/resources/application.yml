@@ -28,7 +28,6 @@ spring:
     user: ${USERNAME:jewelry_user}
     password: ${PASSWORD:jewelry_pass}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    baseline-on-migrate: true
     locations: filesystem:src/main/resources/db.migration
     clean-disabled: false
     clean-on-validation-error: true
