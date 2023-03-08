@@ -21,6 +21,7 @@ public class ProductService {
         return productRepository.findAll().stream().map(productEntity -> new ProductDto(
                 productEntity.getVendorCode(),
                 productEntity.getName(),
+                productEntity.getGender(),
                 productEntity.getPrice(),
                 productEntity.getDescription(),
                 productEntity.getPhotoPath()

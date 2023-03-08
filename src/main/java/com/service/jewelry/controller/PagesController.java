@@ -31,9 +31,6 @@ public class PagesController {
     public String returnAbout() {
         return "about";
     }
-    /*TODO: @Belyakov add new endpoint and method in product service
-    to add new product + to get new product(only this with ui)
-     */
 
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody ProductEntity product) {
