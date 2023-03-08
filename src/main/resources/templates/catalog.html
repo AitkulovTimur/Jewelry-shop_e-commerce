@@ -54,21 +54,21 @@
                     <a class="search-btn" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
                 </div>
             </div>
-            <div class="catalog-cards" th:each="product : ${products}">
-                <div class="card-item">
-<!--        Product page link bellow           -->
-                    <a th:href="'/product?id='+${product.id}">
-<!--            In the future it may be a problem due to extension hard-coding            -->
+
+            <div class="catalog-cards">
+                <div class="card-item" th:each="product : ${products}">
+                    <a th:href="@{/product}+${product.vendorCode}">
                         <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="card-image" />
-                    </a>
                     <div class="price-item">
                         <p th:text="${product.name}"></p>
                         <p th:text="'Цена: '+${product.price} + '₽'"></p>
                     </div>
+
                     <div class="description-item">
                         <p class="text-description" th:text="${product.description}"></p>
                         <p class="text-description" th:text="'Артикул: '+${product.vendorCode}"></p>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
