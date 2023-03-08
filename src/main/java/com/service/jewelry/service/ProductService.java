@@ -31,5 +31,10 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public ProductEntity getOne(int vendorCode) {
+        ProductEntity product = productRepository.findById(vendorCode).get();
+        return  product;
+    }
+
 
 }
