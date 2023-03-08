@@ -12,7 +12,3 @@ values
 ("Цепь муж. Vialak", 89900, "Лучший вариант для среднего класса"),
 ("Цепь муж. Gucci", 490500, "Высший класс"),
 ("Кулон муж. Saper", 21000, "Высший класс");
-
-
---TODO: add gender to table @Belyakov
---TODO: think how can we set vendor code to new project not here but in service

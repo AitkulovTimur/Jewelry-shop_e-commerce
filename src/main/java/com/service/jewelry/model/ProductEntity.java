@@ -25,7 +25,6 @@ import lombok.Setter;
 @Table(name="products")
 public class ProductEntity {
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_code", updatable = false, nullable = false)
     private int vendorCode;
