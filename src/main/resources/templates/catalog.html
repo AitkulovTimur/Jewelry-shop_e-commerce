@@ -31,7 +31,12 @@
                            <p>Корзина</p> 
                         </a>                        
                     </div>
-
+                    <div class="headright">
+                        <a href="" class="shop-cart-container">
+                            <img src="img/login2.png" class="login-icon">
+                            <p>Авторизация</p>
+                        </a>
+                    </div>
                 </div>
             </header>
             <h1>Ювелирные изделия</h1>
@@ -45,9 +50,10 @@
             
             <div class="category_and_search">
                 <div class="category">
-                    <button class="category-btn">
-                        +
-                    </button>
+                    <button class="category-btn">Мужское</button>
+                    <button class="category-btn">Женское</button>
+                    <button class="category-btn">Серебро</button>
+                    <button class="category-btn">Золото</button>
                 </div>                
                 <div class="search-box">
                     <input class="search-txt" type="text" name="" placeholder="Поиск">
@@ -60,8 +66,8 @@
                     <a th:href="@{/product}+${product.vendorCode}">
                         <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="card-image" />
                     <div class="price-item">
-                        <p th:text="${product.name}"></p>
-                        <p th:text="'Цена: '+${product.price} + '₽'"></p>
+                        <p th:text="${product.name}" class="text-decoration"></p>
+                        <p th:text="'Цена: '+${product.price} + '₽'" class="text-decoration"></p>
                     </div>
 
                     <div class="description-item">

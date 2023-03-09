@@ -61,6 +61,7 @@ body
     color: white;
     border-radius: 24px;
     width: 49%;
+    text-decoration:none;
 }
 
 .card-img {
@@ -76,6 +77,8 @@ body
 
 .card-text {
     margin-left: 1.5em;
+    text-decoration:none;
+    color:white;
 }
 
 .catalog-text {
@@ -94,6 +97,7 @@ body
     color: #FFFFFF;
     background: #222222;
     margin-top: 90px;
+    padding-bottom:2em;
 }
 
 .headopis {
@@ -185,4 +189,12 @@ body
     font-size: 15px;
 }
 
+.card a {
+    text-decoration:none;
+    color:white;
+}
 
+.login-icon {
+    width: 50px;
+    height: 50px;
+}
