@@ -141,7 +141,7 @@ body
     background-color:#222222;
     border-radius: 25px;
     row-gap: 40px;
-    margin-right: 40px;    
+    margin-right: 40px;
 }
 
 .catalog-cards {
@@ -162,6 +162,7 @@ body
     justify-content: space-between;
     align-content: center;
     margin: 0 1em 0 1em;
+    text-decoration: none;
 }
 
 .price-item a {
@@ -170,6 +171,15 @@ body
     color: white;
     font-weight: 400;
     align-items: center;
+}
+
+.card-item a {
+    text-decoration: none;
+    color: white;
+}
+
+.text-decoration {
+    text-decoration: none;
 }
 
 .description-item {
@@ -226,13 +236,19 @@ h1 {
     font-weight: bold;
 }
 
+.category {
+    display:flex;
+    justify-content:flex-start;
+}
+
 .category-btn {
-    width: 57px;
+    width: 150px;
     height: 57px;
     background: white;
     color: #222222;
     border-radius: 8px;
     cursor: pointer;
+    margin-right: 1em;
 }
 
 .sort {
@@ -262,4 +278,9 @@ h1 {
 
 .shop-cart-container p {
     font-size: 15px;
+}
+
+.login-icon {
+    width: 50px;
+    height: 50px;
 }

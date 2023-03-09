@@ -26,7 +26,7 @@ html {
 }
 
 body
-{    
+{
     margin: 0px;
     width: 100%;
     position: relative;
@@ -127,71 +127,44 @@ body
     margin-bottom: 1em;
 }
 
-.nav-name-head {
-    font-size: 32px;
-}
-
-.nav-country {
-    height: 125px;
-    width: 100%;
-    background-color: #222222;
-    color: white;
-    border-radius: 25px;
-    margin-bottom: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.nav-icon {
-    color: white;
-    height: 50px;
-    width: 50px;
-    margin-right: 1em;
-}
-
-.nav-street-name {
-    display: flex;
-    align-items: center;
-    margin-left: 1.5em;
-}
-
-.nav-number p {
-    margin-bottom: 7.5px;
-}
-
-.nav-time {
-    margin-right: 4em;  
-    color: grey;
-    margin: 0 4em 0 0;
-}
-
-.number {
-    margin-bottom: 1em;
-    margin-top: 0;
-}
 .headright a {
     text-decoration: none;
     color: #222222;
 }
 
-.cart-icon {
-    width: 50px;
-    height: 50px;
+.login-form {
+    justify-content:center;
+    display: flex;
+    flex-direction: column;
+    width:40%;
+    margin: 0 auto;
 }
 
-.shop-cart-container {
-    display: flex;  
-    flex-direction: column;  
-    height: 100%;
-    align-items: center;
+.button-aunt {
+    background: #222222;
+    color: white;
+    cursor: pointer;
+    height: 40px;
 }
 
-.shop-cart-container p {
-    font-size: 15px;
+#aunt-id {
+    margin: 0 auto;
+    margin-bottom: 1em;
 }
 
-.login-icon {
-    width: 50px;
-    height: 50px;
+.pole {
+    height:40px;
+    margin-bottom:1em;
+}
+
+.registration-link {
+   display: flex;
+   align-items:center;
+   justify-content:center;
+}
+
+.registration-link a{
+   text-decoration:none;
+   color: #EFB461;
+   margin-left:1em;
 }
