@@ -1,0 +1,15 @@
+
+
+<div class="category_and_search"  th:fragment="sorting(field, label)">
+    <div class="category">
+        <a class="category-btn" th:href="@{'/catalog?' + ${searchQuery!=null && searchQuery!=''? 'searchQuery=' + searchQuery + '&' : ''}
+                + 'page=' + ${currentPage} + '&size=' + ${pageSize}
+                + ${sortField!=null ? '&sort=' + field + ',' + (sortField == field ? reverseSortDirection : sortDirection) : ''}}">[[${label}]]</a>
+    </div>
+    <div class="search-box">
+        <input class="search-txt" type="text" name="" placeholder="Поиск">
+        <a class="search-btn" th:href="@{'/catalog?' + ${searchQuery!=null && searchQuery!=''? 'searchQuery=' + searchQuery + '&' : ''}
+                + 'page=' + ${currentPage} + '&size=' + ${pageSize}
+                + ${sortField!=null ? '&sort=' + field + ',' + (sortField == field ? reverseSortDirection : sortDirection) : ''}}"><i class="fa fa-search" aria-hidden="true"></i></a>
+    </div>
+</div>

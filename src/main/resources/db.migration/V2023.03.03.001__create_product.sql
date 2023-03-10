@@ -5,5 +5,6 @@ create table products
     gender ENUM("MEN","WOMEN","UNI"),
     price decimal(10, 2),
     description varchar(255),
-    primary key (vendor_code)
+    primary key (vendor_code),
+    fulltext indx(vendor_code, name)
 );

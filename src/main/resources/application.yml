@@ -1,5 +1,7 @@
 server:
   port: 9081
+  tomcat:
+    relaxed-query-chars: '|,{,},[,],^,`,\'
   servlet:
     context-path: /shop
   error:

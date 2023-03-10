@@ -4,37 +4,81 @@ import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
 
 import com.service.jewelry.repo.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.lang.String.format;
 
 @Service
+@Slf4j
 public class ProductService {
+    private static final String REGEX_WHITESPACES = "\\s+";
+    private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^a-zA-Z0-9\\s.]");
+    private String handleSearchString(String searchStr) {
+        if (searchStr == null || searchStr.isBlank())
+            return null;
+        searchStr = searchStr.trim();
+
+        Matcher matcherForbiddenSymbols = SEARCH_STR_PATTERN.matcher(searchStr);
+
+        if (matcherForbiddenSymbols.find())
+        {
+            log.error("Wrong symbol");
+            throw new RuntimeException("Wrong symbol");
+        }
+
+        return Stream.of(searchStr.split(REGEX_WHITESPACES))
+                .map(word -> format("+%s*", word.trim()))
+                .collect(Collectors.joining(" "));
+    }
     @Autowired
     ProductRepository productRepository;
 
     public Set<ProductDto> getAllProducts() {
-        return productRepository.findAll().stream().map(productEntity -> new ProductDto(
+        return productRepository.findAll().stream().map(this::mapper)
+                .sorted(Comparator.comparing(ProductDto::vendorCode))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public void createProduct(ProductEntity product) {
+        productRepository.save(product);
+    }
+
+    public ProductEntity getProductByVendor(int vendorCode) {
+        return productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("ProductNotFound"));
+    }
+
+    public Page<ProductDto> searchProduct(String searchStr, Pageable pageable) {
+        searchStr = handleSearchString(searchStr);
+
+        Page<ProductEntity> productEntities = searchStr != null
+                ? productRepository.getProductsBySearchString(searchStr, pageable)
+                : productRepository.findAll(pageable);
+
+        return productEntities.map(this::mapper);
+    }
+
+    private ProductDto mapper(ProductEntity productEntity) {
+        return new ProductDto(
                 productEntity.getVendorCode(),
                 productEntity.getName(),
                 productEntity.getGender(),
                 productEntity.getPrice(),
                 productEntity.getDescription(),
                 productEntity.getPhotoPath()
-        )).sorted(Comparator.comparing(ProductDto::vendorCode)).collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    public ProductEntity createProduct(ProductEntity product) {
-        return productRepository.save(product);
-    }
-
-    public ProductEntity getOne(int vendorCode) {
-        ProductEntity product = productRepository.findById(vendorCode).get();
-        return  product;
+        );
     }
 
 

@@ -52,8 +52,6 @@
                 <div class="category">
                     <button class="category-btn">Мужское</button>
                     <button class="category-btn">Женское</button>
-                    <button class="category-btn">Серебро</button>
-                    <button class="category-btn">Золото</button>
                 </div>                
                 <div class="search-box">
                     <input class="search-txt" type="text" name="" placeholder="Поиск">
@@ -63,7 +61,7 @@
 
             <div class="catalog-cards">
                 <div class="card-item" th:each="product : ${products}">
-                    <a th:href="@{/product}+${product.vendorCode}">
+                    <a th:href="@{/product}+'/'+${product.vendorCode}">
                         <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="card-image" />
                     <div class="price-item">
                         <p th:text="${product.name}" class="text-decoration"></p>
