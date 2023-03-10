@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @Controller
-//Don't set @RequestMapping both on a class and method layer. Xz yabanutaya huinya 4 chasa potratil ne rabotalo
 public class PagesController {
     @Autowired
     ProductService productService;
@@ -26,10 +25,29 @@ public class PagesController {
         return "catalog";
     }
 
-// test endpoint
     @GetMapping("/about")
     public String returnAbout() {
         return "about";
+    }
+
+    @GetMapping("/adress")
+    public String returnAdress() {
+        return "adress";
+    }
+
+    @GetMapping("/cart")
+    public String returnCart() {
+        return "cart";
+    }
+
+    @GetMapping("/registration")
+    public String returnRegistration() {
+        return "registration";
+    }
+
+    @GetMapping("/authentication")
+    public String returnAuthentication() {
+        return "authentication";
     }
 
     @PostMapping("/create")
