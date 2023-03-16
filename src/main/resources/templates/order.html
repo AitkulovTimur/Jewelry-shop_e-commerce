@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- @ - default directory -->
+    <link th:href="@{/cart.css}" rel="stylesheet">
+    <title>opal.com</title>
+    <meta charset="utf-8">
+</head>
+    <body class="page">
+        <div class="container">
+            <header class="header">
+                <div class="headopis">
+                    <div class="logo">
+                        <a th:href="@{/main-page}">
+                            <img src="img/logo.png">
+                        </a>
+                    </div>
+                    <div class="headright">
+                        <a th:href="@{/adress}" class="bold">Санкт-Петербург</a>
+                        <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
+                        <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
+                    </div>
+                    <div class="headright">
+                        <p class="bold">+7 (900) 653-97-77</p>
+                        <p>c 10:00 до 21:00</p>
+                    </div>
+                    <div class="headright">
+                        <a th:href="@{/cart}" class="shop-cart-container">
+                            <img src="img/shopping-cart.png" class="cart-icon">
+                            <p>Корзина</p>
+                        </a>
+                    </div>
+                    <div class="headright">
+                        <a th:href="@{/authentication}" class="shop-cart-container">
+                            <img src="img/login2.png" class="login-icon">
+                            <p>Авторизация</p>
+                        </a>
+                    </div>
+                </div>
+            </header>
+            <div class="shopping-carts-container">
+                <h1>Заказ</h1>
+                <div class="shopping-carts-menu">
+                    <div class="cart-items">
+                        <div class="shop-cart-item">
+                            <div class="cart-image-price">
+                                <a th:href="@{/product}+${product.vendorCode}">
+                                <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="small-img">
+                                <div class="cart-desc-small">
+                                    <p th:text="${product.name}"></p>
+                                </div>
+                                </a>
+                            </div>
+                            <div class="big-desc-cart">
+                                <p th:text="${product.name}"></p>
+                                <p th:text="'Артикул: '+${product.vendorCode}"></p>
+                                <p th:text="${product.description}"></p>
+                                <form>
+                                    <fieldset>                                        
+                                        <legend>Адрес доставки</legend>
+                                        <label>
+                                            <input type="radio" name="address" value="firstAddress">
+                                            Среднерогатская улица, д. 14
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="address" value="secondAddress">
+                                            Каштановая аллея, д. 3
+                                        </label>                                      
+                                    </fieldset>
+                                  </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="describtion-order">                        
+                        <form class="desc-form">
+                            <p>Имя</p>
+                            <input type="text" class="form-window-text">
+                        </form>
+                        <form class="desc-form">
+                            <p>Телефон</p>
+                            <input type="tel" class="form-window-text">
+                        </form>
+                        <div class="shop-sum-itog">
+                            <p id="sum-itog">Итого:</p>
+                            <p th:text="${product.price}"></p>
+                        </div>
+                        <div class="div-end-shop">
+                           <button onclick="alert('Заказ сделан. С Вами свяжутся по телефону для уточнения информации.')" class="end-shop-button">Заказать</button>
+                        </div>                        
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </body>
+    <footer class="footer">
+        <div class="social">
+            <div class="foottop">
+                <a th:href="@{/adress}"  class="bold">Санкт-Петербург</a>
+                <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
+                <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
+            </div>
+            <div class="soc">
+                <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>
+                <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" alt="tg"></a>
+                <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" alt="inst"></a>
+            </div>
+            <div>
+                <p>+7 (900) 653-97-77</p>
+                <p class="fontgrey">c 10:00 до 21:00</p>
+            </div>
+        </div>
+        <div  class="foottop">
+            <p class="bold">Ювелирные изделия</p>
+            <a th:href="@{/catalog}">Каталог ювелирных изделий</a>
+        </div>
+        <div class="foottop">
+            <div class="footer-reight-menu">
+                <div class="footerlogo">
+                    <a th:href="@{/main-page}">
+                        <img src="img/logo.png" class="footerlogo">
+                    </a>
+                </div>
+                <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
+                <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
+            </div>
+        </div>
+    </footer>
+</html>
