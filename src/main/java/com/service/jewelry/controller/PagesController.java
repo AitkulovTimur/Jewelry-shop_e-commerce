@@ -11,11 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.util.Set;
 
 @Controller
 //Don't set @RequestMapping both on a class and method layer
@@ -60,9 +59,29 @@ public class PagesController {
         return "about";
     }
 
+    @GetMapping("/adress")
+    public String returnAdress() {
+        return "adress";
+    }
+
+    @GetMapping("/cart")
+    public String returnCart() {
+        return "cart";
+    }
+
+    @GetMapping("/registration")
+    public String returnRegistration() {
+        return "registration";
+    }
+
+    @GetMapping("/authentication")
+    public String returnAuthentication() {
+        return "authentication";
+    }
+
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody ProductEntity product) {
-        productService.(product);
+        productService.createProduct(product);
         return ResponseEntity.ok("You have added a new product");
     }
 

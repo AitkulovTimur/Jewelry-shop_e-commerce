@@ -23,7 +23,7 @@ import static java.lang.String.format;
 @Slf4j
 public class ProductService {
     private static final String REGEX_WHITESPACES = "\\s+";
-    private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^a-zA-Z0-9\\s.]");
+    private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^\\p{L}+0-9\\s.]", Pattern.UNICODE_CASE |  Pattern.UNICODE_CHARACTER_CLASS);
 
     private String handleSearchString(String searchStr) {
         if (searchStr == null || searchStr.isBlank())
@@ -59,19 +59,17 @@ public class ProductService {
         return productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("ProductNotFound"));
     }
 
-    public Page<ProductDto> searchProduct(String searchStr, Pageable pageable, String filterField) {
-//        Page<ProductEntity> productEntities;
-//        try {
-////            searchStr = handleSearchString(searchStr);
-////            productEntities = Optional.of(filterField).filter(filterField.).map(searchStr != null
-////                    ? productRepository.getProductsBySearchString(searchStr, pageable)
-////                    : productRepository.findAll(pageable))
-////                    .orElse().map
-//            return productEntities.map(this::mapper);
-//        } catch (RuntimeException e) {
-//            return Page.empty();
-//        }
-        return Page.empty();
+    public Page<ProductDto> searchProduct(String searchStr, Pageable pageable) {
+        Page<ProductEntity> productEntities;
+        try {
+            searchStr = handleSearchString(searchStr);
+            productEntities = searchStr != null
+                    ? productRepository.getProductsBySearchString(searchStr, pageable)
+                    : productRepository.findAll(pageable);
+            return productEntities.map(this::mapper);
+        } catch (RuntimeException e) {
+            return Page.empty();
+        }
     }
 
     private ProductDto mapper(ProductEntity productEntity) {

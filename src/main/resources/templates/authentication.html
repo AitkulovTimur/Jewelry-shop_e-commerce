@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+<<<<<<<< HEAD:src/main/resources/templates/auth.html
   <link href="../static/auth.css" rel="stylesheet">
+========
+  <!-- @ - default directory -->
+  <link th:href="@{/auntofication.css}" rel="stylesheet">
+>>>>>>>> main:src/main/resources/templates/authentication.html
   <title>opal.com</title>
   <meta charset="utf-8">
 </head>
@@ -10,14 +15,14 @@
   <header class="header">
     <div class="headopis">
       <div class="logo">
-        <a href="catalog.html">
+        <a th:href="@{/main-page}">
           <img src="img/logo.png">
         </a>
       </div>
       <div class="headright">
-        <a href="adress.html" class="bold">Санкт-Петербург</a>
-        <br><a href="adress.html">Среднерогатская, 14к1, ст 1</a>
-        <br><a href="adress.html">Каштановая аллея, 3</a>
+        <a th:href="@{/adress}" class="bold">Санкт-Петербург</a>
+        <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
+        <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
       </div>
       <div class="headright">
         <p class="bold">+7 (900) 653-97-77</p>
@@ -32,11 +37,11 @@
           <label id="aunt-id">Авторизация</label>
           <input class="pole" type="email" name="email" placeholder="Email">
           <input class="pole" type="password" name="pswd" placeholder="Password">
-          <button class="button-aunt" class="pole">Авторизироваться</button>
+          <button class="button-aunt pole">Авторизироваться</button>
         </form>
         <div class="registration-link">
           <p>Еще не зарегестрированы?</p>
-          <a href="registration.html">Зарегестрироваться</a>
+          <a th:href="@{/registration}">Зарегестрироваться</a>
         </div>
       </div>
     </div>
@@ -46,14 +51,14 @@
 <footer class="footer">
   <div class="social">
     <div class="foottop">
-      <a href="adress.html" class="bold">Санкт-Петербург</a>
-      <br><a href="adress.html">Среднерогатская, 14к1, ст 1</a>
-      <br><a href="adress.html">Каштановая аллея, 3</a>
+      <a th:href="@{/adress}"  class="bold">Санкт-Петербург</a>
+      <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
+      <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
     </div>
     <div class="soc">
-      <a href="..."><img src="img/vk 1.svg" alt="vk"></a>
-      <a href="..."><img src="img/telegram 1.svg" alt="tg"></a>
-      <a href="..."><img src="img/inst 1.svg" alt="inst"></a>
+      <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>
+      <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" alt="tg"></a>
+      <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" alt="inst"></a>
     </div>
     <div>
       <p>+7 (900) 653-97-77</p>
@@ -62,17 +67,17 @@
   </div>
   <div  class="foottop">
     <p class="bold">Ювелирные изделия</p>
-    <a href="catalog.html">Каталог ювелирных изделий</a>
+    <a th:href="@{/catalog}">Каталог ювелирных изделий</a>
   </div>
   <div class="foottop">
     <div class="footer-reight-menu">
       <div class="footerlogo">
-        <a href="catalog.html">
-          <img src="img/logo.png"class="footerlogo">
+        <a th:href="@{/main-page}">
+          <img src="img/logo.png" class="footerlogo">
         </a>
       </div>
       <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
-      <a href="adress.html"><br>© 2018-2022 “ОПАЛ”</a>
+      <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
     </div>
   </div>
 </footer>
