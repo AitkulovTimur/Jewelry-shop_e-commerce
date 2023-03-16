@@ -2,8 +2,8 @@ package com.service.jewelry.controller;
 
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.service.jewelry.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -62,7 +62,7 @@ public class PagesController {
 
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody ProductEntity product) {
-        pro(product);
+        productService.(product);
         return ResponseEntity.ok("You have added a new product");
     }
 
