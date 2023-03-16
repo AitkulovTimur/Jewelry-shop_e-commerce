@@ -4,6 +4,9 @@
         <!-- @ - default directory -->
         <link th:href="@{/catalog.css}" rel="stylesheet">
         <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
         <title>catalog</title>
         <meta charset="utf-8">
     </head>
@@ -50,8 +53,8 @@
             
             <div class="category_and_search">
                 <div class="category">
-                    <button class="category-btn">Мужское</button>
-                    <button class="category-btn">Женское</button>
+                    <button th:replace="fragments/sorting :: sorting('gender','Мужское')"></button>
+                    <button th:replace="fragments/sorting :: sorting('gender','Женское')"></button>
                 </div>                
                 <div class="search-box">
                     <input class="search-txt" type="text" name="" placeholder="Поиск">
@@ -75,6 +78,32 @@
                     </a>
                 </div>
             </div>
+            <nav aria-label="Pagination" th:if="${totalPages > 0}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
+                    </li>
+                    <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+                    </li>
+                    <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                    <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                        th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                        <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+                    </li>
+                    <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                    <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </body>
     <footer class="footer">

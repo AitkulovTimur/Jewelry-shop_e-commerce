@@ -6,5 +6,5 @@ create table products
     price decimal(10, 2),
     description varchar(255),
     primary key (vendor_code),
-    fulltext indx(vendor_code, name)
+    fulltext indx(name)
 );

@@ -2,7 +2,6 @@ package com.service.jewelry.service;
 
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
-
 import com.service.jewelry.repo.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -26,6 +26,7 @@ import static java.lang.String.format;
 public class ProductService {
     private static final String REGEX_WHITESPACES = "\\s+";
     private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^a-zA-Z0-9\\s.]");
+
     private String handleSearchString(String searchStr) {
         if (searchStr == null || searchStr.isBlank())
             return null;
@@ -33,8 +34,7 @@ public class ProductService {
 
         Matcher matcherForbiddenSymbols = SEARCH_STR_PATTERN.matcher(searchStr);
 
-        if (matcherForbiddenSymbols.find())
-        {
+        if (matcherForbiddenSymbols.find()) {
             log.error("Wrong symbol");
             throw new RuntimeException("Wrong symbol");
         }
@@ -43,6 +43,7 @@ public class ProductService {
                 .map(word -> format("+%s*", word.trim()))
                 .collect(Collectors.joining(" "));
     }
+
     @Autowired
     ProductRepository productRepository;
 
@@ -60,14 +61,19 @@ public class ProductService {
         return productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("ProductNotFound"));
     }
 
-    public Page<ProductDto> searchProduct(String searchStr, Pageable pageable) {
-        searchStr = handleSearchString(searchStr);
-
-        Page<ProductEntity> productEntities = searchStr != null
-                ? productRepository.getProductsBySearchString(searchStr, pageable)
-                : productRepository.findAll(pageable);
-
-        return productEntities.map(this::mapper);
+    public Page<ProductDto> searchProduct(String searchStr, Pageable pageable, String filterField) {
+//        Page<ProductEntity> productEntities;
+//        try {
+////            searchStr = handleSearchString(searchStr);
+////            productEntities = Optional.of(filterField).filter(filterField.).map(searchStr != null
+////                    ? productRepository.getProductsBySearchString(searchStr, pageable)
+////                    : productRepository.findAll(pageable))
+////                    .orElse().map
+//            return productEntities.map(this::mapper);
+//        } catch (RuntimeException e) {
+//            return Page.empty();
+//        }
+        return Page.empty();
     }
 
     private ProductDto mapper(ProductEntity productEntity) {
