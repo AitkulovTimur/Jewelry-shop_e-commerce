@@ -31,10 +31,11 @@
             <div class="login">
                 <form class="login-form">
                     <label id="aunt-id">Регистрация</label>
-                    <input class="pole" type="email" name="email" placeholder="Email">
-                    <input class="pole" type="password" name="pswd" placeholder="Password">
+                    <input class="pole email" type="email" name="email" placeholder="Email">
+                    <input class="pole password" type="password" name="pswd" placeholder="Password">
                     <input class="pole" type="confirm_password" name="cfmpswd" placeholder="Confirm your password">
-                    <button class="button-aunt pole">Зарегистрироваться</button>
+                    <span class="error"></span>
+                    <div class="button-aunt pole sign-up-button">Зарегистрироваться</div>
                 </form>
             </div>
         </div>
@@ -74,4 +75,6 @@
         </div>
     </div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/auth.js}"></script>
 </html>

@@ -3,7 +3,7 @@ package com.service.jewelry.service;
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
 
-import com.service.jewelry.repo.ProductRepository;
+import com.service.jewelry.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

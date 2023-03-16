@@ -1,4 +1,4 @@
-package com.service.jewelry.repo;
+package com.service.jewelry.repository;
 
 import com.service.jewelry.model.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
