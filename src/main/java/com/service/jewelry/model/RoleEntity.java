@@ -1,4 +1,9 @@
 package com.service.jewelry.model;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.*;
@@ -6,47 +11,24 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
+@Getter
+@Setter
+@NoArgsConstructor
 public class RoleEntity implements GrantedAuthority {
     @Id
-    private Long id;
+    private int id;
     private String name;
     @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<UserEntity> users;
-    public RoleEntity() {
-    }
 
-    public RoleEntity(Long id) {
+    public RoleEntity(int id) {
         this.id = id;
     }
 
-    public RoleEntity(Long id, String name) {
+    public RoleEntity(int id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<UserEntity> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<UserEntity> users) {
-        this.users = users;
     }
 
     @Override
