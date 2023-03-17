@@ -43,16 +43,15 @@
                 </div>
             </header>
             <h1>Ювелирные изделия</h1>
-            <form th:action="@{/catalog}">
+            <form id="search_form" th:action="@{/catalog}">
             <div class="category_and_search">
                 <div class="category">
-                    <button th:replace="fragments/sorting :: sorting('price','По возрастанию цены')"></button>
-                    <button th:replace="fragments/sorting :: sorting('price','По убыванию цены')"></button>
+                    <a th:replace="fragments/sorting :: sorting('price','По возрастанию цены')"></a>
+                    <a th:replace="fragments/sorting :: sorting('price','По убыванию цены')"></a>
                 </div>
                 <div class="search-box">
-                    <i class="fa fa-search"></i>
                     <input class="search-txt" type="text" name="searchQuery" th:value="${searchQuery}" placeholder="Поиск">
-                    <button type="submit" class="btn btn-secondary">Search</button>
+                    <a class="search-btn" href="javascript:{}" onclick="document.getElementById('search_form').submit();"><i class="fa fa-search" aria-hidden="true"></i></a>
                 </div>
             </div>
             </form>

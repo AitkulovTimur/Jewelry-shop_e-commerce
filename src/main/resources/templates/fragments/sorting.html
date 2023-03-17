@@ -1,9 +1,9 @@
 
 
 <div th:fragment="sorting(field, label)">
-        <button class="category-btn" th:href="@{'/catalog?' + ${searchQuery!=null && searchQuery!=''? 'searchQuery=' + searchQuery + '&' : ''}
+        <a type="button"  class="btn btn-outline-dark" th:href="@{'/catalog?' + ${searchQuery!=null && searchQuery!=''? 'searchQuery=' + searchQuery + '&' : ''}
                 + 'page=' + ${currentPage} + '&size=' + ${pageSize}
-                + ${sortField!=null ? '&sort=' + field + ',' + (sortField == field ? reverseSortDirection : sortDirection) : ''}}">[[${label}]]</button>
+                + ${sortField!=null ? '&sort=' + field + ',' + (sortField == field ? reverseSortDirection : sortDirection) : ''}}">[[${label}]]</a>
 
 <!--    <div class="search-box">-->
 <!--        <input class="search-txt" type="text" name="" placeholder="Поиск">-->

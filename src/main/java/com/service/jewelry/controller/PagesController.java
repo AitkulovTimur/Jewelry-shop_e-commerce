@@ -90,18 +90,14 @@ public class PagesController {
     }
 
     @GetMapping("/product/{vendorCode}")
-    public String getProductByVendor(@PathVariable("vendorCode") int vendorCode, Model model) {
-        model.addAttribute("product", productService.getProductByVendor(vendorCode));
-
-    @GetMapping("/product{vendorCode}")
     public String getOneProduct (@PathVariable("vendorCode") int vendorCode, Model model) {
-        model.addAttribute("product",productService.getOne(vendorCode));
+        model.addAttribute("product", productService.getProductByVendor(vendorCode));
         return "item";
     }
 
     @GetMapping("/order{vendorCode}")
     public String getOrder (@PathVariable("vendorCode") int vendorCode, Model model) {
-        model.addAttribute("product",productService.getOne(vendorCode));
+        model.addAttribute("product", productService.getProductByVendor(vendorCode));
         return "order";
     }
 
