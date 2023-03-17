@@ -12,7 +12,7 @@
                 <div class="headopis">
                     <div class="logo">
                         <a th:href="@{/main-page}">
-                            <img src="../static/img/logo.png" th:src="@{img/logo.png}"/>
+                            <img src="../static/img/logo.png" th:src="@{/img/logo.png}"/>
                         </a>
                 </div>
                     <div class="headright">
@@ -26,13 +26,13 @@
                     </div>
                     <div class="headright">
                         <a th:href="@{/cart}" class="shop-cart-container">
-                           <img src="img/shopping-cart.png" class="cart-icon">
+                           <img src="img/shopping-cart.png" th:src="@{/img/shopping-cart.png}" class="cart-icon">
                            <p>Корзина</p> 
                         </a>                        
                     </div>
                     <div class="headright">
                         <a th:href="@{/authentication}" class="shop-cart-container">
-                            <img src="img/login2.png" class="login-icon">
+                            <img src="img/login2.png" th:src="@{/img/login2.png}" class="login-icon">
                             <p>Авторизация</p>
                         </a>
                     </div>
@@ -41,7 +41,7 @@
                 <div class="big-card-item">
                     <div class="desc-big-card">
                         <h1 th:text="${product.name}"></h1>
-                        <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="big-img-card">
+                        <img th:src="@{'/img/'+${product.vendorCode}+'.jpg'}    "  class="big-img-card">
                         <div>
                             <p>Срок исполнения заказа: от 10-ти до 45-ти дней, зависит от трудоемкости работы и степени загруженности производства.</p>
                             <p>Вес готового изделия может отличаться от заданного.</p>
@@ -104,9 +104,9 @@
                 <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
             </div>
             <div class="soc">
-                <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>
-                <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" alt="tg"></a>
-                <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" alt="inst"></a>
+                <a href="https://vk.com/opal_jewerly"><img src="/img/vk 1.svg" th:src="@{/img/vk 1.svg}" alt="vk"></a>
+                <a href="https://t.me/opal_jewerly"><img src="/img/telegram 1.svg" th:src="@{/img/telegram 1.svg}" alt="tg"></a>
+                <a href="https://instagram.com/opal_jewerly"><img src="/img/inst 1.svg" th:src="@{/img/inst 1.svg}" alt="inst"></a>
             </div>
             <div>
             <p>+7 (900) 653-97-77</p>
@@ -121,7 +121,7 @@
             <div class="footer-reight-menu">
             <div class="footerlogo">
                 <a th:href="@{/main-page}">
-                <img src="img/logo.png" class="footerlogo">
+                <img src="img/logo.png" th:src="@{/img/logo.png}" class="footerlogo">
                 </a>
             </div>
             <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
