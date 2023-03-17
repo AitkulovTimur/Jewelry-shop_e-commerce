@@ -1,7 +1,8 @@
 package com.service.jewelry.repo;
 
-import com.service.jewelry.model.RoleEntity;
+import com.service.jewelry.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findByName(String name);
 }

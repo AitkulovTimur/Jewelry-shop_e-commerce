@@ -73,16 +73,6 @@ public class PagesController {
         return "cart";
     }
 
-    @GetMapping("/registration")
-    public String returnRegistration() {
-        return "registration";
-    }
-
-    @GetMapping("/authentication")
-    public String returnAuthentication() {
-        return "authentication";
-    }
-
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody ProductEntity product) {
             productService.createProduct(product);

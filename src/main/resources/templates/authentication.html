@@ -1,81 +1,53 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <!-- @ - default directory -->
-  <link th:href="@{/auth.css}" rel="stylesheet">
-  <title>opal.com</title>
   <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" rel="stylesheet">
+
+  <title>Login</title>
 </head>
-<body class="page">
+<body>
 <div class="container">
-  <header class="header">
-    <div class="headopis">
-      <div class="logo">
-        <a th:href="@{/main-page}">
-          <img src="img/logo.png">
-        </a>
+  <div class="row mt-5">
+    <div class="col-6 mx-auto">
+      <h1>Login Form</h1>
+      <div th:if="${param.error}">
+        <div class="alert alert-danger">Invalid Email or Password !!!</div>
       </div>
-      <div class="headright">
-        <a th:href="@{/adress}" class="bold">Санкт-Петербург</a>
-        <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
-        <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
+      <div th:if="${param.logout}">
+        <div class="alert alert-success">You have been logged out !!!</div>
       </div>
-      <div class="headright">
-        <p class="bold">+7 (900) 653-97-77</p>
-        <p>c 10:00 до 21:00</p>
-      </div>
-    </div>
-  </header>
-  <main>
-    <div class="main">
-      <div class="login">
-        <form class="login-form">
-          <label id="aunt-id">Авторизация</label>
-          <input class="pole" type="email" name="email" placeholder="Email">
-          <input class="pole" type="password" name="pswd" placeholder="Password">
-          <button class="button-aunt pole">Авторизироваться</button>
-        </form>
-        <div class="registration-link">
-          <p>Еще не зарегестрированы?</p>
-          <a th:href="@{/registration}">Зарегестрироваться</a>
+      <form
+              class="form-horizontal"
+              method="post"
+              role="form"
+              th:action="@{/login}"
+      >
+        <div class="mb-3">
+          <label class="form-label" for="username">Email</label>
+          <input class="form-control" id="username" name="username" placeholder="Enter email address"
+                 type="email">
         </div>
-      </div>
+        <div class="mb-3">
+          <label class="col-sm-2 col-form-label" for="password">Password</label>
+          <input class="form-control" id="password" name="password" placeholder="Enter password"
+                 type="password">
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-primary mb-3" type="submit">Login</button>
+          or <a class="link-primary" th:href="@{/registration}">Register</a>
+        </div>
+      </form>
     </div>
-  </main>
+  </div>
 </div>
+
+
+<script crossorigin="anonymous"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
-<footer class="footer">
-  <div class="social">
-    <div class="foottop">
-      <a th:href="@{/adress}"  class="bold">Санкт-Петербург</a>
-      <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
-      <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
-    </div>
-    <div class="soc">
-      <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>
-      <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" alt="tg"></a>
-      <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" alt="inst"></a>
-    </div>
-    <div>
-      <p>+7 (900) 653-97-77</p>
-      <p class="fontgrey">c 10:00 до 21:00</p>
-    </div>
-  </div>
-  <div  class="foottop">
-    <p class="bold">Ювелирные изделия</p>
-    <a th:href="@{/catalog}">Каталог ювелирных изделий</a><br>
-    <a th:href="@{/reviews}">Отзывы</a>
-  </div>
-  <div class="foottop">
-    <div class="footer-reight-menu">
-      <div class="footerlogo">
-        <a th:href="@{/main-page}">
-          <img src="img/logo.png" class="footerlogo">
-        </a>
-      </div>
-      <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
-      <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
-    </div>
-  </div>
-</footer>
 </html>
