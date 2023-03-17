@@ -147,10 +147,11 @@ body
 .catalog-cards {
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     flex-grow: 4;
     row-gap: 40px;
     margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .card-item:nth-child(4n) {
@@ -284,3 +285,7 @@ h1 {
     width: 50px;
     height: 50px;
 }
+
+
+
+
