@@ -2,7 +2,10 @@ package com.service.jewelry.controller;
 
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
+import com.service.jewelry.model.ReviewDto;
+import com.service.jewelry.model.ReviewEntity;
 import com.service.jewelry.service.ProductService;
+import com.service.jewelry.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @Controller
-//Don't set @RequestMapping both on a class and method layer
 public class PagesController {
     @Autowired
     ProductService productService;
+
+    @Autowired
+    ReviewService reviewService;
 
     @GetMapping("/catalog")
     public String returnCatalogPage(Model model, @RequestParam(required = false) String searchQuery,
@@ -53,7 +58,6 @@ public class PagesController {
         return "catalog";
     }
 
-    // test endpoint
     @GetMapping("/about")
     public String returnAbout() {
         return "about";
@@ -81,14 +85,38 @@ public class PagesController {
 
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody ProductEntity product) {
-        productService.createProduct(product);
-        return ResponseEntity.ok("You have added a new product");
+            productService.createProduct(product);
+            return ResponseEntity.ok("You have added a new product");
     }
 
     @GetMapping("/product/{vendorCode}")
     public String getProductByVendor(@PathVariable("vendorCode") int vendorCode, Model model) {
         model.addAttribute("product", productService.getProductByVendor(vendorCode));
+
+    @GetMapping("/product{vendorCode}")
+    public String getOneProduct (@PathVariable("vendorCode") int vendorCode, Model model) {
+        model.addAttribute("product",productService.getOne(vendorCode));
         return "item";
     }
 
+    @GetMapping("/order{vendorCode}")
+    public String getOrder (@PathVariable("vendorCode") int vendorCode, Model model) {
+        model.addAttribute("product",productService.getOne(vendorCode));
+        return "order";
+    }
+
+    @GetMapping("/reviews")
+    public String returnReviewsPage(Model model) {
+        Set<ReviewDto> reviewsSet = reviewService.getAllReviews();
+
+        model.addAttribute("allReviews", reviewsSet);
+        model.addAttribute("review", new ReviewEntity());
+        return "reviews";
+    }
+
+    @PostMapping("/addReview")
+    public String addReview(@ModelAttribute ("review") ReviewEntity review) {
+        reviewService.createReview(review);
+        return "redirect:/reviews";
+    }
 }

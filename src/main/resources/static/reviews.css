@@ -38,7 +38,7 @@ body
     align-items: center;
     flex-wrap: nowrap;
     height: 150px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 .logo
 {
@@ -47,6 +47,7 @@ body
     left: 0px;
     top: 0px;
 }
+
 
 .footer
 {
@@ -57,7 +58,7 @@ body
     color: #FFFFFF;
     background: #222222;
     margin-top: 90px;
-    padding-bottom: 2em;
+    padding-bottom:2em;
 }
 
 .headopis {
@@ -149,149 +150,9 @@ body
     font-size: 15px;
 }
 
-.shopping-carts-container {
-    font-family: 'Inter';
-}
-
-.shopping-carts-container h1 {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 2em;
-}
-
-.describtion-order {
-    width: 353px;
-    height: 100%;
-}
-
-.shopping-carts-menu {
-    display: flex;
-    justify-content: space-between;
-}
-
-.shopping-cart-container {
-    width: 716px;
-}
-
-
-.desc-form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.desc-form p {
-    font-weight: bold;
-}
-
-.form-window-text {
-    width: 236px;
-    height: 33px;
-    border-radius: 8px;
-}
-
-.shop-sum-itog {
-    display: flex;
-}
-
-#sum-itog {
-    margin-right: 1em;
-}
-
-.shop-sum-itog p {
-    font-weight: bold;
-}
-
-.end-shop-button {
-    margin-top: 1em;
-    background: #FFA82F;
-    border-radius: 8px;
-    color: #FFFFFF;
-    border-color: #FFA82F;
-    height: 66px;
-    width: 213px;
-    font-weight: 700;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.div-end-shop {
-    display: flex;
-    justify-content: center;
-}
-
-.cart-items {
-    height: 100%;
-    width: 716px;
-}
-
-.cart-image-price {
-    width: 270px;
-    height: 330px;
-    background: #222222;
-    color: white;
-    border-radius: 25px;
-    margin-right: 1em;
-}
-
-.cart-desc-small {
-    display: flex;
-    margin: 0 1em 0 1em;
-    justify-content: space-between;
-}
-
-.small-img {
-    width: 100%;
-    height: 246.75px;
-    border-radius: 25px 25px 0 0;
-}
-
-.shop-cart-item {
-    display: flex;
-    margin: 0 0 2em 0;
-}
-
-.big-desc-cart p{
-    margin: 0 0 2em 0;
-    font-weight: bold;
-    max-width: 397px;
-}
-
-.big-desc-cart {
-    margin: 0;
-    width: 397px;
-}
-
-.two-buttons {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2em;
-}
-
-.two-buttons p {
-    margin: 0 1em 0 1em;
-    display: flex;
-    align-items: center;
-}
-
-.buttons-count {
-    width: 57px;
-    height: 57px;
-    background: white;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.button-delete {
-    background: #FF3B2F;
-    border-radius: 8px;
-    color: #FFFFFF;
-    height: 66px;
-    width: 213px;
-    font-weight: 700;
-    font-weight: bold;
-    cursor: pointer;
-    border-color: #FF3B2F;
+.card a {
+    text-decoration:none;
+    color:white;
 }
 
 .login-icon {
@@ -299,22 +160,82 @@ body
     height: 50px;
 }
 
-.cart-image-price a {
-    text-decoration:none;
-    color:white;
+.feedback-cont {    
+    width: 100%;      
 }
 
-fieldset {
-    display:flex;
-    flex-direction:column;
+.feedback {
+    min-height: 3em;
+    padding: 2px 1em 2px 1em;
+    border:solid 2px #222222;
+    border-radius: 25px;
+    margin-bottom: 1em;    
+}
+
+.author{
+    font-weight: bold;    
+}
+
+.feedback-cont h1 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.feedback-author p {
+   margin-bottom: 0px; 
+}
+
+.form-feedback {
+    width: 100%;
+    border:solid 2px #222222;
+    border-radius: 25px;
+}
+
+.form-form {
+    margin: 1em;
+}
+
+
+input {
+    width: 15%;
+    border:solid 1px #222222;
+    border-radius: 25px;
+    padding: 0.5em 1em 0.5em 1em; 
+}
+
+.your-name-feed {
+    margin-bottom: 1em;
+}
+
+textarea {
+    max-width: 96%;
+    min-width: 96%;
+    min-height: 5em;
+    border:solid 1px #222222;
+    border-radius: 25px;
+    padding: 1em;
+}
+
+.container h1 {
+    margin-top: 3em;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.send-feed {
+    margin-top: 1em;
+    background: #222222;
     border-radius: 8px;
-    
+    color: #FFFFFF;
+    border-color: #222222;
+    height: 50px;
+    width: 150px;
+    font-weight: 700;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-legend {
-    font-weight: bold;
-}
-
-label {
-    font-weight: bold;
+.btn-send-feed {
+    display: flex;
+    justify-content: flex-start;
 }

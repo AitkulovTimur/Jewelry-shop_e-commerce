@@ -89,7 +89,9 @@
                                 <p class="bold">ИТОГО</p>
                                 <p th:text="${product.price}" id="price-work"></p>
                             </div>
-                            <button class="button-zakaz">Заказать</button>                            
+                            <a th:href="@{/order}+${product.vendorCode}">
+                            <button class="button-zakaz">Заказать</button>
+                            </a>
                         </div>
                     </div>
                 </div>                

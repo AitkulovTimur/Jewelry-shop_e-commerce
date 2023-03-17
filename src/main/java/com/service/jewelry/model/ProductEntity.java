@@ -41,4 +41,5 @@ public class ProductEntity {
     @Column(name="photo_path")
     private String photoPath;
 
+
 }
