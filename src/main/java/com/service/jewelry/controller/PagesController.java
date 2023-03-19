@@ -63,9 +63,9 @@ public class PagesController {
         return "about";
     }
 
-    @GetMapping("/adress")
-    public String returnAdress() {
-        return "adress";
+    @GetMapping("/address")
+    public String returnAddress() {
+        return "address";
     }
 
     @GetMapping("/cart")

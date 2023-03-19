@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    private UserService userDetailService;
+    private final UserService userDetailService;
 
     @Autowired
     public SecurityConfig(@Lazy UserService userDetailService) {
@@ -44,15 +44,18 @@ public class SecurityConfig {
                         .requestMatchers("/registration/**").permitAll()
                         .requestMatchers("/catalog/**").permitAll()
                         .requestMatchers("/product/**").permitAll()
+                        .requestMatchers("/about/**").permitAll()
+                        .requestMatchers("/address/**").permitAll()
+                        .requestMatchers("/cart/**").permitAll()
+                        .requestMatchers("/reviews/**").permitAll()
+                        .requestMatchers("/addReview/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/product")
+                        .defaultSuccessUrl("/catalog")
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll)

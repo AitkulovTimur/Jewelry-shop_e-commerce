@@ -12,36 +12,7 @@
     </head>
     <body class="page">
         <div class="container">
-            <header class="header">                
-                <div class="headopis">
-                    <div class="logo">
-                    <a th:href="@{/main-page}">
-                        <img src="../static/img/logo.png" th:src="@{img/logo.png}"/>
-                    </a>
-                </div>
-                    <div class="headright">
-                        <a th:href="@{/adress}" class="bold">Санкт-Петербург</a>
-                        <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
-                        <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
-                    </div>
-                    <div class="headright">
-                        <p class="bold">+7 (900) 653-97-77</p>
-                        <p>c 10:00 до 21:00</p>
-                    </div>
-                    <div class="headright">
-                        <a th:href="@{/cart}" class="shop-cart-container">
-                           <img src="img/shopping-cart.png" class="cart-icon">
-                           <p>Корзина</p> 
-                        </a>                        
-                    </div>
-                    <div class="headright">
-                        <a th:href="@{/authentication}" class="shop-cart-container">
-                            <img src="img/login2.png" class="login-icon">
-                            <p>Авторизация</p>
-                        </a>
-                    </div>
-                </div>
-            </header>
+            <header th:insert="fragments/header_footer.html :: header"></header>
             <h1>Ювелирные изделия</h1>
             <form id="search_form" th:action="@{/catalog}">
             <div class="category_and_search">
@@ -103,9 +74,9 @@
     <footer class="footer">
         <div class="social">
             <div class="foottop">
-                <a th:href="@{/adress}"  class="bold">Санкт-Петербург</a>
-                <br><a th:href="@{/adress}">Среднерогатская, 14к1, ст 1</a>
-                <br><a th:href="@{/adress}">Каштановая аллея, 3</a>
+                <a th:href="@{/address}"  class="bold">Санкт-Петербург</a>
+                <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
+                <br><a th:href="@{/address}">Каштановая аллея, 3</a>
             </div>
             <div class="soc">
                 <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>

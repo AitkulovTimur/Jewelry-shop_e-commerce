@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- @ - default directory -->
+  <link th:href="@{/style.css}" rel="stylesheet">
+  <title>opal.com</title>
+  <meta charset="utf-8">
+</head>
+<body class="page">
+<div class="container">
+  <header th:fragment="header" class="header">
+    <div class="headopis">
+      <div class="logo">
+        <a th:href="@{/main-page}">
+          <img src="img/logo.png">
+        </a>
+      </div>
+      <div class="headright">
+        <a th:href="@{/address}" class="bold">Санкт-Петербург</a>
+        <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
+        <br><a th:href="@{/address}">Каштановая аллея, 3</a>
+      </div>
+      <div class="headright">
+        <p class="bold">+7 (900) 653-97-77</p>
+        <p>c 10:00 до 21:00</p>
+      </div>
+      <div class="headright">
+        <a th:href="@{/cart}" class="shop-cart-container">
+          <img src="img/shopping-cart.png" class="cart-icon">
+          <p>Корзина</p>
+        </a>
+      </div>
+      <div class="headright">
+        <a th:href="@{/authentication}" class="shop-cart-container">
+          <img src="img/login2.png" class="login-icon">
+          <p>Авторизация</p>
+        </a>
+      </div>
+    </div>
+  </header>
+</div>
+</body>
+
+<footer class="footer">
+  <div class="social">
+    <div class="foottop">
+      <a th:href="@{/address}"  class="bold">Санкт-Петербург</a>
+      <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
+      <br><a th:href="@{/address}">Каштановая аллея, 3</a>
+    </div>
+    <div class="soc">
+      <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>
+      <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" alt="tg"></a>
+      <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" alt="inst"></a>
+    </div>
+    <div>
+      <p>+7 (900) 653-97-77</p>
+      <p class="fontgrey">c 10:00 до 21:00</p>
+    </div>
+  </div>
+  <div  class="foottop">
+    <p class="bold">Ювелирные изделия</p>
+    <a th:href="@{/catalog}">Каталог ювелирных изделий</a><br>
+    <a th:href="@{/reviews}">Отзывы</a>
+  </div>
+  <div class="foottop">
+    <div class="footer-reight-menu">
+      <div class="footerlogo">
+        <a th:href="@{/main-page}">
+          <img src="img/logo.png" class="footerlogo">
+        </a>
+      </div>
+      <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
+      <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
+    </div>
+  </div>
+</footer>
+</html>
