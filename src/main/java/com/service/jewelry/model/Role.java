@@ -29,5 +29,4 @@ public class Role {
         super();
         this.name = name;
     }
-
 }
