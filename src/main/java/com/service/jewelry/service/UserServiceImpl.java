@@ -21,9 +21,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public void save(UserRegistrationDto registrationDto) {
-        String p = new BCryptPasswordEncoder().encode(registrationDto.getPassword());
+        String p = passwordEncoder.encode(registrationDto.getPassword());
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
                p, List.of(new Role("ROLE_USER")));
