@@ -10,9 +10,9 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 @Configuration
@@ -30,7 +30,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(){
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailService);
         authProvider.setPasswordEncoder(getPasswordEncoder());
@@ -50,7 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/reviews/**").permitAll()
                         .requestMatchers("/addReview/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/login/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -58,7 +58,15 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/catalog")
                         .permitAll()
                 )
-                .logout(LogoutConfigurer::permitAll)
+                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+                                .clearAuthentication(true)
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID")
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessUrl("/catalog?logout")
+                                .permitAll()
+                )
                 .exceptionHandling().accessDeniedPage("/access-denied");
         return http.build();
     }

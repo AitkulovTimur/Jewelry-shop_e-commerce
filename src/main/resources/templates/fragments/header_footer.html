@@ -30,10 +30,16 @@
           <p>Корзина</p>
         </a>
       </div>
-      <div class="headright">
-        <a th:href="@{/authentication}" class="shop-cart-container">
+      <div class="headright" sec:authorize="isAnonymous()">
+        <a th:href="@{/login}" class="shop-cart-container">
           <img src="img/login2.png" class="login-icon">
-          <p>Авторизация</p>
+          <p>Войти</p>
+        </a>
+      </div>
+      <div class="headright" sec:authorize="isAuthenticated()">
+        <a th:href="@{/logout}" class="shop-cart-container">
+          <img src="img/login2.png" class="login-icon">
+          <p>Выйти</p>
         </a>
       </div>
     </div>
