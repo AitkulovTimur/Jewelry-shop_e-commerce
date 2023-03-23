@@ -51,14 +51,11 @@
                     <input class="pole" type="email" name="email" placeholder="Email">
                     <p class="text-danger" th:errors="*{email}"
                        th:if="${#fields.hasErrors('email')}"></p>
-                    <input class="pole" type="password" name="password" placeholder="Password">
+                    <input class="pole" type="password" name="pswd" placeholder="Password">
                     <p class="text-danger" th:errors="*{password}"
                        th:if="${#fields.hasErrors('password')}"></p>
                     <input class="pole" type="confirm_password" name="cfmpswd" placeholder="Confirm your password">
                     <button class="button-aunt pole">Зарегистрироваться</button>
-                    <div class="login-link">
-                        <p>Уже зарегистрированы? <a th:href="@{/login}">Авторизоваться</a></p>
-                    </div>
                 </form>
             </div>
         </div>
