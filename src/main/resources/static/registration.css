@@ -157,13 +157,13 @@ body
     margin-bottom:1em;
 }
 
-.registration-link {
+.login-link {
    display: flex;
    align-items:center;
    justify-content:center;
 }
 
-.registration-link a{
+.login-link a{
    text-decoration:none;
    color: #EFB461;
    margin-left:1em;
