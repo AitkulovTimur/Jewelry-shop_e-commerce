@@ -33,3 +33,7 @@ spring:
     locations: filesystem:src/main/resources/db.migration
     clean-disabled: false
     clean-on-validation-error: true
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB

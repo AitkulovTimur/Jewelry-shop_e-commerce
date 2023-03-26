@@ -1,111 +1,185 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <!-- @ - default directory -->
-        <link th:href="@{/catalog.css}" rel="stylesheet">
-        <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
-        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-        <title>catalog</title>
-        <meta charset="utf-8">
-    </head>
-    <body class="page">
-        <div class="container">
-            <header th:insert="fragments/header_footer.html :: header"></header>
-            <h1>Ювелирные изделия</h1>
-            <div th:if="${param.logout}">
-                <div class="alert alert-info">You have been logged out.</div>
-            </div>
-            <form id="search_form" th:action="@{/catalog}">
-            <div class="category_and_search">
-                <div class="category">
-                    <a th:replace="fragments/sorting :: sorting('price','По возрастанию цены')"></a>
-                    <a th:replace="fragments/sorting :: sorting('price','По убыванию цены')"></a>
-                </div>
-                <div class="search-box">
-                    <input class="search-txt" type="text" name="searchQuery" th:value="${searchQuery}" placeholder="Поиск">
-                    <a class="search-btn" href="javascript:{}" onclick="document.getElementById('search_form').submit();"><i class="fa fa-search" aria-hidden="true"></i></a>
-                </div>
-            </div>
-            </form>
+<head>
+    <!-- @ - default directory -->
+    <link th:href="@{/catalog.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <title>catalog</title>
+    <meta charset="utf-8">
+</head>
+<body class="page">
+<div class="container">
+    <header th:insert="fragments/header_footer.html :: header"></header>
+    <h1>Ювелирные изделия</h1>
+    <div th:if="${param.logout}">
+        <div class="alert alert-info">Вы вышли из системы</div>
+    </div>
 
-            <div class="catalog-cards">
-                <div class="card-item" th:each="product : ${products}">
-                    <a th:href="@{/product}+'/'+${product.vendorCode}">
-                        <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="card-image" />
-                    <div class="price-item">
-                        <p th:text="${product.name}" class="text-decoration"></p>
-                        <p th:text="'Цена: '+${product.price} + '₽'" class="text-decoration"></p>
-                    </div>
+    <div th:if="${param.error}">
+        <div class="alert alert-info" th:text="${error}"></div>
+    </div>
 
-                    <div class="description-item">
-                        <p class="text-description" th:text="${product.description}"></p>
-                        <p class="text-description" th:text="'Артикул: '+${product.vendorCode}"></p>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" id="but" data-toggle="modal" data-target="#exampleModal">
+        Добавить товар
+    </button>
+
+    <!-- Modal for product adding-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form
+                        method="post"
+                        role="form"
+                        th:action="@{/create}"
+                        th:object="${product}"
+                >
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Добавление продукта</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    </a>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="name">Название продукта</label>
+                            <input class="form-control" id="name" name="name" type="text">
+                            <!--                            <p class="text-danger" th:errors="*{name}"-->
+                            <!--                               th:if="${#fields.hasErrors('name')}"></p>-->
+                        </div>
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupSelect01">Пол</label>
+                            <select class="form-select" name="gender" id="inputGroupSelect01">
+                                <option value="MEN">Для нее</option>
+                                <option value="WOMEN">Для него</option>
+                                <option value="UNI">Для оно</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">₽</span>
+                            <input type="text" placeholder="цена вашего нового продукта" class="form-control"
+                                   name="price" aria-label="Amount (to the nearest dollar)">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Описание продукта</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" name="description"
+                                   aria-describedby="inputGroup-sizing-default">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Добавить продукт</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#but").on("click", function(e) {
+                e.preventDefault();
+                $("#exampleModal").modal("show").find(".modal-content");
+            });
+        });
+
+
+    </script>
+
+    <form id="search_form" th:action="@{/catalog}">
+        <div class="category_and_search">
+            <div class="category">
+                <a th:replace="fragments/sorting :: sorting('price','По возрастанию цены')"></a>
+                <a th:replace="fragments/sorting :: sorting('price','По убыванию цены')"></a>
+            </div>
+            <div class="search-box">
+                <input class="search-txt" type="text" name="searchQuery" th:value="${searchQuery}" placeholder="Поиск">
+                <a class="search-btn" href="javascript:{}" onclick="document.getElementById('search_form').submit();"><i
+                        class="fa fa-search" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </form>
+
+    <div class="catalog-cards">
+        <div class="card-item" th:each="product : ${products}">
+            <a th:href="@{/product}+'/'+${product.vendorCode}">
+                <img th:src="'img/'+${product.vendorCode}+'.jpg'" class="card-image"/>
+                <div class="price-item">
+                    <p th:text="${product.name}" class="text-decoration"></p>
+                    <p th:text="'Цена: '+${product.price} + '₽'" class="text-decoration"></p>
                 </div>
-            </div>
-            <nav aria-label="Pagination" th:if="${totalPages > 0}">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                        <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
-                    </li>
-                    <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-                        <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
-                    </li>
-                    <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
-                        <a class="page-link" href="#">...</a>
-                    </li>
-                    <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
-                        th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
-                        <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
-                    </li>
-                    <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
-                        <a class="page-link" href="#">...</a>
-                    </li>
-                    <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                        <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
-                    </li>
-                    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                        <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
-                    </li>
-                </ul>
-            </nav>
+
+                <div class="description-item">
+                    <p class="text-description" th:text="${product.description}"></p>
+                    <p class="text-description" th:text="'Артикул: '+${product.vendorCode}"></p>
+                </div>
+            </a>
         </div>
-    </body>
-    <footer class="footer">
-        <div class="social">
-            <div class="foottop">
-                <a th:href="@{/address}"  class="bold">Санкт-Петербург</a>
-                <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
-                <br><a th:href="@{/address}">Каштановая аллея, 3</a>
-            </div>
-            <div class="soc">
-                <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>
-                <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" alt="tg"></a>
-                <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" alt="inst"></a>
-            </div>
-            <div>
-                <p>+7 (900) 653-97-77</p>
-                <p class="fontgrey">c 10:00 до 21:00</p>
-            </div>
-        </div>
-        <div  class="foottop">
-            <p class="bold">Ювелирные изделия</p>
-            <a th:href="@{/catalog}">Каталог ювелирных изделий</a><br>
-            <a th:href="@{/reviews}">Отзывы</a>
-        </div>
+    </div>
+    <nav aria-label="Pagination" th:if="${totalPages > 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+<footer class="footer">
+    <div class="social">
         <div class="foottop">
-            <div class="footer-reight-menu">
-                <div class="footerlogo">
-                    <a th:href="@{/main-page}">
-                        <img src="img/logo.png" class="footerlogo">
-                    </a>
-                </div>
-                <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
-                <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
-            </div>
+            <a th:href="@{/address}" class="bold">Санкт-Петербург</a>
+            <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
+            <br><a th:href="@{/address}">Каштановая аллея, 3</a>
         </div>
-    </footer>
+        <div class="soc">
+            <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" alt="vk"></a>
+            <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" alt="tg"></a>
+            <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" alt="inst"></a>
+        </div>
+        <div>
+            <p>+7 (900) 653-97-77</p>
+            <p class="fontgrey">c 10:00 до 21:00</p>
+        </div>
+    </div>
+    <div class="foottop">
+        <p class="bold">Ювелирные изделия</p>
+        <a th:href="@{/catalog}">Каталог ювелирных изделий</a><br>
+        <a th:href="@{/reviews}">Отзывы</a>
+    </div>
+    <div class="foottop">
+        <div class="footer-reight-menu">
+            <div class="footerlogo">
+                <a th:href="@{/main-page}">
+                    <img src="img/logo.png" class="footerlogo">
+                </a>
+            </div>
+            <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
+            <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
+        </div>
+    </div>
+</footer>
 </html>

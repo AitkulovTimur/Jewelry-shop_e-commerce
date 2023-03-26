@@ -1,5 +1,7 @@
 package com.service.jewelry.service;
 
+import com.service.jewelry.model.Gender;
+import com.service.jewelry.model.ProductCreateRequest;
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.repo.ProductRepository;
@@ -23,7 +25,7 @@ import static java.lang.String.format;
 @Slf4j
 public class ProductService {
     private static final String REGEX_WHITESPACES = "\\s+";
-    private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^\\p{L}+0-9\\s.]", Pattern.UNICODE_CASE |  Pattern.UNICODE_CHARACTER_CLASS);
+    private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^\\p{L}+0-9\\s.]", Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
 
     private String handleSearchString(String searchStr) {
         if (searchStr == null || searchStr.isBlank())
@@ -51,8 +53,8 @@ public class ProductService {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public void createProduct(ProductEntity product) {
-        productRepository.save(product);
+    public ProductEntity createProduct(ProductCreateRequest product) {
+        return productRepository.save(mapper(product));
     }
 
     public ProductEntity getProductByVendor(int vendorCode) {
@@ -78,10 +80,17 @@ public class ProductService {
                 productEntity.getName(),
                 productEntity.getGender(),
                 productEntity.getPrice(),
-                productEntity.getDescription(),
-                productEntity.getPhotoPath()
+                productEntity.getDescription()
         );
     }
 
 
+    private ProductEntity mapper(ProductCreateRequest productCreateRequest) {
+        return ProductEntity.builder()
+                .name(productCreateRequest.getName())
+                .gender(Gender.valueOf(productCreateRequest.getGender()))
+                .price(productCreateRequest.getPrice())
+                .description(productCreateRequest.getDescription())
+                .build();
+    }
 }

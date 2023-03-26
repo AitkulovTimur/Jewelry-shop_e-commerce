@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- @ - default directory -->
+  <link th:href="@{/catalog.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+  <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <title>adminka</title>
+  <meta charset="utf-8">
+</head>
+<body>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Добавить товар
+</button>
+
+<!-- Modal for product adding-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Добавление продукта</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form
+              method="post"
+              role="form"
+              th:action="@{/create}"
+              th:object="${product}"
+      >
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" for="name">Название продукта</label>
+            <input class="form-control" id="name" name="name" type="text">
+            <!--                            <p class="text-danger" th:errors="*{name}"-->
+            <!--                               th:if="${#fields.hasErrors('name')}"></p>-->
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">Пол</label>
+            <select class="form-select" name="gender" id="inputGroupSelect01">
+              <option value="MEN">Для нее</option>
+              <option value="WOMEN">Для него</option>
+              <option value="UNI">Для оно</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">₽</span>
+            <input type="text" placeholder="цена вашего нового продукта" class="form-control"
+                   name="price" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text">.00</span>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Описание продукта</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" name="description"
+                   aria-describedby="inputGroup-sizing-default">
+          </div>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">Добавить продукт</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
