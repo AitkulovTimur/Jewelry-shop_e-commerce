@@ -16,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 @Configuration
+//TODO: add default users with ADMIN and DEFAULT roles
 public class SecurityConfig {
     private final UserService userDetailService;
 
@@ -55,7 +56,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/catalog")
+                        .defaultSuccessUrl("/main-page")
                         .permitAll()
                 )
                 .logout(logout -> logout

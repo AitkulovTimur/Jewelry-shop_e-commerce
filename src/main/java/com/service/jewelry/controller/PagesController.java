@@ -1,7 +1,6 @@
 package com.service.jewelry.controller;
 
 import com.service.jewelry.model.ProductDto;
-import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.model.ReviewDto;
 import com.service.jewelry.model.ReviewEntity;
 import com.service.jewelry.service.ProductService;
@@ -11,11 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Set;
 
@@ -73,20 +74,14 @@ public class PagesController {
         return "cart";
     }
 
-    @PostMapping("/create")
-    public ResponseEntity create(@RequestBody ProductEntity product) {
-            productService.createProduct(product);
-            return ResponseEntity.ok("You have added a new product");
-    }
-
     @GetMapping("/product/{vendorCode}")
-    public String getOneProduct (@PathVariable("vendorCode") int vendorCode, Model model) {
+    public String getOneProduct(@PathVariable("vendorCode") int vendorCode, Model model) {
         model.addAttribute("product", productService.getProductByVendor(vendorCode));
         return "item";
     }
 
     @GetMapping("/order{vendorCode}")
-    public String getOrder (@PathVariable("vendorCode") int vendorCode, Model model) {
+    public String getOrder(@PathVariable("vendorCode") int vendorCode, Model model) {
         model.addAttribute("product", productService.getProductByVendor(vendorCode));
         return "order";
     }
@@ -101,7 +96,7 @@ public class PagesController {
     }
 
     @PostMapping("/addReview")
-    public String addReview(@ModelAttribute ("review") ReviewEntity review) {
+    public String addReview(@ModelAttribute("review") ReviewEntity review) {
         reviewService.createReview(review);
         return "redirect:/reviews";
     }

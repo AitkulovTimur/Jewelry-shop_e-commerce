@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/catalog.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <title>Админка</title>
+</head>
+<body>
+
+<div class="container-sm">
+
+    <h1>АДМИНКА</h1>
+
+    <table class="table table-bordered border-secondary">
+        <thead class="table-light">
+        <tr>
+            <th scope="col">Артикул</th>
+            <th scope="col">Имя изделия</th>
+            <th scope="col">Пол</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Фото</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${listProducts}">
+            <td th:text="${product.vendorCode}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.gender}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.description}"></td>
+            <td><img th:src="'img/'+${product.vendorCode}+'.jpg'" class="card-image"/></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+
+</body>
+</html>

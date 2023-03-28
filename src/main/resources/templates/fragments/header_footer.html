@@ -24,12 +24,16 @@
         <p class="bold">+7 (900) 653-97-77</p>
         <p>c 10:00 до 21:00</p>
       </div>
+
+      <a sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-outline-dark" role="button" th:href="@{/all_products}">АДМИНКА</a>
+
       <div class="headright">
         <a th:href="@{/cart}" class="shop-cart-container">
           <img src="img/shopping-cart.png" class="cart-icon">
           <p>Корзина</p>
         </a>
       </div>
+
       <div class="headright" sec:authorize="isAnonymous()">
         <a th:href="@{/login}" class="shop-cart-container">
           <img src="img/login2.png" class="login-icon">

@@ -1,5 +1,6 @@
 package com.service.jewelry.service;
 
+import com.service.jewelry.model.ProductCreateRequest;
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.repo.ProductRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +25,7 @@ import static java.lang.String.format;
 @Slf4j
 public class ProductService {
     private static final String REGEX_WHITESPACES = "\\s+";
-    private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^\\p{L}+0-9\\s.]", Pattern.UNICODE_CASE |  Pattern.UNICODE_CHARACTER_CLASS);
+    private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^\\p{L}+0-9\\s.]", Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
 
     private String handleSearchString(String searchStr) {
         if (searchStr == null || searchStr.isBlank())
@@ -45,14 +47,9 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public Set<ProductDto> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         return productRepository.findAll().stream().map(this::mapper)
-                .sorted(Comparator.comparing(ProductDto::vendorCode))
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    public void createProduct(ProductEntity product) {
-        productRepository.save(product);
+                .sorted(Comparator.comparing(ProductDto::vendorCode)).toList();
     }
 
     public ProductEntity getProductByVendor(int vendorCode) {
@@ -76,12 +73,19 @@ public class ProductService {
         return new ProductDto(
                 productEntity.getVendorCode(),
                 productEntity.getName(),
-                productEntity.getGender(),
+                productEntity.getGender().toString(),
                 productEntity.getPrice(),
-                productEntity.getDescription(),
-                productEntity.getPhotoPath()
+                productEntity.getDescription()
         );
     }
 
 
+    private ProductEntity mapper(ProductCreateRequest productCreateRequest) {
+        return ProductEntity.builder()
+                .name(productCreateRequest.getName())
+                .gender(productCreateRequest.getGender())
+                .price(productCreateRequest.getPrice())
+                .description(productCreateRequest.getDescription())
+                .build();
+    }
 }

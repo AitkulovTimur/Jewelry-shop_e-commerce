@@ -42,9 +42,4 @@ public class ProductEntity {
 
     @Column(name="description")
     private String description;
-
-    @Column(name="photo_path")
-    private String photoPath;
-
-
 }
