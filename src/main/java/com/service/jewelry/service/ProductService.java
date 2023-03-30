@@ -24,6 +24,8 @@ import static java.lang.String.format;
 @Service
 @Slf4j
 public class ProductService {
+    @Autowired
+    ProductRepository productRepository;
     private static final String REGEX_WHITESPACES = "\\s+";
     private static final Pattern SEARCH_STR_PATTERN = Pattern.compile("[^\\p{L}+0-9\\s.]", Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
 
@@ -44,12 +46,13 @@ public class ProductService {
                 .collect(Collectors.joining(" "));
     }
 
-    @Autowired
-    ProductRepository productRepository;
-
     public List<ProductDto> getAllProducts() {
         return productRepository.findAll().stream().map(this::mapper)
                 .sorted(Comparator.comparing(ProductDto::vendorCode)).toList();
+    }
+
+    public void createProduct(ProductCreateRequest request) {
+        productRepository.save(this.mapper(request));
     }
 
     public ProductEntity getProductByVendor(int vendorCode) {

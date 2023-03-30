@@ -29,10 +29,23 @@ public class UserServiceImpl implements UserService {
         String p = passwordEncoder.encode(registrationDto.getPassword());
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
-               p, List.of(new Role("ROLE_USER")));
+                p, List.of(new Role("ROLE_USER")));
 
         userRepository.save(user);
     }
+
+    @Override
+    public void saveAdmin(UserRegistrationDto registrationDto) {
+        if (!userRepository.existsByEmail(registrationDto.getEmail())) {
+            String p = passwordEncoder.encode(registrationDto.getPassword());
+            User user = new User(registrationDto.getFirstName(),
+                    registrationDto.getLastName(), registrationDto.getEmail(),
+                    p, List.of(new Role("ROLE_ADMIN")));
+
+            userRepository.save(user);
+        }
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

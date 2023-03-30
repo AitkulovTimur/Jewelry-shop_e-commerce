@@ -2,7 +2,6 @@ package com.service.jewelry.service;
 
 import com.service.jewelry.model.ReviewDto;
 import com.service.jewelry.model.ReviewEntity;
-
 import com.service.jewelry.repo.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +29,7 @@ public class ReviewService {
     }
 
     public ReviewEntity getOneReview(int id) {
-        ReviewEntity review = reviewRepository.findById(id).get();
-        return review;
+        return reviewRepository.findById(id).get();
     }
 
 
