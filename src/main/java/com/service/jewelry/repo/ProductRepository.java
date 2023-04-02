@@ -24,4 +24,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
             nativeQuery = true)
     Page<ProductEntity> getProductsBySearchString(String searchString, Pageable pageable);
 
+    boolean existsByVendorCode(int vendorCode);
+
+    boolean existsByName(String name);
+
 }

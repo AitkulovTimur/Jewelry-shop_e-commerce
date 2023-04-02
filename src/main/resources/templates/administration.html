@@ -14,8 +14,13 @@
 <div class="container-sm">
 
     <h1>АДМИНКА</h1>
+    <div th:if="${param.success}">
+        <div class="alert alert-info">
+            Новый товар был успешно добавлен
+        </div>
+    </div>
 
-    <a type="button" class="btn btn-outline-success" role="button" th:href="@{/administration/all_products}">Добавить товар</a>
+    <a type="button" class="btn btn-outline-success" role="button" th:href="@{/administration/add_product}">Добавить товар</a>
 
     <table class="table table-bordered border-secondary">
         <thead class="table-light">

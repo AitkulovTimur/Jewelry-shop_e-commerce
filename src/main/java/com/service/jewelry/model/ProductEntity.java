@@ -29,7 +29,6 @@ public class ProductEntity {
     @Column(name = "vendor_code", updatable = false, nullable = false)
     private int vendorCode;
 
-
     @Column(name="name", nullable = false, unique = true)
     private String name;
 

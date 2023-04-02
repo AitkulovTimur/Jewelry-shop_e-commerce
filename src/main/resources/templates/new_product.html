@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link th:href="@{/catalog.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>Добавить товар</title>
+</head>
+<body>
+<div class="container">
+    <main>
+        <div class>
+            <div>
+                <form
+                        method="post"
+                        role="form"
+                        th:action="@{/administration/add_product}"
+                        th:object="${product}"
+                >
+                    <h1>Добавление нового товара</h1>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="vendor_code">Артикул (автозаполняемый/необязательный для ввода)</label>
+                        <input class="form-control" id="vendor_code" name="vendorCode" type="text">
+                        <p class="text-danger" th:errors="*{vendorCode}"
+                           th:if="${#fields.hasErrors('vendorCode')}"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="name">Имя</label>
+                        <input class="form-control" id="name" name="name" type="text">
+                        <p class="text-danger" th:errors="*{name}"
+                           th:if="${#fields.hasErrors('name')}"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="gender">Пол</label>
+                        <select class="form-select"  id="gender" name="gender">
+                            <option th:value="'MEN'" th:text="Мужское"></option>
+                            <option th:value="'WOMEN'" th:text="Женское"></option>
+                            <option th:value="'UNI'" th:text="Унисекас"></option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <label class="form-label" for="price">Цена</label>
+                        <input type="text" id="price" name="price" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                        <span class="input-group-text">₽</span>
+                        <span class="input-group-text">0.00</span>
+                        <p class="text-danger" th:errors="*{price}"
+                           th:if="${#fields.hasErrors('price')}"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Описание</label>
+                        <input class="form-control" id="description" name="description" type="text">
+                        <p class="text-danger" th:errors="*{description}"
+                           th:if="${#fields.hasErrors('description')}"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <button class="btn btn-primary mb-3" type="submit">Создать товар</button>
+                        или <a class="link-primary" th:href="@{/administration/all_products}">Вернуться на главную</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

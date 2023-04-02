@@ -7,21 +7,22 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
 
+//Don't make it a record @Anton Belyakov
 @Value
 public class ProductCreateRequest {
+    @Min(1)
+    int vendorCode;
 
-    @NotBlank(message = "Email cannot be empty")
-    @Size(min = 7, max = 50, message = "Wrong email length")
+    @NotBlank(message = "Имя не может быть пустым")
+    @Size(min = 7, max = 50, message = "Неправильная длина имени, возможно она слишком большая или маленькая")
     String name;
-    @NotBlank(message = "Email cannot be empty")
+
     Gender gender;
 
-    @NotBlank(message = "Email cannot be empty")
-    @Size(min = 1, max = 10, message = "Wrong price length")
-    @Min(value = 500, message = "Price lower bound violation")
-    @Max(value = 6000000, message = "Price higher bound violation")
+    @Min(value = 500, message = "Слишком низкая цена")
+    @Max(value = 6000000, message = "Слишком высокая цена")
     double price;
 
+    @Size(max = 255, message = "Слишком большое описание")
     String description;
-    String photoPath;
 }

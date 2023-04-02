@@ -51,12 +51,20 @@ public class ProductService {
                 .sorted(Comparator.comparing(ProductDto::vendorCode)).toList();
     }
 
-    public void createProduct(ProductCreateRequest request) {
-        productRepository.save(this.mapper(request));
+    public ProductEntity createProduct(ProductCreateRequest request) {
+        return productRepository.save(this.mapper(request));
     }
 
     public ProductEntity getProductByVendor(int vendorCode) {
         return productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("ProductNotFound"));
+    }
+
+    public boolean existsByName(String name) {
+        return productRepository.existsByName(name);
+    }
+
+    public boolean existByVendorCode(int vendorCode) {
+        return productRepository.existsByVendorCode(vendorCode);
     }
 
     public Page<ProductDto> searchProduct(String searchStr, Pageable pageable) {
