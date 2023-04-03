@@ -56,7 +56,9 @@ public class ProductService {
     }
 
     public ProductEntity getProductByVendor(int vendorCode) {
-        return productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("ProductNotFound"));
+        return productRepository.findById(vendorCode)
+                .orElseThrow(() ->
+                        new RuntimeException("ProductNotFound"));
     }
 
     public boolean existsByName(String name) {

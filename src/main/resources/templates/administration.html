@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <a type="button" class="btn btn-outline-success" role="button" th:href="@{/administration/add_product}">Добавить товар</a>
+    <a type="button" class="btn btn-outline-success" th:href="@{/administration/add_product}">Добавить товар</a>
 
     <table class="table table-bordered border-secondary">
         <thead class="table-light">
@@ -31,6 +31,7 @@
             <th scope="col">Цена</th>
             <th scope="col">Описание</th>
             <th scope="col">Фото</th>
+            <th scope="col">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -41,6 +42,12 @@
             <td th:text="${product.price}"></td>
             <td th:text="${product.description}"></td>
             <td><img th:src="@{${'/img/' + product.vendorCode + '.jpg'}}" width="120"/></td>
+            <td>
+                <div class="container d-flex">
+                    <a type="button" class="btn btn-info m-1 mt-4" th:href="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}">Обновить</a>
+                    <a type="button" class="btn btn-danger m-1 mt-4" th:href="@{/administration/delete/{vendor_code}(vendor_code=${product.vendorCode})}">Удалить</a>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>
