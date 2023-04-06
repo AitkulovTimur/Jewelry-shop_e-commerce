@@ -14,9 +14,19 @@
 <div class="container-sm">
 
     <h1>АДМИНКА</h1>
-    <div th:if="${param.success}">
-        <div class="alert alert-info">
+    <div th:if="${param.success_create}">
+        <div class="alert alert-success">
             Новый товар был успешно добавлен
+        </div>
+    </div>
+
+    <div th:if="${success_update_vendor != null}">
+        <div class="alert alert-info" th:text="'Товар с артиклем [' + ${success_update_vendor} + '] был успешно обновлен'">
+        </div>
+    </div>
+
+    <div th:if="${vendor_code_error != null}">
+        <div class="alert alert-danger" role="alert" th:text="'Невозможно найти продукт с артиклем [' + ${vendor_code_error} + ']'">
         </div>
     </div>
 

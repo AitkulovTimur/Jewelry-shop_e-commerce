@@ -9,10 +9,7 @@ import lombok.Value;
 
 //Don't make it record @Anton Belyakov
 @Value
-public class ProductCreateRequest {
-    @Min(1)
-    int vendorCode;
-
+public class ProductUpdateRequest {
     @NotBlank(message = "Имя не может быть пустым")
     @Size(min = 7, max = 30, message = "Неправильная длина имени (валидное имя от 7 - 10 символов)")
     String name;

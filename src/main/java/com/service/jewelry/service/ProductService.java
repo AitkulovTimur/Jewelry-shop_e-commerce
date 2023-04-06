@@ -3,6 +3,7 @@ package com.service.jewelry.service;
 import com.service.jewelry.model.ProductCreateRequest;
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.ProductEntity;
+import com.service.jewelry.model.ProductUpdateRequest;
 import com.service.jewelry.repo.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -55,6 +54,16 @@ public class ProductService {
         return productRepository.save(this.mapper(request));
     }
 
+    public ProductEntity updateProduct(ProductUpdateRequest request, int vendorCode) {
+        return productRepository.save(ProductEntity.builder()
+                .vendorCode(vendorCode)
+                .name(request.getName())
+                .description(request.getDescription())
+                .gender(request.getGender())
+                .price(request.getPrice())
+                .build());
+    }
+
     public ProductEntity getProductByVendor(int vendorCode) {
         return productRepository.findById(vendorCode)
                 .orElseThrow(() ->
@@ -94,11 +103,21 @@ public class ProductService {
 
 
     private ProductEntity mapper(ProductCreateRequest productCreateRequest) {
-        return ProductEntity.builder()
-                .name(productCreateRequest.getName())
-                .gender(productCreateRequest.getGender())
-                .price(productCreateRequest.getPrice())
-                .description(productCreateRequest.getDescription())
-                .build();
+        if (productCreateRequest.getVendorCode() != 0)
+            return ProductEntity.builder()
+                    .vendorCode(productCreateRequest.getVendorCode())
+                    .name(productCreateRequest.getName())
+                    .gender(productCreateRequest.getGender())
+                    .price(productCreateRequest.getPrice())
+                    .description(productCreateRequest.getDescription())
+                    .build();
+        else
+            return ProductEntity.builder()
+                    .name(productCreateRequest.getName())
+                    .gender(productCreateRequest.getGender())
+                    .price(productCreateRequest.getPrice())
+                    .description(productCreateRequest.getDescription())
+                    .build();
     }
+
 }

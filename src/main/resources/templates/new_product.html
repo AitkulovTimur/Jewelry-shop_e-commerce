@@ -24,7 +24,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="vendor_code">Артикул (автозаполняемый/необязательный для ввода)</label>
-                        <input class="form-control" id="vendor_code" name="vendorCode" type="text">
+                        <input class="form-control" id="vendor_code" name="vendorCode" type="number">
                         <p class="text-danger" th:errors="*{vendorCode}"
                            th:if="${#fields.hasErrors('vendorCode')}"></p>
                     </div>
