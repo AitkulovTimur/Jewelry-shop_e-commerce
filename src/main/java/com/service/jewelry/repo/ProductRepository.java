@@ -28,4 +28,9 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     boolean existsByName(String name);
 
+
+    @Query(value = """
+            SELECT MAX(vendor_code) from products;
+            """, nativeQuery = true)
+    int findMaxVendorCode();
 }

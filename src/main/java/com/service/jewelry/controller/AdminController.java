@@ -39,7 +39,7 @@ public class AdminController {
 
     @GetMapping("add_product")
     public String returnAddProductPage(Model model) {
-        model.addAttribute("product", new ProductEntity());
+        model.addAttribute("product", new ProductEntity().withVendorCode(productService.getLastVendorCode() + 1));
         return "new_product";
     }
 

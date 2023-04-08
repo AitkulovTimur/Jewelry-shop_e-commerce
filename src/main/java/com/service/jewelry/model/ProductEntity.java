@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.With;
 
 
 @Builder
@@ -22,6 +23,7 @@ import jakarta.persistence.Table;
 @Getter
 @Setter
 @Entity
+@With
 @Table(name="products")
 public class ProductEntity {
     @Id

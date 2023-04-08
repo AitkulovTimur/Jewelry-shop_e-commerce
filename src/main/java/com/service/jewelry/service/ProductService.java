@@ -91,6 +91,10 @@ public class ProductService {
         }
     }
 
+    public int getLastVendorCode() {
+        return productRepository.findMaxVendorCode();
+    }
+
     private ProductDto mapper(ProductEntity productEntity) {
         return new ProductDto(
                 productEntity.getVendorCode(),

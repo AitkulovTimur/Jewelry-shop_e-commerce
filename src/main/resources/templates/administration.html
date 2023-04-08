@@ -5,6 +5,7 @@
     <link th:href="@{/catalog.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8">
     <title>Админка</title>
@@ -21,12 +22,14 @@
     </div>
 
     <div th:if="${success_update_vendor != null}">
-        <div class="alert alert-info" th:text="'Товар с артиклем [' + ${success_update_vendor} + '] был успешно обновлен'">
+        <div class="alert alert-info"
+             th:text="'Товар с артиклем [' + ${success_update_vendor} + '] был успешно обновлен'">
         </div>
     </div>
 
     <div th:if="${vendor_code_error != null}">
-        <div class="alert alert-danger" role="alert" th:text="'Невозможно найти продукт с артиклем [' + ${vendor_code_error} + ']'">
+        <div class="alert alert-danger" role="alert"
+             th:text="'Невозможно найти продукт с артиклем [' + ${vendor_code_error} + ']'">
         </div>
     </div>
 
@@ -54,8 +57,21 @@
             <td><img th:src="@{${'/img/' + product.vendorCode + '.jpg'}}" width="120"/></td>
             <td>
                 <div class="container d-flex">
-                    <a type="button" class="btn btn-info m-1 mt-4" th:href="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}">Обновить</a>
-                    <a type="button" class="btn btn-danger m-1 mt-4" th:href="@{/administration/delete/{vendor_code}(vendor_code=${product.vendorCode})}">Удалить</a>
+                    <a type="button" class="btn btn-info m-1 mt-4"
+                       th:href="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}">Обновить</a>
+
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
+                       aria-expanded="false" aria-controls="collapseExample">
+                        Удалить продукт
+                    </a>
+
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+                            squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente
+                            ea proident.
+                        </div>
+                    </div>
                 </div>
             </td>
         </tr>
