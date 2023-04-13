@@ -12,7 +12,7 @@
     <div class="headopis">
       <div class="logo">
         <a th:href="@{/main-page}">
-          <img src="img/logo.png">
+          <img th:src="@{/img/logo.png}">
         </a>
       </div>
       <div class="headright">
@@ -36,13 +36,13 @@
 
       <div class="headright" sec:authorize="isAnonymous()">
         <a th:href="@{/login}" class="shop-cart-container">
-          <img src="img/login2.png" class="login-icon">
+          <img th:src="@{/img/login2.png}" class="login-icon">
           <p>Войти</p>
         </a>
       </div>
       <div class="headright" sec:authorize="isAuthenticated()">
         <a th:href="@{/logout}" class="shop-cart-container">
-          <img src="img/login2.png" class="login-icon">
+          <img th:src="@{/img/login2.png}" class="login-icon">
           <p>Выйти</p>
         </a>
       </div>

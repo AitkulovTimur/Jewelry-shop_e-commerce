@@ -23,7 +23,7 @@
 
             <div th:if="${quantity_limit == true}">
                 <div class="alert alert-danger"
-                     th:text="'Вы набрали слишком много, у нас столько нет! [' + ${product.name} + '] закончился'">
+                     th:text="'Вы набрали слишком много, у нас столько нет! Возможно, товар [' + ${product.name} + '] скоро будет доступен'">
                 </div>
             </div>
 

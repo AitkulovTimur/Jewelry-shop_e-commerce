@@ -63,7 +63,7 @@ public class CartService {
                             int quantity = item.getQuantity() + 1;
                             if (quantity > product.getQuantity())
                                 throw new RuntimeException("Товар закончился");
-                            return item.withQuantity(quantity);
+                            return itemRepository.save(item.withQuantity(quantity));
                         }
                         return item;
                     }).toList();
