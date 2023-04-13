@@ -1,133 +1,129 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <link th:href="@{/item.css}" rel="stylesheet">
-        <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
-        <title>opal.com</title>
-        <meta charset="utf-8">
-    </head>
-    <body class="page">
-        <div class="container">
-            <header class="header">                
-                <div class="headopis">
-                    <div class="logo">
-                        <a th:href="@{/main-page}">
-                            <img src="../static/img/logo.png" th:src="@{/img/logo.png}"/>
-                        </a>
+<head>
+    <link th:href="@{/item.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <title>opal.com</title>
+    <meta charset="utf-8">
+</head>
+<body class="page">
+<div class="container">
+    <header th:insert="fragments/header_footer.html :: header"></header>
+
+    <div class="big-card-item">
+        <div class="desc-big-card">
+            <div th:if="${add_success == true}">
+                <div class="alert alert-info"
+                     th:text="'Товар [' + ${product.name} + '] был успешно добавлен в корзину'">
                 </div>
-                    <div class="headright">
-                        <a th:href="@{/address}" class="bold">Санкт-Петербург</a>
-                        <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
-                        <br><a th:href="@{/address}">Каштановая аллея, 3</a>
-                    </div>
-                    <div class="headright">
-                        <p class="bold">+7 (900) 653-97-77</p>
-                        <p>c 10:00 до 21:00</p>
-                    </div>
-                    <div class="headright">
-                        <a th:href="@{/cart}" class="shop-cart-container">
-                           <img src="img/shopping-cart.png" th:src="@{/img/shopping-cart.png}" class="cart-icon">
-                           <p>Корзина</p> 
-                        </a>                        
-                    </div>
-                    <div class="headright">
-                        <a th:href="@{/authentication}" class="shop-cart-container">
-                            <img src="img/login2.png" th:src="@{/img/login2.png}" class="login-icon">
-                            <p>Авторизация</p>
-                        </a>
-                    </div>
+            </div>
+
+            <div th:if="${quantity_limit == true}">
+                <div class="alert alert-danger"
+                     th:text="'Вы набрали слишком много, у нас столько нет! [' + ${product.name} + '] закончился'">
                 </div>
-            </header>
-                <div class="big-card-item">
-                    <div class="desc-big-card">
-                        <h1 th:text="${product.name}"></h1>
-                        <img th:src="@{'/img/'+${product.vendorCode}+'.jpg'}    "  class="big-img-card">
-                        <div>
-                            <p>Срок исполнения заказа: от 10-ти до 45-ти дней, зависит от трудоемкости работы и степени загруженности производства.</p>
-                            <p>Вес готового изделия может отличаться от заданного.</p>
-                            <p>Закрепка ювелирных вставок не входит в стоимость изготовления и рассчитываются отдельно.</p>
-                            <p>Гарантия 12 месяцев.</p>
-                        </div>                        
-                    </div>
-                    <div class="desc-big-card">
-                        <div class="slidecontainer">
-                            <p class="bold">Размер</p>
-                            <input type="range" min="14" max="24" value="14" class="slider" id="myRange">
-                        </div>
-                        <div class="ves-jewerly">
-                            <p class="bold">Вес:</p>
-                            <p class="ves-count">11,1 г</p>
-                        </div>
-                        <div class="metall-jewerly">
-                            <p class="bold">Металл</p>
-                            <ul>
-                                <li class="bg">Золото</li>
-                                <li class="bg">Серебро</li>
-                            </ul>
-                        </div>
-                        <div class="color-jewerly">
-                            <p class="bold">Цвет</p>
-                            <ul>
-                                <li class="bg">Красное</li>
-                                <li class="bg">Белое</li>
-                            </ul>
-                        </div>
-                        <div class="stones-jewerly">
-                            <p class="bold">Камни</p>
-                            <ul>
-                                <li class="bg">Фианит</li>
-                                <li class="bg">Хризолит</li>
-                            </ul>
-                        </div>
-                        <div class="work-itog">
-                            <div class="work">
-                                <p class="bold">Работа</p>
-                                <p id="price-work-black">3600 руб.</p>
-                            </div>
-                            <div class="work">
-                                <p class="bold">ИТОГО</p>
-                                <p th:text="${product.price}" id="price-work"></p>
-                            </div>
-                            <a th:href="@{/order}+${product.vendorCode}">
-                            <button class="button-zakaz">Заказать</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>                
-        </div>
-        </body>
-    <footer class="footer">
-        <div class="social">
-            <div class="foottop">
-                <a th:href="@{/address}"  class="bold">Санкт-Петербург</a>
-                <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
-                <br><a th:href="@{/address}">Каштановая аллея, 3</a>
             </div>
-            <div class="soc">
-                <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" th:src="@{/img/vk 1.svg}" alt="vk"></a>
-                <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" th:src="@{/img/telegram 1.svg}" alt="tg"></a>
-                <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" th:src="@{/img/inst 1.svg}" alt="inst"></a>
-            </div>
+
+            <h1 th:text="${product.name}"></h1>
+            <img th:src="@{'/img/'+${product.vendorCode}+'.jpg'}    " class="big-img-card">
             <div>
-                <p>+7 (900) 653-97-77</p>
-                <p class="fontgrey">c 10:00 до 21:00</p>
+                <p>Срок исполнения заказа: от 10-ти до 45-ти дней, зависит от трудоемкости работы и степени
+                    загруженности производства.</p>
+                <p>Вес готового изделия может отличаться от заданного.</p>
+                <p>Закрепка ювелирных вставок не входит в стоимость изготовления и рассчитываются отдельно.</p>
+                <p>Гарантия 12 месяцев.</p>
             </div>
         </div>
-        <div  class="foottop">
-            <p class="bold">Ювелирные изделия</p>
-            <a th:href="@{/catalog}">Каталог ювелирных изделий</a><br>
-            <a th:href="@{/reviews}">Отзывы</a>
-        </div>
-        <div class="foottop">
-            <div class="footer-reight-menu">
-                <div class="footerlogo">
-                    <a th:href="@{/main-page}">
-                        <img src="img/logo.png" th:src="@{/img/logo.png}" class="footerlogo">
-                    </a>
+        <div class="desc-big-card">
+            <div class="slidecontainer">
+                <p class="bold">Размер</p>
+                <input type="range" min="14" max="24" value="14" class="slider" id="myRange">
+            </div>
+            <div class="ves-jewerly">
+                <p class="bold">Вес:</p>
+                <p class="ves-count">11,1 г</p>
+            </div>
+            <div class="metall-jewerly">
+                <p class="bold">Металл</p>
+                <ul>
+                    <li class="bg">Золото</li>
+                    <li class="bg">Серебро</li>
+                </ul>
+            </div>
+            <div class="color-jewerly">
+                <p class="bold">Цвет</p>
+                <ul>
+                    <li class="bg">Красное</li>
+                    <li class="bg">Белое</li>
+                </ul>
+            </div>
+            <div class="stones-jewerly">
+                <p class="bold">Камни</p>
+                <ul>
+                    <li class="bg">Фианит</li>
+                    <li class="bg">Хризолит</li>
+                </ul>
+            </div>
+            <div class="work-itog">
+                <div class="work">
+                    <p class="bold">Работа</p>
+                    <p id="price-work-black">3600 руб.</p>
                 </div>
-                <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
-                <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
+                <div class="work">
+                    <p class="bold">ИТОГО</p>
+                    <p th:text="${product.price}" id="price-work"></p>
+                </div>
+                <a th:href="@{/order}+${product.vendorCode}">
+                    <button class="button-zakaz">Заказать</button>
+                    <form
+                            method="post"
+                            role="form"
+                            th:action="@{/add_item_to_cart/{vendor_code}(vendor_code=${product.vendorCode})}"
+                    >
+                        <button class="button-zakaz" type="submit">Добавить в корзину</button>
+                    </form>
+                </a>
             </div>
         </div>
-    </footer>
+    </div>
+</div>
+</body>
+<footer class="footer">
+    <div class="social">
+        <div class="foottop">
+            <a th:href="@{/address}" class="bold">Санкт-Петербург</a>
+            <br><a th:href="@{/address}">Среднерогатская, 14к1, ст 1</a>
+            <br><a th:href="@{/address}">Каштановая аллея, 3</a>
+        </div>
+        <div class="soc">
+            <a href="https://vk.com/opal_jewerly"><img src="img/vk 1.svg" th:src="@{/img/vk 1.svg}" alt="vk"></a>
+            <a href="https://t.me/opal_jewerly"><img src="img/telegram 1.svg" th:src="@{/img/telegram 1.svg}" alt="tg"></a>
+            <a href="https://instagram.com/opal_jewerly"><img src="img/inst 1.svg" th:src="@{/img/inst 1.svg}"
+                                                              alt="inst"></a>
+        </div>
+        <div>
+            <p>+7 (900) 653-97-77</p>
+            <p class="fontgrey">c 10:00 до 21:00</p>
+        </div>
+    </div>
+    <div class="foottop">
+        <p class="bold">Ювелирные изделия</p>
+        <a th:href="@{/catalog}">Каталог ювелирных изделий</a><br>
+        <a th:href="@{/reviews}">Отзывы</a>
+    </div>
+    <div class="foottop">
+        <div class="footer-reight-menu">
+            <div class="footerlogo">
+                <a th:href="@{/main-page}">
+                    <img src="img/logo.png" th:src="@{/img/logo.png}" class="footerlogo">
+                </a>
+            </div>
+            <p>ИП Соколова С.Р.<br>ОРГНИП: 321623400013730</p>
+            <a th:href="@{/about}"><br>© 2018-2022 “ОПАЛ”</a>
+        </div>
+    </div>
+</footer>
 </html>

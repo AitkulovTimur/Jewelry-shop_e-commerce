@@ -22,4 +22,8 @@ public class ProductUpdateRequest {
 
     @Size(max = 255, message = "Слишком большое описание")
     String description;
+
+    @Min(value = 1, message = "Слишком маленькое количество продукта")
+    @Max(value = 1000, message = "Слишком большое количество продукта")
+    int quantity;
 }

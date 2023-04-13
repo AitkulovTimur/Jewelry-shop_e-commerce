@@ -1,10 +1,15 @@
 package com.service.jewelry.controller;
 
+import com.service.jewelry.model.CartEntity;
 import com.service.jewelry.model.ProductDto;
+import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.model.ReviewDto;
 import com.service.jewelry.model.ReviewEntity;
+import com.service.jewelry.service.AuthService;
+import com.service.jewelry.service.CartService;
 import com.service.jewelry.service.ProductService;
 import com.service.jewelry.service.ReviewService;
+import com.service.jewelry.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +32,15 @@ public class PagesController {
 
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    AuthService authService;
+
+    @Autowired
+    CartService cartService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/catalog")
     public String returnCatalogPage(Model model, @RequestParam(required = false) String searchQuery,
@@ -69,13 +83,16 @@ public class PagesController {
         return "address";
     }
 
-    @GetMapping("/cart")
-    public String returnCart() {
-        return "cart";
-    }
-
     @GetMapping("/product/{vendorCode}")
-    public String getOneProduct(@PathVariable("vendorCode") int vendorCode, Model model) {
+    public String getOneProduct(@PathVariable("vendorCode") int vendorCode, Model model,
+                                @RequestParam(value = "add_success", required = false, defaultValue = "false") boolean addSuccess,
+                                @RequestParam(value = "quantity_limit", required = false, defaultValue = "false") boolean quantityLimit) {
+
+        if (addSuccess)
+            model.addAttribute("add_success", true);
+        else if (quantityLimit)
+            model.addAttribute("quantity_limit", true);
+
         model.addAttribute("product", productService.getProductByVendor(vendorCode));
         return "item";
     }
@@ -99,5 +116,38 @@ public class PagesController {
     public String addReview(@ModelAttribute("review") ReviewEntity review) {
         reviewService.createReview(review);
         return "redirect:/reviews";
+    }
+
+//    @GetMapping("/cart")
+//    public String showCart(Model model) {
+//        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
+//
+//        model.addAttribute("cart", cart.getItems());
+//        model.addAttribute("sum_of_cart", cart.getItems().stream().mapToDouble(ProductEntity::getPrice).sum());
+//
+//        return "cart";
+//    }
+
+    @PostMapping("/add_item_to_cart/{vendorCode}")
+    public String addItemToCart(@PathVariable int vendorCode) {
+
+        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
+
+        try {
+            cartService.addNewItemToCart(vendorCode, cart.getUserId());
+        } catch (RuntimeException e) {
+            return "redirect:/product/" + vendorCode + "?quantity_limit=true";
+        }
+
+        return "redirect:/product/" + vendorCode + "?add_success=true";
+    }
+
+    @PostMapping("/remove_from_cart/{vendorCode}")
+    public String removeFromCart(@PathVariable int vendorCode) {
+        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
+
+        cartService.addNewItemToCart(vendorCode, cart.getUserId());
+
+        return "redirect:/product/" + vendorCode + "?add_success=true";
     }
 }

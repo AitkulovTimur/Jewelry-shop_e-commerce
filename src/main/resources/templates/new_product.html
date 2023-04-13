@@ -45,6 +45,13 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label" for="quantity">Количество</label>
+                        <input class="form-control" id="quantity" th:field="*{quantity}" type="number">
+                        <p class="text-danger" th:errors="*{quantity}"
+                           th:if="${#fields.hasErrors('quantity')}"></p>
+                    </div>
+
                     <div class="input-group mb-3 d-flex flex-column">
                         <div>
                             <label class="form-label" for="price">Цена</label>

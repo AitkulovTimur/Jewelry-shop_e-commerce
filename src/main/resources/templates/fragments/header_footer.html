@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <!-- @ - default directory -->
   <link th:href="@{/style.css}" rel="stylesheet">
@@ -27,9 +27,9 @@
 
       <a sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-outline-dark" role="button" th:href="@{/administration/all_products}">АДМИНКА</a>
 
-      <div class="headright">
+      <div sec:authorize="isAuthenticated()"  class="headright">
         <a th:href="@{/cart}" class="shop-cart-container">
-          <img src="img/shopping-cart.png" class="cart-icon">
+          <img th:src="@{/img/shopping-cart.png}" class="cart-icon">
           <p>Корзина</p>
         </a>
       </div>

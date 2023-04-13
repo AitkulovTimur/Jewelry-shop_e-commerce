@@ -61,6 +61,7 @@ public class ProductService {
                 .description(request.getDescription())
                 .gender(request.getGender())
                 .price(request.getPrice())
+                .quantity(request.getQuantity())
                 .build());
     }
 
@@ -95,16 +96,23 @@ public class ProductService {
         return productRepository.findMaxVendorCode();
     }
 
+    public void deleteProduct(int vendorCode) {
+        if (!productRepository.existsByVendorCode(vendorCode))
+            throw new RuntimeException("Can't delete product");
+
+        productRepository.deleteById(vendorCode);
+    }
+
     private ProductDto mapper(ProductEntity productEntity) {
         return new ProductDto(
                 productEntity.getVendorCode(),
                 productEntity.getName(),
                 productEntity.getGender().toString(),
                 productEntity.getPrice(),
-                productEntity.getDescription()
+                productEntity.getDescription(),
+                productEntity.getQuantity()
         );
     }
-
 
     private ProductEntity mapper(ProductCreateRequest productCreateRequest) {
         if (productCreateRequest.getVendorCode() != 0)
@@ -114,6 +122,7 @@ public class ProductService {
                     .gender(productCreateRequest.getGender())
                     .price(productCreateRequest.getPrice())
                     .description(productCreateRequest.getDescription())
+                    .quantity(productCreateRequest.getQuantity())
                     .build();
         else
             return ProductEntity.builder()

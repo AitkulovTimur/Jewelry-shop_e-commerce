@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("administration")
@@ -23,15 +29,25 @@ public class AdminController {
     @Autowired
     ProductService productService;
 
+    public static final String SEPARATOR = System.getProperty("file.separator");
+
+    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + SEPARATOR + "src" +
+            SEPARATOR + "main" + SEPARATOR + "resources" + SEPARATOR + "static" + SEPARATOR + "img";
+
     @GetMapping("all_products")
     public String getAllProducts(Model model,
                                  @RequestParam(required = false, name = "vendor_code_error") String vendorCodeError,
-                                 @RequestParam(required = false, name = "success_update_vendor") String vendorCodeUpdate) {
+                                 @RequestParam(required = false, name = "success_update_vendor") String vendorCodeUpdate,
+                                 @RequestParam(required = false, name = "success_delete_vendor") String vendorCodeDelete
+    ) {
         if (vendorCodeError != null && !vendorCodeError.isBlank())
             model.addAttribute("vendor_code_error", vendorCodeError);
 
         if (vendorCodeUpdate != null && !vendorCodeUpdate.isBlank())
             model.addAttribute("success_update_vendor", vendorCodeUpdate);
+
+        if (vendorCodeDelete != null && !vendorCodeDelete.isBlank())
+            model.addAttribute("success_delete_vendor", vendorCodeDelete);
 
         model.addAttribute("listProducts", productService.getAllProducts());
         return "administration";
@@ -73,8 +89,8 @@ public class AdminController {
 
     @PostMapping("update/{vendor_code}")
     public String updateProduct(@Valid @ModelAttribute("product") ProductUpdateRequest request,
-                         BindingResult result,
-                         Model model, @PathVariable(name = "vendor_code") int vendorCode) {
+                                BindingResult result,
+                                Model model, @PathVariable(name = "vendor_code") int vendorCode) {
         ProductEntity productEntityRepo;
 
         try {
@@ -93,6 +109,26 @@ public class AdminController {
         }
 
         productService.updateProduct(request, vendorCode);
-        return  String.format("redirect:/administration/all_products?success_update_vendor=%s", vendorCode);
+        return String.format("redirect:/administration/all_products?success_update_vendor=%s", vendorCode);
+    }
+
+    @PostMapping("delete/{vendor_code}")
+    public String deleteProduct(@PathVariable(name = "vendor_code") int vendorCode) {
+        try {
+            productService.deleteProduct(vendorCode);
+            return String.format("redirect:/administration/all_products?success_delete_vendor=%s", vendorCode);
+        } catch (RuntimeException e) {
+            return String.format("redirect:/administration/all_products?vendor_code_error=%s", vendorCode);
+        }
+    }
+
+    @PostMapping("update/upload/{vendor_code}")
+    public String uploadImage(Model model, @RequestParam("image") MultipartFile file, @PathVariable("vendor_code") int vendorCode) throws IOException {
+        StringBuilder fileNames = new StringBuilder();
+        Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, vendorCode + ".jpg");
+        fileNames.append(file.getOriginalFilename());
+        Files.write(fileNameAndPath, file.getBytes());
+//        model.addAttribute("msg", "Uploaded images: " + fileNames.toString());
+        return "redirect:/administration/update/" + vendorCode;
     }
 }

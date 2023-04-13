@@ -2,74 +2,99 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <link th:href="@{/catalog.css}" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-  <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-  <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-  <meta charset="UTF-8">
-  <title>Обновить товар</title>
+    <link th:href="@{/catalog.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>Обновить товар</title>
 </head>
 <body>
 <div class="container">
-  <main>
-    <div class>
-      <div>
-        <form
-                method="post"
-                role="form"
-                th:action="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}"
-                th:object="${product}"
-        >
-          <h1>Добавление нового товара</h1>
-
-          <input class="form-control" type="hidden" name="vendorCode">
-
-          <div class="mb-3">
-            <label class="form-label" for="name">Имя</label>
-            <input class="form-control" id="name" th:field="*{name}" type="text">
-            <p class="text-danger" th:errors="*{name}"
-               th:if="${#fields.hasErrors('name')}"></p>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label" for="gender">Пол</label>
-            <select class="form-select"  id="gender" th:field="*{gender}">
-              <option th:value="'MEN'" th:text="Мужское"></option>
-              <option th:value="'WOMEN'" th:text="Женское"></option>
-              <option th:value="'UNI'" th:text="Унисекас"></option>
-            </select>
-          </div>
-
-          <div class="input-group mb-3 d-flex flex-column">
+    <main>
+        <section class="my-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <img th:src="@{${'/img/' + product.vendorCode + '.jpg'}}" width="240"/>
+                        <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                        <form method="post" th:action="@{/administration/update/upload/{vendor_code}(vendor_code=${product.vendorCode})}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input type="file" name="image" accept="image/*" class="form-control-file">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload image</button>
+                        </form>
+                        <span th:if="${msg != null}" th:text="${msg}"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div>
             <div>
-              <label class="form-label" for="price">Цена</label>
+                <form
+                        method="post"
+                        role="form"
+                        th:action="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}"
+                        th:object="${product}"
+                >
+                    <h1>Обновление товара</h1>
+
+                    <input class="form-control" type="hidden" name="vendorCode">
+
+                    <div class="mb-3">
+                        <label class="form-label" for="name">Имя</label>
+                        <input class="form-control" id="name" th:field="*{name}" type="text">
+                        <p class="text-danger" th:errors="*{name}"
+                           th:if="${#fields.hasErrors('name')}"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="gender">Пол</label>
+                        <select class="form-select" id="gender" th:field="*{gender}">
+                            <option th:value="'MEN'" th:text="Мужское"></option>
+                            <option th:value="'WOMEN'" th:text="Женское"></option>
+                            <option th:value="'UNI'" th:text="Унисекас"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="quantity">Количество</label>
+                        <input class="form-control" id="quantity" th:field="*{quantity}" type="number">
+                        <p class="text-danger" th:errors="*{quantity}"
+                           th:if="${#fields.hasErrors('quantity')}"></p>
+                    </div>
+
+                    <div class="input-group mb-3 d-flex flex-column">
+                        <div>
+                            <label class="form-label" for="price">Цена</label>
+                        </div>
+
+                        <div class="d-flex">
+                            <input type="text" id="price" th:field="*{price}" class="form-control"
+                                   aria-label="Dollar amount (with dot and two decimal places)">
+                            <span class="input-group-text">₽</span>
+                            <span class="input-group-text">0.00</span>
+                            <p class="text-danger" th:errors="*{price}"
+                               th:if="${#fields.hasErrors('price')}"></p>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Описание</label>
+                        <input class="form-control" id="description" th:field="*{description}" type="text">
+                        <p class="text-danger" th:errors="*{description}"
+                           th:if="${#fields.hasErrors('description')}"></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <button class="btn btn-primary mb-3" type="submit">Обновить товар</button>
+                        или <a class="link-primary" th:href="@{/administration/all_products}">Вернуться на главную</a>
+                    </div>
+                </form>
             </div>
-
-            <div class="d-flex">
-              <input type="text" id="price" th:field="*{price}" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
-              <span class="input-group-text">₽</span>
-              <span class="input-group-text">0.00</span>
-              <p class="text-danger" th:errors="*{price}"
-                 th:if="${#fields.hasErrors('price')}"></p>
-            </div>
-
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label" for="description">Описание</label>
-            <input class="form-control" id="description" th:field="*{description}" type="text">
-            <p class="text-danger" th:errors="*{description}"
-               th:if="${#fields.hasErrors('description')}"></p>
-          </div>
-
-          <div class="mb-3">
-            <button class="btn btn-primary mb-3" type="submit">Обновить товар</button>
-            или <a class="link-primary" th:href="@{/administration/all_products}">Вернуться на главную</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </main>
+        </div>
+    </main>
 </div>
 
 </body>

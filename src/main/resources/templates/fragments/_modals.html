@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<!-- Modal -->
+<div th:fragment="modal(vendor_code)" class="modal fade" th:id="'deleteModal' + ${vendor_code}" tabindex="-1"
+     aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+    <form
+            method="post"
+            role="form"
+            th:action="@{delete/{vendor_code}(vendor_code=${vendor_code})}"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Удаление продукта</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body"
+                     th:text="'Вы уверены, что хотите удалить продукт с артикулом \'' + ${vendor_code} + '\'?'">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена
+                    </button>
+                    <button type="submit" class="btn btn-danger">Удалить продукт</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+

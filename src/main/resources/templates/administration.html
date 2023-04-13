@@ -5,7 +5,6 @@
     <link th:href="@{/catalog.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8">
     <title>Админка</title>
@@ -27,6 +26,12 @@
         </div>
     </div>
 
+    <div th:if="${success_delete_vendor != null}">
+        <div class="alert alert-info"
+             th:text="'Товар с артиклем [' + ${success_delete_vendor} + '] был успешно удален'">
+        </div>
+    </div>
+
     <div th:if="${vendor_code_error != null}">
         <div class="alert alert-danger" role="alert"
              th:text="'Невозможно найти продукт с артиклем [' + ${vendor_code_error} + ']'">
@@ -41,6 +46,7 @@
             <th scope="col">Артикул</th>
             <th scope="col">Имя изделия</th>
             <th scope="col">Пол</th>
+            <th scope="col">Количество</th>
             <th scope="col">Цена</th>
             <th scope="col">Описание</th>
             <th scope="col">Фото</th>
@@ -52,6 +58,7 @@
             <td th:text="${product.vendorCode}"></td>
             <td th:text="${product.name}"></td>
             <td th:text="${product.gender}"></td>
+            <td th:text="${product.quantity}"></td>
             <td th:text="${product.price}"></td>
             <td th:text="${product.description}"></td>
             <td><img th:src="@{${'/img/' + product.vendorCode + '.jpg'}}" width="120"/></td>
@@ -59,25 +66,17 @@
                 <div class="container d-flex">
                     <a type="button" class="btn btn-info m-1 mt-4"
                        th:href="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}">Обновить</a>
-
-                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
-                       aria-expanded="false" aria-controls="collapseExample">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attrappend="data-bs-target=${product.vendorCode}">
                         Удалить продукт
-                    </a>
+                    </button>
 
-                    <div class="collapse" id="collapseExample">
-                        <div class="card card-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                            ea proident.
-                        </div>
-                    </div>
+                    <th:block th:replace="fragments/_modals :: modal(${product.vendorCode})">modal</th:block>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
-
 
 </div>
 
