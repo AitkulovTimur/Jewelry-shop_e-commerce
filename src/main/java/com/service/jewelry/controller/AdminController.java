@@ -80,8 +80,11 @@ public class AdminController {
     }
 
     @GetMapping("update/{vendor_code}")
-    public String updateProduct(@PathVariable(name = "vendor_code") int vendorCode, Model model) {
+    public String updateProduct(@PathVariable(name = "vendor_code") int vendorCode, @RequestParam(name = "success_photo", required = false) boolean successPhoto, Model model) {
         ProductEntity productEntity = productService.getProductByVendor(vendorCode);
+
+        if(successPhoto)
+            model.addAttribute("msg", "Ваше фото было загружено, но появится позже");
 
         model.addAttribute("product", productEntity);
         return "update_product";
@@ -99,7 +102,7 @@ public class AdminController {
             return String.format("redirect:/administration/all_products?vendor_code_error=%s", vendorCode);
         }
 
-        if (productService.existsByName(request.getName()))
+        if (productService.existsByName(request.getName(), vendorCode))
             result.rejectValue("name", null,
                     "Продукт с таким именем уже существует");
 
@@ -122,13 +125,12 @@ public class AdminController {
         }
     }
 
-    @PostMapping("update/upload/{vendor_code}")
+    @PostMapping("upload/{vendor_code}")
     public String uploadImage(Model model, @RequestParam("image") MultipartFile file, @PathVariable("vendor_code") int vendorCode) throws IOException {
         StringBuilder fileNames = new StringBuilder();
         Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, vendorCode + ".jpg");
         fileNames.append(file.getOriginalFilename());
         Files.write(fileNameAndPath, file.getBytes());
-//        model.addAttribute("msg", "Uploaded images: " + fileNames.toString());
-        return "redirect:/administration/update/" + vendorCode;
+        return "redirect:/administration/update/" + vendorCode + "?success_photo=true";
     }
 }

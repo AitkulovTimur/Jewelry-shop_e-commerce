@@ -71,6 +71,11 @@ public class ProductService {
                         new RuntimeException("ProductNotFound"));
     }
 
+    public boolean existsByName(String name, int vendorCode) {
+        ProductEntity productEntity = productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("empty"));
+        return !productEntity.getName().equals(name);
+    }
+
     public boolean existsByName(String name) {
         return productRepository.existsByName(name);
     }
