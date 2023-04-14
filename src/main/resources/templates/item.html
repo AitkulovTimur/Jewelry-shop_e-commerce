@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <link th:href="@{/item.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
@@ -76,8 +76,11 @@
                     <p class="bold">ИТОГО</p>
                     <p th:text="${product.price}" id="price-work"></p>
                 </div>
-                <a th:href="@{/order}+${product.vendorCode}">
-                    <button class="button-zakaz">Заказать</button>
+                <div sec:authorize="isAuthenticated()">
+                    <a th:href="@{/order}+${product.vendorCode}">
+                        <button class="button-zakaz">Заказать</button>
+                    </a>
+
                     <form
                             method="post"
                             role="form"
@@ -85,7 +88,14 @@
                     >
                         <button class="button-zakaz" type="submit">Добавить в корзину</button>
                     </form>
-                </a>
+                </div>
+
+                <div sec:authorize="isAnonymous()">
+                    <div class="alert alert-secondary" role="alert">
+                        Чтобы купить товар или добавить его в корзину, пожалуйста, войдите
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

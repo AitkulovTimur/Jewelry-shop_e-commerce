@@ -32,10 +32,10 @@
     <div class="main">
       <div class="login">
         <div th:if="${param.error}">
-          <div class="alert alert-danger">Invalid Email or Password !!!</div>
+          <div class="alert alert-danger">Неверный емэйл или пароль</div>
         </div>
         <div th:if="${param.logout}">
-          <div class="alert alert-success">You have been logged out !!!</div>
+          <div class="alert alert-success">Вы вышли из системы!</div>
         </div>
         <form     class="login-form"
                   method="post"

@@ -3,6 +3,10 @@
 <head>
     <!-- @ - default directory -->
     <link th:href="@{/cart.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <meta charset="UTF-8">
     <title>opal.com</title>
     <meta charset="utf-8">
 </head>
@@ -11,53 +15,56 @@
     <header th:insert="fragments/header_footer.html :: header"></header>
     <div class="shopping-carts-container">
         <h1>Корзина</h1>
+        <nav th:if="${sum_of_cart != 0}" class="mb-2 sticky-top navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <form class="d-flex">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text" id="name">Имя</span>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="name">
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text" id="phone">Телефон</span>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="phone">
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <p th:text="'Сумма вашей потенциальной покупки: ' + ${sum_of_cart} + '₽'"></p>
+                            </li>
+                        </ul>
+                        <button class="btn btn-outline-dark" type="submit">Купить</button>
+                    </div>
+                </form>
+            </div>
+        </nav>
         <div class="shopping-carts-menu">
-            <div th:if="${cart!=null and !cart.empty}" class="cart-items" th:each="product : ${cart}">
+            <div class="cart-items" th:each="item : ${cart}">
                 <div class="shop-cart-item">
                     <div class="cart-image-price">
-                        <img src="img/ring1.jpg" class="small-img">
+                        <img th:src="'img/'+${item.productEntity.vendorCode}+'.jpg'" class="small-img">
                         <div class="cart-desc-small">
-                            <p th:text="${product.name}"></p>
-                            <p th:text="${product.price}"></p>
+                            <p th:text="${item.productEntity.name}"></p>
+                            <p th:text="${item.productEntity.price}"></p>
                         </div>
                     </div>
                     <div class="big-desc-cart">
-                        <p th:text="${product.name}"></p>
+                        <p th:text="${item.productEntity.name}"></p>
                         <div class="two-buttons">
-                            <button class="buttons-count">
-                                -
-                            </button>
-                            <p>count</p>
-                            <button class="buttons-count">
-                                +
-                            </button>
+                            <select class="form-select" aria-label="Default select example" data-toggle="tooltip" data-placement="top" title="При изменении количества, сумма не меняется, в связи с возможными скидками. Менеджер уточнит цену">
+                                <option th:each="i : ${#numbers.sequence(1, item.maxQuantity)}" th:value="${i}" th:selected="${item.quantity == i}" th:text="${i}">
+                            </select>
                         </div>
                         <form
                                 method="post"
                                 role="form"
-                                th:action="@{/remove_from_cart/{vendor_code}(vendor_code=${product.vendorCode})}"
+                                th:action="@{/remove_from_cart/{item_id}(item_id=${item.id})}"
                         >
                             <button class="button-delete" type="submit">Удалить</button>
                         </form>
-                    </div>
-                </div>
-                <div class="shop-cart-item">
-                </div>
-                <div class="describtion-order">
-                    <form class="desc-form">
-                        <p>Имя</p>
-                        <input type="text" class="form-window-text">
-                    </form>
-                    <form class="desc-form">
-                        <p>Телефон</p>
-                        <input type="tel" class="form-window-text">
-                    </form>
-                    <div class="shop-sum-itog">
-                        <p id="sum-itog">Итого:</p>
-                        <p th:text="${sum_of_cart}"></p>
-                    </div>
-                    <div class="div-end-shop">
-                        <button class="end-shop-button">Заказать</button>
                     </div>
                 </div>
             </div>

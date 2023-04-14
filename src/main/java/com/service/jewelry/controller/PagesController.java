@@ -2,7 +2,6 @@ package com.service.jewelry.controller;
 
 import com.service.jewelry.model.CartEntity;
 import com.service.jewelry.model.ProductDto;
-import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.model.ReviewDto;
 import com.service.jewelry.model.ReviewEntity;
 import com.service.jewelry.service.AuthService;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
@@ -118,23 +118,27 @@ public class PagesController {
         return "redirect:/reviews";
     }
 
-//    @GetMapping("/cart")
-//    public String showCart(Model model) {
-//        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
-//
-//        model.addAttribute("cart", cart.getItems());
-//        model.addAttribute("sum_of_cart", cart.getItems().stream().mapToDouble(ProductEntity::getPrice).sum());
-//
-//        return "cart";
-//    }
+    @GetMapping("/cart")
+    public String showCart(Model model) {
+        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
+        if (cart.getItems() == null)
+            cart.setItems(new ArrayList<>());
+
+        model.addAttribute("cart", cart.getItems());
+        model.addAttribute("sum_of_cart",
+                cart.getItems().stream().mapToDouble(item -> {
+                    double sum = item.getProductEntity().getPrice();
+                    return sum * item.getQuantity();
+                }).sum());
+
+        return "cart";
+    }
 
     @PostMapping("/add_item_to_cart/{vendorCode}")
     public String addItemToCart(@PathVariable int vendorCode) {
 
-        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
-
         try {
-            cartService.addNewItemToCart(vendorCode, cart.getUserId());
+            cartService.addNewItemToCart(vendorCode, authService.getAuthUserId());
         } catch (RuntimeException e) {
             return "redirect:/product/" + vendorCode + "?quantity_limit=true";
         }
@@ -144,10 +148,8 @@ public class PagesController {
 
     @PostMapping("/remove_from_cart/{vendorCode}")
     public String removeFromCart(@PathVariable int vendorCode) {
-        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
+        cartService.removeItemFromCart(vendorCode, authService.getAuthUserId());
 
-        cartService.addNewItemToCart(vendorCode, cart.getUserId());
-
-        return "redirect:/product/" + vendorCode + "?add_success=true";
+        return "redirect:/cart";
     }
 }

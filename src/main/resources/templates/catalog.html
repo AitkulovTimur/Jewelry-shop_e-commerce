@@ -15,7 +15,7 @@
     <header th:insert="fragments/header_footer.html :: header"></header>
     <h1>Ювелирные изделия</h1>
     <div th:if="${param.logout}">
-        <div class="alert alert-info">You have been logged out.</div>
+        <div class="alert alert-info">Вы вышли из системы!</div>
     </div>
 
     <form id="search_form" th:action="@{/catalog}">

@@ -1,5 +1,6 @@
 package com.service.jewelry.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +35,6 @@ public class CartEntity {
     @Column(name = "user_id", updatable = false, nullable = false)
     private int userId;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<ItemEntity> items;
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -39,7 +40,13 @@ public class CartService {
         if (!cartRepository.existsByUserId(userId))
             return createCart(userId);
 
-        return cartRepository.findByUserId(userId);
+        CartEntity cartEntity = cartRepository.findByUserId(userId);
+        List<ItemEntity> itemEntities = cartEntity.getItems();
+        List<ItemEntity> cartItems = itemEntities.stream()
+                .map(i -> i.withMaxQuantity(i.getProductEntity().getQuantity())).collect(Collectors.toList());
+
+        cartEntity.setItems(cartItems);
+        return cartRepository.save(cartEntity);
     }
 
     @Transactional
@@ -79,18 +86,24 @@ public class CartService {
         }
     }
 
-//    public void removeItemFromCart(int vendorCode, int userId) {
-//        ProductEntity product = productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("Not found"));
-//
-//        CartEntity cartEntity = cartRepository.findByUserId(userId);
-//        if(cartEntity.getItems() == null)
-//            cartEntity.setItems(new ArrayList<>());
-//
-//        List<ProductEntity> productEntityList = cartEntity.getItems();
-//
-//        productEntityList.remove(product);
-//
-//        cartRepository.save(cartEntity);
-//    }
+    public void removeItemFromCart(int itemId, int userId) {
+        CartEntity cartEntity = cartRepository.findByUserId(userId);
+        ItemEntity itemEntity = itemRepository.findById(itemId).orElseThrow(() -> new RuntimeException("not found"));
+        ProductEntity productEntity = productRepository.findById(itemEntity.getProductEntity().getVendorCode())
+                .orElseThrow(() -> new RuntimeException("not found"));
+
+        List<ItemEntity> items = cartEntity.getItems();
+        List<ItemEntity> itemEntities = productEntity.getItemEntities();
+
+        items = items.stream().filter(i -> i.getId() != itemId).toList();
+        itemEntities = itemEntities.stream().filter(i -> i.getId() != itemId).toList();
+
+        cartEntity.setItems(items);
+        productEntity.setItemEntities(itemEntities);
+
+        itemRepository.deleteById(itemId);
+        productRepository.save(productEntity);
+        cartRepository.saveAndFlush(cartEntity);
+    }
 
 }
