@@ -120,7 +120,13 @@ public class PagesController {
 
     @GetMapping("/cart")
     public String showCart(Model model) {
-        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
+        CartEntity cart;
+        try{
+            cart = cartService.getCartByUId(authService.getAuthUserId());
+        } catch (Exception e) {
+            return "redirect:/catalog";
+        }
+
         if (cart.getItems() == null)
             cart.setItems(new ArrayList<>());
 
