@@ -18,7 +18,7 @@ import lombok.With;
 import java.util.List;
 
 
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -35,6 +35,6 @@ public class CartEntity {
     @Column(name = "user_id", updatable = false, nullable = false)
     private int userId;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
     private List<ItemEntity> items;
 }

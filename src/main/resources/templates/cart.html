@@ -13,63 +13,118 @@
 <body class="page">
 <div class="container">
     <header th:insert="fragments/header_footer.html :: header"></header>
-    <div class="shopping-carts-container">
-        <h1>Корзина</h1>
-        <nav th:if="${sum_of_cart != 0}" class="mb-2 sticky-top navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <form class="d-flex">
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <form
+            method="post"
+            role="form"
+            th:action="${show_sum} == true ? @{/create_order?show_sum=false} : @{/create_order?show_sum=true}"
+            th:object="${wrapper}"
+    >
+        <div class="shopping-carts-container">
+            <h1>Корзина</h1>
+            <nav th:if="${sum_of_cart != 0}" class="mb-2 sticky-top navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid d-flex">
+                    <div class="collapse navbar-collapse mr-2" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <div class="input-group input-group-lg">
+                                <div class="input-group input-group-lg mr-2">
                                     <span class="input-group-text" id="name">Имя</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="name">
+                                    <div th:if="${show_sum == true}">
+                                        <input type="text" class="form-control" th:field="*{userCustomName}"
+                                               aria-label="Sizing example input"
+                                               aria-describedby="name">
+                                    </div>
+                                    <div th:if="${show_sum == false}">
+                                        <input type="text" class="form-control" th:field="*{userCustomName}"
+                                               aria-label="Sizing example input"
+                                               placeholder="Сначала узнайте цену"
+                                               aria-describedby="name" disabled>
+                                    </div>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <div class="input-group input-group-lg">
+                                <div class="input-group input-group-lg mr-2">
                                     <span class="input-group-text" id="phone">Телефон</span>
-                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="phone">
+                                    <div th:if="${show_sum == true}">
+                                        <input type="text" class="form-control" th:field="*{userNumber}"
+                                               aria-label="Sizing example input"
+                                               aria-describedby="phone">
+                                    </div>
+                                    <div th:if="${show_sum == false}">
+                                        <input type="text" class="form-control" th:field="*{userNumber}"
+                                               aria-label="Sizing example input"
+                                               placeholder="Сначала узнайте цену"
+                                               aria-describedby="phone" disabled>
+                                    </div>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <p th:text="'Сумма вашей потенциальной покупки: ' + ${sum_of_cart} + '₽'"></p>
+                                <div th:if="${show_sum == true}">
+                                    <p th:text="'Сумма вашей потенциальной покупки: ' + ${sum_of_cart} + '₽'"></p>
+                                </div>
                             </li>
                         </ul>
-                        <button class="btn btn-outline-dark" type="submit">Купить</button>
-                    </div>
-                </form>
-            </div>
-        </nav>
-        <div class="shopping-carts-menu">
-            <div class="cart-items" th:each="item : ${cart}">
-                <div class="shop-cart-item">
-                    <div class="cart-image-price">
-                        <img th:src="'img/'+${item.productEntity.vendorCode}+'.jpg'" class="small-img">
-                        <div class="cart-desc-small">
-                            <p th:text="${item.productEntity.name}"></p>
-                            <p th:text="${item.productEntity.price}"></p>
+                        <div th:if="${show_sum == true}">
+                            <button class="btn btn-outline-dark" type="submit">Купить</button>
+                        </div>
+
+                        <div th:if="${show_sum == false}">
+                            <button class="btn btn-outline-dark" type="submit">Узнать цену</button>
                         </div>
                     </div>
-                    <div class="big-desc-cart">
-                        <p th:text="${item.productEntity.name}"></p>
-                        <div class="two-buttons">
-                            <select class="form-select" aria-label="Default select example" data-toggle="tooltip" data-placement="top" title="При изменении количества, сумма не меняется, в связи с возможными скидками. Менеджер уточнит цену">
-                                <option th:each="i : ${#numbers.sequence(1, item.maxQuantity)}" th:value="${i}" th:selected="${item.quantity == i}" th:text="${i}">
-                            </select>
+                </div>
+            </nav>
+            <div class="shopping-carts-menu">
+                <div class="cart-items" th:each="currentItem, item : *{itemsWithNewQuantity}">
+                    <div class="shop-cart-item">
+                        <div class="cart-image-price">
+                            <img th:src="'img/'+${currentItem.productEntity.vendorCode}+'.jpg'" class="small-img">
+                            <div class="cart-desc-small">
+                                <p th:text="${currentItem.productEntity.name}"></p>
+                                <p th:text="${currentItem.productEntity.price}"></p>
+                            </div>
                         </div>
-                        <form
-                                method="post"
-                                role="form"
-                                th:action="@{/remove_from_cart/{item_id}(item_id=${item.id})}"
-                        >
-                            <button class="button-delete" type="submit">Удалить</button>
-                        </form>
+                        <div class="big-desc-cart">
+                            <p th:text="${currentItem.productEntity.name}"></p>
+                            <div class="two-buttons">
+                                <div th:if="${show_sum} == false">
+                                    <select class="form-select" aria-label="Default select example"
+                                            data-toggle="tooltip"
+                                            th:field="*{itemsWithNewQuantity[__${item.index}__].quantity}"
+                                            data-placement="top"
+                                            title="Здесь можно указать количество, которое вам нужно">
+                                        <option th:each="i : ${#numbers.sequence(1, currentItem.maxQuantity)}"
+                                                th:value="${i}"
+                                                th:selected="${currentItem.quantity == i}" th:text="${i}">
+                                    </select>
+                                </div>
+
+                                <div th:if="${show_sum} == true">
+                                    <select class="form-select" aria-label="Default select example"
+                                            data-toggle="tooltip"
+                                            th:field="*{itemsWithNewQuantity[__${item.index}__].quantity}"
+                                            data-placement="top"
+                                            title="Хехе, еее бой">
+                                        <option disabled th:each="i : ${#numbers.sequence(1, currentItem.maxQuantity)}"
+                                                th:value="${i}"
+                                                th:selected="${currentItem.quantity == i}" th:text="${i}">
+                                    </select>
+                                </div>
+
+                                <input type="hidden" th:field="*{itemsWithNewQuantity[__${item.index}__].id}"/>
+                                <input type="hidden"
+                                       th:field="*{itemsWithNewQuantity[__${item.index}__].productEntity}"/>
+                                <input type="hidden" th:field="*{itemsWithNewQuantity[__${item.index}__].maxQuantity}"/>
+                            </div>
+
+                            <a class="btn btn-danger"
+                               th:href="@{/remove_from_cart/{item_id}(item_id=${currentItem.id})}"
+                               role="button">Удалить</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 </body>
 <footer class="footer">

@@ -1,11 +1,15 @@
 package com.service.jewelry.controller;
 
 import com.service.jewelry.model.CartEntity;
+import com.service.jewelry.model.ItemEntity;
+import com.service.jewelry.model.ItemQuantityUpdateRequest;
 import com.service.jewelry.model.ProductDto;
+import com.service.jewelry.model.QuantityUpdateRequestsWrapper;
 import com.service.jewelry.model.ReviewDto;
 import com.service.jewelry.model.ReviewEntity;
 import com.service.jewelry.service.AuthService;
 import com.service.jewelry.service.CartService;
+import com.service.jewelry.service.OrderService;
 import com.service.jewelry.service.ProductService;
 import com.service.jewelry.service.ReviewService;
 import com.service.jewelry.service.UserService;
@@ -23,7 +27,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 @Controller
 public class PagesController {
@@ -40,13 +48,17 @@ public class PagesController {
     CartService cartService;
 
     @Autowired
+    OrderService orderService;
+
+    @Autowired
     UserService userService;
 
     @GetMapping("/catalog")
     public String returnCatalogPage(Model model, @RequestParam(required = false) String searchQuery,
                                     @RequestParam(defaultValue = "1") int page,
                                     @RequestParam(defaultValue = "8") int size,
-                                    @RequestParam(defaultValue = "name,asc") String[] sort) {
+                                    @RequestParam(defaultValue = "name,asc") String[] sort,
+                                    @RequestParam(name = "success_order", required = false) boolean successOrder) {
         String sortField = sort[0];
         String sortDirection = sort[1];
 
@@ -69,6 +81,9 @@ public class PagesController {
         model.addAttribute("filterField", sortField);
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", sortDirection.equals("asc") ? "desc" : "asc");
+
+        if (successOrder)
+            model.addAttribute("successOrder", true);
 
         return "catalog";
     }
@@ -119,9 +134,10 @@ public class PagesController {
     }
 
     @GetMapping("/cart")
-    public String showCart(Model model) {
+    public String showCart(Model model,
+                           @RequestParam(name = "sum", required = false, defaultValue = "false") boolean sumOfOrder) {
         CartEntity cart;
-        try{
+        try {
             cart = cartService.getCartByUId(authService.getAuthUserId());
         } catch (Exception e) {
             return "redirect:/catalog";
@@ -130,7 +146,21 @@ public class PagesController {
         if (cart.getItems() == null)
             cart.setItems(new ArrayList<>());
 
-        model.addAttribute("cart", cart.getItems());
+        List<ItemQuantityUpdateRequest> listForFilling = cart.getItems().stream().map(item ->
+                ItemQuantityUpdateRequest.builder().id(item.getId())
+                        .maxQuantity(item.getMaxQuantity())
+                        .quantity(item.getQuantity())
+                        .productEntity(item.getProductEntity())
+                        .build()).collect(Collectors.toList());
+
+        model.addAttribute("show_sum", sumOfOrder);
+
+        QuantityUpdateRequestsWrapper quantityUpdateRequestsWrapper = QuantityUpdateRequestsWrapper.builder()
+                .itemsWithNewQuantity(listForFilling)
+                .userCustomName("")
+                .userNumber("").build();
+
+        model.addAttribute("wrapper", quantityUpdateRequestsWrapper);
         model.addAttribute("sum_of_cart",
                 cart.getItems().stream().mapToDouble(item -> {
                     double sum = item.getProductEntity().getPrice();
@@ -152,10 +182,33 @@ public class PagesController {
         return "redirect:/product/" + vendorCode + "?add_success=true";
     }
 
-    @PostMapping("/remove_from_cart/{vendorCode}")
+    @GetMapping("/remove_from_cart/{vendorCode}")
     public String removeFromCart(@PathVariable int vendorCode) {
         cartService.removeItemFromCart(vendorCode, authService.getAuthUserId());
 
         return "redirect:/cart";
+    }
+
+    // Писать логику в контроллере - это такой кринж
+    @PostMapping("create_order")
+    public String createOrder(@ModelAttribute QuantityUpdateRequestsWrapper wrapper,
+                              Model model,
+                              @RequestParam(name = "show_sum", required = true, defaultValue = "false") boolean showSum) {
+        CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
+
+        if (showSum) {
+            cartService.updateQuantities(wrapper.getItemsWithNewQuantity());
+            return "redirect:/cart?sum=true";
+        }
+
+        //Found shared references to a collection: com.service.jewelry.model.OrderEntity.items
+        List<ItemEntity> errorEscaping = cart.getItems().stream().map(itemEntity ->
+                itemEntity.toBuilder().cart(null).build()).collect(Collectors.toList());
+
+        cartService.detachItems(cart.getId());
+
+        orderService.createNewOrder(errorEscaping, wrapper.getUserNumber(), wrapper.getUserCustomName());
+
+        return "redirect:/catalog?success_order=true";
     }
 }

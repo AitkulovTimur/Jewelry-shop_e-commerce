@@ -12,9 +12,6 @@ public class AuthService {
     @Autowired
     UserService userService;
 
-    @Autowired
-    CartService cartService;
-
     public int getAuthUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

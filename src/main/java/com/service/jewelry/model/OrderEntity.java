@@ -3,9 +3,13 @@ package com.service.jewelry.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,25 +30,31 @@ import java.util.List;
 @Setter
 @Entity
 @With
-@Table(name = "order")
+@Table(name = "orders")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private int id;
 
-    @Column(name = "user_id", updatable = false, nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "user_phone_num")
     private String userPhoneNum;
 
+    @Column(name = "user_custom_name")
     private String userCustomName;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<ItemEntity> items;
 
+    @Column(name = "order_time")
     private Instant orderTime;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
     private OrderStatus status;
 
 }

@@ -2,6 +2,7 @@ package com.service.jewelry.service;
 
 import com.service.jewelry.model.CartEntity;
 import com.service.jewelry.model.ItemEntity;
+import com.service.jewelry.model.ItemQuantityUpdateRequest;
 import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.repo.CartRepository;
 import com.service.jewelry.repo.ItemRepository;
@@ -95,8 +96,8 @@ public class CartService {
         List<ItemEntity> items = cartEntity.getItems();
         List<ItemEntity> itemEntities = productEntity.getItemEntities();
 
-        items = items.stream().filter(i -> i.getId() != itemId).toList();
-        itemEntities = itemEntities.stream().filter(i -> i.getId() != itemId).toList();
+        items = items.stream().filter(i -> i.getId() != itemId).collect(Collectors.toList());
+        itemEntities = itemEntities.stream().filter(i -> i.getId() != itemId).collect(Collectors.toList());
 
         cartEntity.setItems(items);
         productEntity.setItemEntities(itemEntities);
@@ -106,4 +107,26 @@ public class CartService {
         cartRepository.saveAndFlush(cartEntity);
     }
 
+    public void replaceItems(List<ItemEntity> newItems, CartEntity cart) {
+        cartRepository.save(cart.withItems(newItems));
+    }
+
+    public void detachItems(int cartId) {
+        CartEntity cartToDetach = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("cart wasn't found"));
+//        cartToDetach.getItems().forEach(item -> {
+//            item.setCart(null);
+//            itemRepository.save(item);
+//        });
+
+        cartRepository.delete(cartToDetach);
+    }
+
+    @Transactional
+    public void updateQuantities(List<ItemQuantityUpdateRequest> listNewQuantities) {
+        listNewQuantities.forEach(item -> {
+            ItemEntity itemToUpdate = itemRepository.findById(item.getId()).orElseThrow(() -> new RuntimeException("Not found"));
+            itemToUpdate.setQuantity(item.getQuantity());
+            itemRepository.saveAndFlush(itemToUpdate);
+        });
+    }
 }

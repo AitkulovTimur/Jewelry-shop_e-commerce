@@ -107,7 +107,7 @@ public class AdminController {
                     "Продукт с таким именем уже существует");
 
         if (result.hasErrors()) {
-            model.addAttribute("product", productEntityRepo);
+            model.addAttribute("product", request);
             return "update_product";
         }
 
@@ -133,4 +133,5 @@ public class AdminController {
         Files.write(fileNameAndPath, file.getBytes());
         return "redirect:/administration/update/" + vendorCode + "?success_photo=true";
     }
+
 }
