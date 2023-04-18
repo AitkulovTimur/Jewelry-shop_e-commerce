@@ -202,12 +202,11 @@ public class PagesController {
         }
 
         //Found shared references to a collection: com.service.jewelry.model.OrderEntity.items
-        List<ItemEntity> errorEscaping = cart.getItems().stream().map(itemEntity ->
-                itemEntity.toBuilder().cart(null).build()).collect(Collectors.toList());
-
-        cartService.detachItems(cart.getId());
+        List<Integer> errorEscaping = cart.getItems().stream().map(ItemEntity::getId).collect(Collectors.toList());
+        cartService.deleteCart(cart.getId());
 
         orderService.createNewOrder(errorEscaping, wrapper.getUserNumber(), wrapper.getUserCustomName());
+
 
         return "redirect:/catalog?success_order=true";
     }

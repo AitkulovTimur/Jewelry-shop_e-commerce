@@ -35,6 +35,10 @@ public class CartEntity {
     @Column(name = "user_id", updatable = false, nullable = false)
     private int userId;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "cart", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     private List<ItemEntity> items;
+
+    public void removeItem(ItemEntity item) {
+        this.items.remove(item);
+    }
 }

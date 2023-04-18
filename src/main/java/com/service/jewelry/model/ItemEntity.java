@@ -48,4 +48,8 @@ public class ItemEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
+
+    public void removeCart() {
+        this.cart = null;
+    }
 }

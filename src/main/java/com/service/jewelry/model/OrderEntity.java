@@ -47,7 +47,7 @@ public class OrderEntity {
     @Column(name = "user_custom_name")
     private String userCustomName;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private List<ItemEntity> items;
 
     @Column(name = "order_time")

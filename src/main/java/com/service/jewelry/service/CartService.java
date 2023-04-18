@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class CartService {
     ItemRepository itemRepository;
 
     public CartEntity createCart(int userId) {
-        return cartRepository.save(CartEntity.builder().userId(userId).build());
+        return cartRepository.save(CartEntity.builder().userId(userId).items(new ArrayList<>()).build());
     }
 
     public CartEntity getCartByUId(int userId) {
@@ -111,14 +112,18 @@ public class CartService {
         cartRepository.save(cart.withItems(newItems));
     }
 
-    public void detachItems(int cartId) {
+    public void deleteCart(int cartId) {
         CartEntity cartToDetach = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("cart wasn't found"));
-//        cartToDetach.getItems().forEach(item -> {
-//            item.setCart(null);
-//            itemRepository.save(item);
-//        });
 
-        cartRepository.delete(cartToDetach);
+
+        cartToDetach.getItems().forEach(item -> {
+            item.removeCart();
+            itemRepository.save(item);
+        });
+
+        cartToDetach.setItems(new ArrayList<>());
+
+        cartRepository.deleteById(cartId);
     }
 
     @Transactional
