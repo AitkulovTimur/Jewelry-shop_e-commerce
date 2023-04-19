@@ -3,6 +3,7 @@ package com.service.jewelry.controller;
 import com.service.jewelry.model.CartEntity;
 import com.service.jewelry.model.ItemEntity;
 import com.service.jewelry.model.ItemQuantityUpdateRequest;
+import com.service.jewelry.model.OrderStatusUpdateRequest;
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.QuantityUpdateRequestsWrapper;
 import com.service.jewelry.model.ReviewDto;

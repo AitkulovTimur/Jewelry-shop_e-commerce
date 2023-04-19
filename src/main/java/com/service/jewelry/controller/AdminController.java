@@ -1,8 +1,12 @@
 package com.service.jewelry.controller;
 
+import com.service.jewelry.model.OrderEntity;
+import com.service.jewelry.model.OrderStatusUpdateRequest;
+import com.service.jewelry.model.OrderUpdateRequest;
 import com.service.jewelry.model.ProductCreateRequest;
 import com.service.jewelry.model.ProductEntity;
 import com.service.jewelry.model.ProductUpdateRequest;
+import com.service.jewelry.service.OrderService;
 import com.service.jewelry.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("administration")
@@ -28,6 +34,9 @@ public class AdminController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    OrderService orderService;
 
     public static final String SEPARATOR = System.getProperty("file.separator");
 
@@ -83,7 +92,7 @@ public class AdminController {
     public String updateProduct(@PathVariable(name = "vendor_code") int vendorCode, @RequestParam(name = "success_photo", required = false) boolean successPhoto, Model model) {
         ProductEntity productEntity = productService.getProductByVendor(vendorCode);
 
-        if(successPhoto)
+        if (successPhoto)
             model.addAttribute("msg", "Ваше фото было загружено, но появится позже");
 
         model.addAttribute("product", productEntity);
@@ -94,10 +103,9 @@ public class AdminController {
     public String updateProduct(@Valid @ModelAttribute("product") ProductUpdateRequest request,
                                 BindingResult result,
                                 Model model, @PathVariable(name = "vendor_code") int vendorCode) {
-        ProductEntity productEntityRepo;
 
         try {
-            productEntityRepo = productService.getProductByVendor(vendorCode);
+            ProductEntity productEntityRepo = productService.getProductByVendor(vendorCode);
         } catch (RuntimeException e) {
             return String.format("redirect:/administration/all_products?vendor_code_error=%s", vendorCode);
         }
@@ -132,6 +140,35 @@ public class AdminController {
         fileNames.append(file.getOriginalFilename());
         Files.write(fileNameAndPath, file.getBytes());
         return "redirect:/administration/update/" + vendorCode + "?success_photo=true";
+    }
+
+    @GetMapping("orders")
+    public String showCart(Model model) {
+        List<OrderEntity> orderEntities;
+        try {
+            orderEntities = orderService.getAllOrdersForAdmin();
+        } catch (Exception e) {
+            return "redirect:/all_products";
+        }
+
+        List<OrderStatusUpdateRequest> listForFilling = orderEntities.stream().map(order ->
+                OrderStatusUpdateRequest.builder().id(order.getId())
+                        .user(order.getUser())
+                        .userPhoneNum(order.getUserPhoneNum())
+                        .userCustomName(order.getUserCustomName())
+                        .items(order.getItems())
+                        .orderTime(order.getOrderTime())
+                        .status(order.getStatus())
+                        .orderSum(order.getItems().stream().mapToDouble(item -> {
+                            double sum = item.getProductEntity().getPrice();
+                            return sum * item.getQuantity();
+                        }).sum()).build()).collect(Collectors.toList());
+
+        OrderUpdateRequest orderUpdateRequest = OrderUpdateRequest.builder()
+                .ordersWithNewStatuses(listForFilling).build();
+        model.addAttribute("wrapper", orderUpdateRequest);
+
+        return "orders";
     }
 
 }

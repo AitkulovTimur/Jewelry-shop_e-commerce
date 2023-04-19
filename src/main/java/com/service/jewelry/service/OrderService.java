@@ -57,4 +57,8 @@ public class OrderService {
 
         orderRepository.saveAndFlush(newOrder);
     }
+
+    public List<OrderEntity> getAllOrdersForAdmin() {
+        return orderRepository.findAll();
+    }
 }
