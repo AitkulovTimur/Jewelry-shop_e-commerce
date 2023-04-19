@@ -25,7 +25,14 @@
         <p>c 10:00 до 21:00</p>
       </div>
 
-      <a sec:authorize="hasRole('ADMIN')" type="button" class="btn btn-outline-dark" role="button" th:href="@{/administration/all_products}">АДМИНКА</a>
+
+
+      <div sec:authorize="hasRole('ADMIN')"  class="headright">
+        <a th:href="@{/administration/all_products}" class="shop-cart-container">
+          <img th:src="@{/img/admin.png}" class="cart-icon">
+          <p>Админ</p>
+        </a>
+      </div>
 
       <div sec:authorize="isAuthenticated()"  class="headright">
         <a th:href="@{/cart}" class="shop-cart-container">
