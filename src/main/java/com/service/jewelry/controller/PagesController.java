@@ -112,7 +112,7 @@ public class PagesController {
         return "item";
     }
 
-    @GetMapping("/order{vendorCode}")
+    @GetMapping("/order/{vendorCode}")
     public String getOrder(@PathVariable("vendorCode") int vendorCode, Model model) {
         model.addAttribute("product", productService.getProductByVendor(vendorCode));
         return "order";

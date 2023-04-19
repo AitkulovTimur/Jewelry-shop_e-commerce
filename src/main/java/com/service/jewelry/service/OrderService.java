@@ -6,6 +6,7 @@ import com.service.jewelry.model.OrderStatus;
 import com.service.jewelry.model.User;
 import com.service.jewelry.repo.ItemRepository;
 import com.service.jewelry.repo.OrderRepository;
+import com.service.jewelry.repo.ProductRepository;
 import com.service.jewelry.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class OrderService {
     UserRepository userRepository;
 
     @Autowired
+    ProductRepository productRepository;
+
+    @Autowired
     ItemRepository itemRepository;
 
     @Transactional
@@ -45,6 +49,7 @@ public class OrderService {
         List<ItemEntity> items = itemsInOrder.stream()
                 .map(id -> {
                     ItemEntity item = itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+                    productRepository.updateQuantity(item.getQuantity(), item.getProductEntity().getVendorCode());
                     return itemRepository.save(item.withOrder(newOrder));
                 })
                 .collect(Collectors.toList());
