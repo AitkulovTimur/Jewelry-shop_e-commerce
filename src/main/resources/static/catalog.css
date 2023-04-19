@@ -198,11 +198,11 @@ body
     opacity: 0;
     border-radius: 25px 25px 0 0;
     height: 246.75px;
-  
+
     /* transition effect. not necessary */
     transition: opacity .2s, visibility .2s;
 }
-  
+
 .card-item:hover .description-item {
     visibility: visible;
     opacity: 0.9;
@@ -274,8 +274,8 @@ h1 {
 }
 
 .shop-cart-container {
-    display: flex;  
-    flex-direction: column;  
+    display: flex;
+    flex-direction: column;
     height: 100%;
     align-items: center;
 }

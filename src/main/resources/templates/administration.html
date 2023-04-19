@@ -7,13 +7,13 @@
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8">
-    <title>Админка</title>
+    <title>Панель администратора</title>
 </head>
 <body>
 
 <div class="container-sm">
 
-    <h1>АДМИНКА</h1>
+    <h1>Панель администратора</h1>
     <div th:if="${param.success_create}">
         <div class="alert alert-success">
             Новый товар был успешно добавлен
@@ -38,9 +38,11 @@
         </div>
     </div>
 
-    <a type="button" class="btn btn-outline-success" th:href="@{/administration/add_product}">Добавить товар</a>
+    <a type="button" class="btn btn-outline-dark" role="button"  th:href="@{/administration/add_product}">Добавить товар</a>
+    <a type="button" class="btn btn-outline-dark" role="button"  th:href="@{/}">Список заказов</a>
+    <a type="button" class="btn btn-outline-dark" role="button"  th:href="@{/main-page}">На главную</a>
 
-    <table class="table table-bordered border-secondary">
+    <table class="table table-bordered border-secondary mt-2">
         <thead class="table-light">
         <tr>
             <th scope="col">Артикул</th>
@@ -67,8 +69,8 @@
                     <a type="button" class="btn btn-info m-1 mt-4"
                        th:href="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}">Обновить</a>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attrappend="data-bs-target=${product.vendorCode}">
-                        Удалить продукт
+                    <button type="button" class="btn btn-danger m-1 mt-4" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attrappend="data-bs-target=${product.vendorCode}">
+                        Удалить
                     </button>
 
                     <th:block th:replace="fragments/_modals :: modal(${product.vendorCode})">modal</th:block>
