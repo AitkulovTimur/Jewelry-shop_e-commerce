@@ -159,6 +159,11 @@ body
     width: 591px;
 }
 
+.desc-big-card2 {
+    width: 551px;
+    text-align: justify;
+}
+
 .slider {
     -webkit-appearance: none;
     width: 100%;
@@ -306,4 +311,12 @@ ul li {
 .login-icon {
     width: 50px;
     height: 50px;
+}
+
+.description p {
+    font-size:25px;
+ }
+
+.work p {
+    font-size:25px;
 }

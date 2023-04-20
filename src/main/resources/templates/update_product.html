@@ -2,34 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link th:href="@{/catalog.css}" rel="stylesheet">
+    <link th:href="@{/cart.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <meta charset="UTF-8">
     <title>Обновить товар</title>
 </head>
-<body>
-<div class="container">
-    <main>
-        <section class="my-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 mx-auto">
-                        <img th:src="@{${'/img/' + product.vendorCode + '.jpg'}}" width="240"/>
-                        <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
-                        <form method="post" th:action="@{/administration/upload/{vendor_code}(vendor_code=${product.vendorCode})}" enctype="multipart/form-data">
+<body class="page">
+
+    <div class="mx-4 my-2">
+        <h1>Обновление товара</h1>
+    </div>
+
+<div class="shopping-carts-menu container-fluid d-flex flex-row px-4">
+    <div class="cart-items mx-auto my-auto">
+
+                        <img class="my-1" th:src="@{${'/img/' + product.vendorCode + '.jpg'}}" width="240"/>
+                        <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary my-1"></p>
+                        <form class="my-1" method="post" th:action="@{/administration/upload/{vendor_code}(vendor_code=${product.vendorCode})}" enctype="multipart/form-data">
                             <div class="form-group">
                                 <input type="file" name="image" accept="image/*" class="form-control-file">
                             </div>
-                            <button type="submit" class="btn btn-primary">Загрузить фото</button>
+                            <button type="submit" class="btn btn-primary my-1">Загрузить фото</button>
                         </form>
-                        <span th:if="${msg != null}" th:text="${msg}"></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <div>
+                        <span class="my-1" th:if="${msg != null}" th:text="${msg}"></span>
+    </div>
+
+        <div class="cart-items col-8">
             <div>
                 <form
                         method="post"
@@ -40,8 +40,7 @@
                     <div th:if="${msg}">
                         <div class="alert alert-info" th:text="${msg}"></div>
                     </div>
-
-                    <h1>Обновление товара</h1>
+                    <div class="container">
 
                     <input class="form-control" type="hidden" name="vendorCode">
 
@@ -90,6 +89,7 @@
                         <p class="text-danger" th:errors="*{description}"
                            th:if="${#fields.hasErrors('description')}"></p>
                     </div>
+                    </div>
 
                     <div class="mb-3">
                         <button class="btn btn-primary mb-3" type="submit">Обновить товар</button>
@@ -98,7 +98,6 @@
                 </form>
             </div>
         </div>
-    </main>
 </div>
 
 </body>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <link th:href="@{/item.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link th:href="@{/item.css}" rel="stylesheet">
     <title>opal.com</title>
     <meta charset="utf-8">
 </head>
@@ -13,91 +13,56 @@
 <div class="container">
     <header th:insert="fragments/header_footer.html :: header"></header>
 
-    <div class="big-card-item">
-        <div class="desc-big-card">
-            <div th:if="${add_success == true}">
-                <div class="alert alert-info"
-                     th:text="'Товар [' + ${product.name} + '] был успешно добавлен в корзину'">
-                </div>
-            </div>
-
-            <div th:if="${quantity_limit == true}">
-                <div class="alert alert-danger"
-                     th:text="'Вы набрали слишком много, у нас столько нет! Возможно, товар [' + ${product.name} + '] скоро будет доступен'">
-                </div>
-            </div>
-
-            <h1 th:text="${product.name}"></h1>
-            <img th:src="@{'/img/'+${product.vendorCode}+'.jpg'}    " class="big-img-card">
-            <div>
-                <p>Срок исполнения заказа: от 10-ти до 45-ти дней, зависит от трудоемкости работы и степени
-                    загруженности производства.</p>
-                <p>Вес готового изделия может отличаться от заданного.</p>
-                <p>Закрепка ювелирных вставок не входит в стоимость изготовления и рассчитываются отдельно.</p>
-                <p>Гарантия 12 месяцев.</p>
-            </div>
+    <h1 th:text="${product.name}"></h1>
+    <div th:if="${add_success == true}">
+        <div class="alert alert-info"
+             th:text="'Товар [' + ${product.name} + '] был успешно добавлен в корзину'">
         </div>
+    </div>
+
+    <div th:if="${quantity_limit == true}">
+        <div class="alert alert-danger"
+             th:text="'Вы набрали слишком много, у нас столько нет! Возможно, товар [' + ${product.name} + '] скоро будет доступен'">
+        </div>
+    </div>
+
+    <div class="big-card-item d-flex justify-content-between">
         <div class="desc-big-card">
-            <div class="slidecontainer">
-                <p class="bold">Размер</p>
-                <input type="range" min="14" max="24" value="14" class="slider" id="myRange">
-            </div>
-            <div class="ves-jewerly">
-                <p class="bold">Вес:</p>
-                <p class="ves-count">11,1 г</p>
-            </div>
-            <div class="metall-jewerly">
-                <p class="bold">Металл</p>
-                <ul>
-                    <li class="bg">Золото</li>
-                    <li class="bg">Серебро</li>
-                </ul>
-            </div>
-            <div class="color-jewerly">
-                <p class="bold">Цвет</p>
-                <ul>
-                    <li class="bg">Красное</li>
-                    <li class="bg">Белое</li>
-                </ul>
-            </div>
-            <div class="stones-jewerly">
-                <p class="bold">Камни</p>
-                <ul>
-                    <li class="bg">Фианит</li>
-                    <li class="bg">Хризолит</li>
-                </ul>
-            </div>
-            <div class="work-itog">
-                <div class="work">
-                    <p class="bold">Работа</p>
-                    <p id="price-work-black">3600 руб.</p>
+            <img th:src="@{'/img/'+${product.vendorCode}+'.jpg'}    " class="big-img-card">
+        </div>
+        <div class="desc-big-card2 d-flex align-content-between flex-wrap">
+                <div class="description">
+                    <h3 class="bold">Описание</h3>
+                <p th:text="${product.description}"></p>
                 </div>
-                <div class="work">
-                    <p class="bold">ИТОГО</p>
-                    <p th:text="${product.price}" id="price-work"></p>
+                <div class="description">
+                    <p>Срок исполнения заказа: от 10-ти до 45-ти дней, зависит от трудоемкости работы и степени
+                        загруженности производства.</p>
+                    <p>Вес готового изделия может отличаться от заданного.</p>
+                    <p>Закрепка ювелирных вставок не входит в стоимость изготовления и рассчитываются отдельно.</p>
+                    <p>Гарантия 12 месяцев.</p>
                 </div>
-                <div sec:authorize="isAuthenticated()">
-                    <a th:href="@{/order/}+${product.vendorCode}">
-                        <button class="button-zakaz">Заказать</button>
-                    </a>
-
-                    <form
-                            method="post"
-                            role="form"
-                            th:action="@{/add_item_to_cart/{vendor_code}(vendor_code=${product.vendorCode})}"
-                    >
-                        <button class="button-zakaz" type="submit">Добавить в корзину</button>
-                    </form>
-                </div>
-
-                <div sec:authorize="isAnonymous()">
-                    <div class="alert alert-secondary" role="alert">
-                        Чтобы купить товар или добавить его в корзину, пожалуйста, войдите
+                    <div class="work-with-button">
+                        <div class="work">
+                            <p class="bold">Стоимость:</p>
+                            <p th:text="${product.price}" id="price-work"></p>
+                        </div>
+                        <div sec:authorize="isAuthenticated()">
+                            <form
+                                method="post"
+                                role="form"
+                                th:action="@{/add_item_to_cart/{vendor_code}(vendor_code=${product.vendorCode})}"
+                            >
+                                <button class="button-zakaz" type="submit">Добавить в корзину</button>
+                            </form>
+                         </div>
+                        <div sec:authorize="isAnonymous()">
+                            <div class="alert alert-secondary m-0" role="alert">
+                                Чтобы купить товар или добавить его в корзину, пожалуйста, войдите
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
     </div>
 </div>
 </body>

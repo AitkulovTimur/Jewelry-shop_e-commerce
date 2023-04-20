@@ -256,10 +256,7 @@ body
     max-width: 397px;
 }
 
-.big-desc-cart {
-    margin: 0;
-    width: 397px;
-}
+
 
 .two-buttons {
     display: flex;
@@ -303,17 +300,22 @@ body
     color:white;
 }
 
-fieldset {
+.fieldset {
     display:flex;
     flex-direction:column;
     border-radius: 8px;
     
 }
 
-legend {
+.legend {
     font-weight: bold;
 }
 
-label {
+.label {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 32px;
     font-weight: bold;
 }

@@ -2,17 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- @ - default directory -->
-    <link th:href="@{/cart.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link th:href="@{/cart.css}" rel="stylesheet">
     <meta charset="UTF-8">
     <title>opal.com</title>
-    <meta charset="utf-8">
 </head>
 <body class="page">
 <div class="container">
     <header th:insert="fragments/header_footer.html :: header"></header>
+    <h1>Корзина</h1>
     <form
             method="post"
             role="form"
@@ -20,13 +20,12 @@
             th:object="${wrapper}"
     >
         <div class="shopping-carts-container">
-            <h1>Корзина</h1>
-            <nav th:if="${sum_of_cart != 0}" class="mb-2 sticky-top navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid d-flex">
-                    <div class="collapse navbar-collapse mr-2" id="navbarSupportedContent">
+            <nav th:if="${sum_of_cart != 0}" class="mb-2 sticky-top navbar navbar-expand-lg navbar-light">
+                <div class="container-fluid g-0">
+                    <div class="collapse navbar-collapse mr-2 d-flex justify-content-between" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <div class="input-group input-group-lg mr-2">
+                                <div class="input-group">
                                     <span class="input-group-text" id="name">Имя</span>
                                     <div th:if="${show_sum == true}">
                                         <input type="text" class="form-control" th:field="*{userCustomName}"
@@ -41,8 +40,8 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <div class="input-group input-group-lg mr-2">
+                            <li class="nav-item px-4">
+                                <div class="input-group">
                                     <span class="input-group-text" id="phone">Телефон</span>
                                     <div th:if="${show_sum == true}">
                                         <input type="text" class="form-control" th:field="*{userNumber}"
@@ -57,9 +56,9 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item pt-2">
                                 <div th:if="${show_sum == true}">
-                                    <p th:text="'Сумма вашей потенциальной покупки: ' + ${sum_of_cart} + '₽'"></p>
+                                    <p th:text="'Сумма покупки: ' + ${sum_of_cart} + '₽'"></p>
                                 </div>
                             </li>
                         </ul>
@@ -73,8 +72,8 @@
                     </div>
                 </div>
             </nav>
-            <div class="shopping-carts-menu">
-                <div class="cart-items" th:each="currentItem, item : *{itemsWithNewQuantity}">
+            <div class="shopping-carts-menu container-fluid d-flex flex-row g-0">
+                <div class="cart-items col-6" th:each="currentItem, item : *{itemsWithNewQuantity}">
                     <div class="shop-cart-item">
                         <div class="cart-image-price">
                             <img th:src="'img/'+${currentItem.productEntity.vendorCode}+'.jpg'" class="small-img">
