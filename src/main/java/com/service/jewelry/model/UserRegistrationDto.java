@@ -1,6 +1,8 @@
 package com.service.jewelry.model;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,15 +16,18 @@ import lombok.Setter;
 @Builder
 public class UserRegistrationDto {
 
-    @NotEmpty(message = "Please enter valid first name.")
+    @NotEmpty(message = "Пожалуйста, введите имя")
+    @Pattern(regexp = "^[A-ЯЁ][а-яё]+$", message = "Пожалуйста, введите имя в верном формате")
     private String firstName;
 
-    @NotEmpty(message = "Please enter valid last name.")
+    @NotEmpty(message = "Пожалуйста, введите фамилию")
+    @Pattern(regexp = "^[A-ЯЁ][а-яё]+$", message = "Пожалуйста, введите фамилию в верном формате")
     private String lastName;
 
-    @NotEmpty(message = "Please enter not empty email.")
+    @NotEmpty(message = "Пожалуйста, введите емэйл")
+    @Email(message = "Емэйл не проходит валидацию")
     private String email;
 
-    @NotEmpty(message = "Please enter valid password.")
+    @NotEmpty(message = "Пожалуйста, введите пароль")
     private String password;
 }

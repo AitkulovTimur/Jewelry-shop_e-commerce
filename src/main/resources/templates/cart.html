@@ -13,6 +13,18 @@
 <div class="container">
     <header th:insert="fragments/header_footer.html :: header"></header>
     <h1>Корзина</h1>
+
+    <div th:if="${num_failed == true}">
+        <div class="alert alert-danger" role="alert"
+             th:text="'Вы указали номер в неверном формате'">
+        </div>
+    </div>
+
+    <div th:if="${name_failed == true}">
+        <div class="alert alert-danger" role="alert"
+             th:text="'Вы указали имя в неверном формате'">
+        </div>
+    </div>
     <form
             method="post"
             role="form"

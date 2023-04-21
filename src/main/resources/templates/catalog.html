@@ -19,6 +19,10 @@
         <div class="alert alert-info">Вы вышли из системы!</div>
     </div>
 
+    <div th:if="${successOrder == true}">
+        <div class="alert alert-info">Вы сделали заказ, с вами свяжется наш менеджер. Спасибо!</div>
+    </div>
+
     <form id="search_form" th:action="@{/catalog}">
         <div class="category_and_search">
             <div class="category">

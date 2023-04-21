@@ -3,7 +3,6 @@ package com.service.jewelry.controller;
 import com.service.jewelry.model.CartEntity;
 import com.service.jewelry.model.ItemEntity;
 import com.service.jewelry.model.ItemQuantityUpdateRequest;
-import com.service.jewelry.model.OrderStatusUpdateRequest;
 import com.service.jewelry.model.ProductDto;
 import com.service.jewelry.model.QuantityUpdateRequestsWrapper;
 import com.service.jewelry.model.ReviewDto;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -136,7 +138,9 @@ public class PagesController {
 
     @GetMapping("/cart")
     public String showCart(Model model,
-                           @RequestParam(name = "sum", required = false, defaultValue = "false") boolean sumOfOrder) {
+                           @RequestParam(name = "sum", required = false, defaultValue = "false") boolean sumOfOrder,
+                           @RequestParam(name = "num_failed", required = false, defaultValue = "false") boolean numFailed,
+                           @RequestParam(name = "name_failed", required = false, defaultValue = "false") boolean nameFailed) {
         CartEntity cart;
         try {
             cart = cartService.getCartByUId(authService.getAuthUserId());
@@ -146,6 +150,13 @@ public class PagesController {
 
         if (cart.getItems() == null)
             cart.setItems(new ArrayList<>());
+
+        if (numFailed)
+            model.addAttribute("num_failed", true);
+
+        if (nameFailed)
+            model.addAttribute("name_failed", true);
+
 
         List<ItemQuantityUpdateRequest> listForFilling = cart.getItems().stream().map(item ->
                 ItemQuantityUpdateRequest.builder().id(item.getId())
@@ -193,6 +204,7 @@ public class PagesController {
     // Писать логику в контроллере - это такой кринж
     @PostMapping("create_order")
     public String createOrder(@ModelAttribute QuantityUpdateRequestsWrapper wrapper,
+                              BindingResult bindingResult,
                               Model model,
                               @RequestParam(name = "show_sum", required = true, defaultValue = "false") boolean showSum) {
         CartEntity cart = cartService.getCartByUId(authService.getAuthUserId());
@@ -201,6 +213,21 @@ public class PagesController {
             cartService.updateQuantities(wrapper.getItemsWithNewQuantity());
             return "redirect:/cart?sum=true";
         }
+
+        String phoneNumber = wrapper.getUserNumber();
+        String customName = wrapper.getUserCustomName();
+
+        Pattern patternNum = Pattern.compile("^(\\s*)?(\\+)?([- _():=+]?\\d[- _():=+]?){10,14}(\\s*)?$");
+        Matcher matcherNum = patternNum.matcher(phoneNumber);
+
+        Pattern patternName = Pattern.compile("^[A-ЯЁ][а-яё]+$");
+        Matcher matcherName = patternName.matcher(customName);
+
+        if (!matcherNum.find())
+            return "redirect:/cart?num_failed=true&sum=true";
+
+        if (!matcherName.find())
+            return "redirect:/cart?name_failed=true&sum=true";
 
         //Found shared references to a collection: com.service.jewelry.model.OrderEntity.items
         List<Integer> errorEscaping = cart.getItems().stream().map(ItemEntity::getId).collect(Collectors.toList());

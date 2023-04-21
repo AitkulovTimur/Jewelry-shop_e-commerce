@@ -46,7 +46,7 @@ public class UserRegistrationController {
 
         if (existingUser != null)
             result.rejectValue("email", null,
-                    "User already registered !!!");
+                    "Юзер с таким емэйлом уже существует !!!");
 
         if (result.hasErrors()) {
             model.addAttribute("user", userDto);

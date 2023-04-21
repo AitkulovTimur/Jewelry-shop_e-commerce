@@ -1,5 +1,8 @@
 package com.service.jewelry.model;
 
+import jakarta.persistence.Temporal;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
