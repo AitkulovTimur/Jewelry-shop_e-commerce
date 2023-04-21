@@ -10,7 +10,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="infoModalLabel">Информацию о клиенте</h5>
+                    <h5 class="modal-title" id="infoModalLabel">Информация о клиенте</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                 </div>
@@ -31,7 +31,7 @@
 <div th:fragment="prodInf(prod_info, id)" class="modal fade" th:id="'prodInfo' + ${id}" tabindex="-1"
      aria-labelledby="prodModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="prodModalLabel">Покупка клиента в рамке заказа</h5>
@@ -46,6 +46,7 @@
                         <th scope="col">Артикул</th>
                         <th scope="col">Имя изделия</th>
                         <th scope="col">Пол</th>
+                        <th scope="col">Количество</th>
                         <th scope="col">Цена</th>
                     </tr>
                     </thead>
@@ -55,6 +56,7 @@
                         <td th:text="${item.productEntity.vendorCode}"></td>
                         <td th:text="${item.productEntity.name}"></td>
                         <td th:text="${item.productEntity.gender}"></td>
+                        <td th:text="${item.quantity}"></td>
                         <td th:text="${item.productEntity.price}"></td>
                     </tr>
                     </tbody>
