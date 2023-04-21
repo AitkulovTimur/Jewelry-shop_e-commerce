@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- @ - default directory -->
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>Список заказов</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="container">
+    <h1>Список заказов</h1>
+    <a class="btn btn-outline-info" th:href="@{/administration/all_products}">Вернуться на главную</a>
+    <table class="table table-bordered border-secondary mt-2">
+        <thead class="table-light">
+        <tr>
+            <th scope="col">Информация о заказе</th>
+            <th scope="col">Информация о заказчике</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="currentOrder : ${wrapper.ordersWithNewStatuses}">
+            <td>
+                <p th:text="'ID: ' + ${currentOrder.id}"></p>
+                <p th:text="'Сумма заказа: ' + ${currentOrder.orderSum}"></p>
+                <p th:text="'Время заказа: ' + ${currentOrder.orderTime}"></p>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#prodInfo" th:attrappend="data-bs-target=${currentOrder.id}">
+                    Список купленного
+                </button>
+                <div th:replace="~{fragments/user_info_fragment :: prodInf(prod_info = ${ currentOrder.items }, id = ${ currentOrder.id})}"></div>
+            </td>
+            <td>
+                <p th:text="'Номер телефона: ' + ${currentOrder.userPhoneNum}"></p>
+                <p th:text="'Имя при заказе: ' + ${currentOrder.userCustomName}"></p>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#userInfo" th:attrappend="data-bs-target=${currentOrder.id}">
+                    Дополнительная информация
+                </button>
+                <th:block
+                        th:replace="fragments/user_info_fragment :: userInf(${currentOrder.user.id}, ${currentOrder.user.firstName}, ${currentOrder.user.lastName}, ${currentOrder.user.email}, ${currentOrder.id})">
+                    modal
+                </th:block>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

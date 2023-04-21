@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<!-- Modal -->
+<div th:fragment="userInf(user_id, user_first_name, user_last_name, user_email, id)" class="modal fade" th:id="'userInfo' + ${id}" tabindex="-1"
+     aria-labelledby="infoModalLabel"
+     aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Информацию о клиенте</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p th:text="'Айди: ' + ${user_id}"></p>
+                    <p th:text="'Имя: ' + ${user_first_name}"></p>
+                    <p th:text="'Фамилия: ' + ${user_last_name}"></p>
+                    <p th:text="'Емэйл: ' + ${user_email}"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div th:fragment="prodInf(prod_info, id)" class="modal fade" th:id="'prodInfo' + ${id}" tabindex="-1"
+     aria-labelledby="prodModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="prodModalLabel">Покупка клиента в рамке заказа</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered border-secondary mt-2">
+                    <thead class="table-light">
+                    <tr>
+                        <th scope="col">Фото</th>
+                        <th scope="col">Артикул</th>
+                        <th scope="col">Имя изделия</th>
+                        <th scope="col">Пол</th>
+                        <th scope="col">Цена</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${prod_info}">
+                        <td><img th:src="@{${'/img/' + item.productEntity.vendorCode + '.jpg'}}" width="120"/></td>
+                        <td th:text="${item.productEntity.vendorCode}"></td>
+                        <td th:text="${item.productEntity.name}"></td>
+                        <td th:text="${item.productEntity.gender}"></td>
+                        <td th:text="${item.productEntity.price}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

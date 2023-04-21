@@ -1,5 +1,6 @@
 package com.service.jewelry.controller;
 
+import com.service.jewelry.model.ItemEntity;
 import com.service.jewelry.model.OrderEntity;
 import com.service.jewelry.model.OrderStatusUpdateRequest;
 import com.service.jewelry.model.OrderUpdateRequest;
@@ -25,6 +26,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -148,21 +153,24 @@ public class AdminController {
         try {
             orderEntities = orderService.getAllOrdersForAdmin();
         } catch (Exception e) {
-            return "redirect:/all_products";
-        }
+            return "redirect:/administration/all_products";
+         }
 
-        List<OrderStatusUpdateRequest> listForFilling = orderEntities.stream().map(order ->
-                OrderStatusUpdateRequest.builder().id(order.getId())
-                        .user(order.getUser())
-                        .userPhoneNum(order.getUserPhoneNum())
-                        .userCustomName(order.getUserCustomName())
-                        .items(order.getItems())
-                        .orderTime(order.getOrderTime())
-                        .status(order.getStatus())
-                        .orderSum(order.getItems().stream().mapToDouble(item -> {
-                            double sum = item.getProductEntity().getPrice();
-                            return sum * item.getQuantity();
-                        }).sum()).build()).collect(Collectors.toList());
+        List<OrderStatusUpdateRequest> listForFilling = orderEntities.stream().map(order -> {
+                    List<ItemEntity> items = order.getItems();
+                    return  OrderStatusUpdateRequest.builder().id(order.getId())
+                            .user(order.getUser())
+                            .userPhoneNum(order.getUserPhoneNum())
+                            .userCustomName(order.getUserCustomName())
+                            .items(items == null || items.isEmpty() ? new ArrayList<>() : items)
+                            .orderTime(LocalDateTime.ofInstant(order.getOrderTime(), ZoneOffset.systemDefault()))
+                            .status(order.getStatus())
+                            .orderSum(order.getItems().stream().mapToDouble(item -> {
+                                double sum = item.getProductEntity().getPrice();
+                                return sum * item.getQuantity();
+                            }).sum()).build();}
+        ).collect(Collectors.toList());
+
 
         OrderUpdateRequest orderUpdateRequest = OrderUpdateRequest.builder()
                 .ordersWithNewStatuses(listForFilling).build();

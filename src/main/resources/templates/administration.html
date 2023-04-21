@@ -39,7 +39,7 @@
     </div>
 
     <a type="button" class="btn btn-outline-dark" role="button"  th:href="@{/administration/add_product}">Добавить товар</a>
-    <a type="button" class="btn btn-outline-dark" role="button"  th:href="@{/}">Список заказов</a>
+    <a type="button" class="btn btn-outline-dark" role="button"  th:href="@{/administration/orders}">Список заказов</a>
     <a type="button" class="btn btn-outline-dark" role="button"  th:href="@{/main-page}">На главную</a>
 
     <table class="table table-bordered border-secondary mt-2">
@@ -69,7 +69,8 @@
                     <a type="button" class="btn btn-info m-1 mt-4"
                        th:href="@{/administration/update/{vendor_code}(vendor_code=${product.vendorCode})}">Обновить</a>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger m-1 mt-4" data-bs-toggle="modal" data-bs-target="#deleteModal" th:attrappend="data-bs-target=${product.vendorCode}">
+                    <button type="button" class="btn btn-danger m-1 mt-4" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal" th:attrappend="data-bs-target=${product.vendorCode}">
                         Удалить
                     </button>
 

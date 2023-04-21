@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,19 +47,19 @@ public class OrderService {
                 .build();
         orderRepository.save(newOrder);
 
-        List<ItemEntity> items = itemsInOrder.stream()
+        ArrayList<ItemEntity> items = itemsInOrder.stream()
                 .map(id -> {
                     ItemEntity item = itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
                     productRepository.updateQuantity(item.getQuantity(), item.getProductEntity().getVendorCode());
                     return itemRepository.save(item.withOrder(newOrder));
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
         newOrder.setItems(items);
 
         orderRepository.saveAndFlush(newOrder);
     }
 
     public List<OrderEntity> getAllOrdersForAdmin() {
-        return orderRepository.findAll();
+        return new ArrayList<>(orderRepository.findAll());
     }
 }
