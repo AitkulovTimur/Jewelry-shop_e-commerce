@@ -1,5 +1,8 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.wrapper;
 
+import com.service.jewelry.model.OrderStatus;
+import com.service.jewelry.model.entity.ItemEntity;
+import com.service.jewelry.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

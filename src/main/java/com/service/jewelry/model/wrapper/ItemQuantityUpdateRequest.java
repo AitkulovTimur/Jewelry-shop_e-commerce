@@ -1,5 +1,6 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.wrapper;
 
+import com.service.jewelry.model.entity.ProductEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.service.jewelry.service;
 
-import com.service.jewelry.model.ReviewDto;
-import com.service.jewelry.model.ReviewEntity;
+import com.service.jewelry.model.dto.ReviewDto;
+import com.service.jewelry.model.entity.ReviewEntity;
 import com.service.jewelry.repo.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +24,8 @@ public class ReviewService {
         )).sorted(Comparator.comparing(ReviewDto::id)).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public ReviewEntity createReview(ReviewEntity review) {
-        return reviewRepository.save(review);
+    public void createReview(ReviewEntity review) {
+        reviewRepository.save(review);
     }
-
-    public ReviewEntity getOneReview(int id) {
-        return reviewRepository.findById(id).get();
-    }
-
 
 }

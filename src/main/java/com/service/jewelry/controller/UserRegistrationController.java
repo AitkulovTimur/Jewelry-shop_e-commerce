@@ -1,17 +1,17 @@
 package com.service.jewelry.controller;
 
-import com.service.jewelry.model.User;
-import com.service.jewelry.model.UserRegistrationDto;
+import com.service.jewelry.model.entity.User;
+import com.service.jewelry.model.dto.UserRegistrationDto;
 import com.service.jewelry.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.ui.Model;
 
 
 @Controller
@@ -46,7 +46,7 @@ public class UserRegistrationController {
 
         if (existingUser != null)
             result.rejectValue("email", null,
-                    "Юзер с таким емэйлом уже существует !!!");
+                    "Пользователь с таким адресом уже существует !!!");
 
         if (result.hasErrors()) {
             model.addAttribute("user", userDto);

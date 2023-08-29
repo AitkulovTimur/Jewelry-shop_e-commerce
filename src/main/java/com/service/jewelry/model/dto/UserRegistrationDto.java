@@ -1,4 +1,4 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

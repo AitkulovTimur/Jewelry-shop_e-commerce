@@ -1,12 +1,11 @@
 package com.service.jewelry.controller;
 
-import com.service.jewelry.model.CartEntity;
-import com.service.jewelry.model.ItemEntity;
-import com.service.jewelry.model.ItemQuantityUpdateRequest;
-import com.service.jewelry.model.ProductDto;
-import com.service.jewelry.model.QuantityUpdateRequestsWrapper;
-import com.service.jewelry.model.ReviewDto;
-import com.service.jewelry.model.ReviewEntity;
+import com.service.jewelry.model.entity.CartEntity;
+import com.service.jewelry.model.entity.ItemEntity;
+import com.service.jewelry.model.dto.ProductDto;
+import com.service.jewelry.model.wrapper.QuantityUpdateRequestsWrapper;
+import com.service.jewelry.model.dto.ReviewDto;
+import com.service.jewelry.model.entity.ReviewEntity;
 import com.service.jewelry.service.AuthService;
 import com.service.jewelry.service.CartService;
 import com.service.jewelry.service.OrderService;
@@ -30,11 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static java.lang.String.format;
 
 @Controller
 public class PagesController {
@@ -105,7 +100,6 @@ public class PagesController {
     public String getOneProduct(@PathVariable("vendorCode") int vendorCode, Model model,
                                 @RequestParam(value = "add_success", required = false, defaultValue = "false") boolean addSuccess,
                                 @RequestParam(value = "quantity_limit", required = false, defaultValue = "false") boolean quantityLimit) {
-
         if (addSuccess)
             model.addAttribute("add_success", true);
         else if (quantityLimit)
@@ -137,7 +131,7 @@ public class PagesController {
     }
 
     @GetMapping("/cart")
-    public String showCart(Model model,
+    public String returnCartPage(Model model,
                            @RequestParam(name = "sum", required = false, defaultValue = "false") boolean sumOfOrder,
                            @RequestParam(name = "num_failed", required = false, defaultValue = "false") boolean numFailed,
                            @RequestParam(name = "name_failed", required = false, defaultValue = "false") boolean nameFailed) {
@@ -148,6 +142,7 @@ public class PagesController {
             return "redirect:/catalog";
         }
 
+        //clarifying type of the items collection
         if (cart.getItems() == null)
             cart.setItems(new ArrayList<>());
 
@@ -157,22 +152,9 @@ public class PagesController {
         if (nameFailed)
             model.addAttribute("name_failed", true);
 
-
-        List<ItemQuantityUpdateRequest> listForFilling = cart.getItems().stream().map(item ->
-                ItemQuantityUpdateRequest.builder().id(item.getId())
-                        .maxQuantity(item.getMaxQuantity())
-                        .quantity(item.getQuantity())
-                        .productEntity(item.getProductEntity())
-                        .build()).collect(Collectors.toList());
-
+        //attribute that is responsible for showing the order amount or not
         model.addAttribute("show_sum", sumOfOrder);
-
-        QuantityUpdateRequestsWrapper quantityUpdateRequestsWrapper = QuantityUpdateRequestsWrapper.builder()
-                .itemsWithNewQuantity(listForFilling)
-                .userCustomName("")
-                .userNumber("").build();
-
-        model.addAttribute("wrapper", quantityUpdateRequestsWrapper);
+        model.addAttribute("wrapper", CartService.returnWrappedProductList(cart.getItems()));
         model.addAttribute("sum_of_cart",
                 cart.getItems().stream().mapToDouble(item -> {
                     double sum = item.getProductEntity().getPrice();
@@ -217,24 +199,18 @@ public class PagesController {
         String phoneNumber = wrapper.getUserNumber();
         String customName = wrapper.getUserCustomName();
 
-        Pattern patternNum = Pattern.compile("^(\\s*)?(\\+)?([- _():=+]?\\d[- _():=+]?){10,14}(\\s*)?$");
-        Matcher matcherNum = patternNum.matcher(phoneNumber);
-
-        Pattern patternName = Pattern.compile("^[A-ЯЁ][а-яё]+$");
-        Matcher matcherName = patternName.matcher(customName);
-
-        if (!matcherNum.find())
+        if (!OrderService.validatePhoneNum(phoneNumber))
             return "redirect:/cart?num_failed=true&sum=true";
 
-        if (!matcherName.find())
+        if (!OrderService.validateName(customName))
             return "redirect:/cart?name_failed=true&sum=true";
 
-        //Found shared references to a collection: com.service.jewelry.model.OrderEntity.items
+        //Found shared references to a collection: com.service.jewelry.model.entity.OrderEntity.items
         List<Integer> errorEscaping = cart.getItems().stream().map(ItemEntity::getId).collect(Collectors.toList());
+        //deleting the user's cart because the order is going to be done
         cartService.deleteCart(cart.getId());
 
         orderService.createNewOrder(errorEscaping, wrapper.getUserNumber(), wrapper.getUserCustomName());
-
 
         return "redirect:/catalog?success_order=true";
     }

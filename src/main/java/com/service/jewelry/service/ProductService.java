@@ -1,9 +1,9 @@
 package com.service.jewelry.service;
 
-import com.service.jewelry.model.ProductCreateRequest;
-import com.service.jewelry.model.ProductDto;
-import com.service.jewelry.model.ProductEntity;
-import com.service.jewelry.model.ProductUpdateRequest;
+import com.service.jewelry.model.dto.ProductCreateRequest;
+import com.service.jewelry.model.dto.ProductDto;
+import com.service.jewelry.model.entity.ProductEntity;
+import com.service.jewelry.model.dto.ProductUpdateRequest;
 import com.service.jewelry.repo.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +50,8 @@ public class ProductService {
                 .sorted(Comparator.comparing(ProductDto::vendorCode)).toList();
     }
 
-    public ProductEntity createProduct(ProductCreateRequest request) {
-        return productRepository.save(this.mapper(request));
+    public void createProduct(ProductCreateRequest request) {
+        productRepository.save(this.mapper(request));
     }
 
     public ProductEntity updateProduct(ProductUpdateRequest request, int vendorCode) {
@@ -137,5 +137,4 @@ public class ProductService {
                     .description(productCreateRequest.getDescription())
                     .build();
     }
-
 }

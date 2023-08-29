@@ -1,4 +1,4 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.wrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderUpdateRequest {
+public class OrderUpdateWrapper {
     List<OrderStatusUpdateRequest> ordersWithNewStatuses;
 }

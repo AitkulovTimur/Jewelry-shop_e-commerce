@@ -1,6 +1,7 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.dto;
 
 
+import com.service.jewelry.model.Gender;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

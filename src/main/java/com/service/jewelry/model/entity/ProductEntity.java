@@ -1,5 +1,6 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.entity;
 
+import com.service.jewelry.model.Gender;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

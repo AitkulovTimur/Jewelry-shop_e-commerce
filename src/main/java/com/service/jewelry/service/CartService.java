@@ -1,10 +1,10 @@
 package com.service.jewelry.service;
 
-import com.service.jewelry.model.CartEntity;
-import com.service.jewelry.model.ItemEntity;
-import com.service.jewelry.model.ItemQuantityUpdateRequest;
-import com.service.jewelry.model.OrderStatusUpdateRequest;
-import com.service.jewelry.model.ProductEntity;
+import com.service.jewelry.model.entity.CartEntity;
+import com.service.jewelry.model.entity.ItemEntity;
+import com.service.jewelry.model.wrapper.ItemQuantityUpdateRequest;
+import com.service.jewelry.model.entity.ProductEntity;
+import com.service.jewelry.model.wrapper.QuantityUpdateRequestsWrapper;
 import com.service.jewelry.repo.CartRepository;
 import com.service.jewelry.repo.ItemRepository;
 import com.service.jewelry.repo.ProductRepository;
@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,14 +29,11 @@ public class CartService {
     @Autowired
     ItemRepository itemRepository;
 
-    public CartEntity createCart(int userId) {
-        return cartRepository.save(CartEntity.builder().userId(userId).items(new ArrayList<>()).build());
-    }
-
     public CartEntity getCartByUId(int userId) {
 
         List<CartEntity> cartEntities = cartRepository.findAllByUserId(userId);
 
+        //if somehow it happened, that several cart of this user exists in db
         if (cartEntities.size() > 1) {
             cartRepository.deleteById(cartEntities.get(0).getId());
         }
@@ -57,7 +55,7 @@ public class CartService {
         ProductEntity product = productRepository.findById(vendorCode).orElseThrow(() -> new RuntimeException("Not found"));
 
         if (product.getQuantity() == 0)
-            throw new RuntimeException("Извините, товара нет в наличии");
+            throw new RuntimeException("Товара нет в наличии");
 
         CartEntity cartEntity = cartRepository.findByUserId(userId);
 
@@ -93,7 +91,7 @@ public class CartService {
         CartEntity cartEntity = cartRepository.findByUserId(userId);
         ItemEntity itemEntity = itemRepository.findById(itemId).orElseThrow(() -> new RuntimeException("not found"));
         ProductEntity productEntity = productRepository.findById(itemEntity.getProductEntity().getVendorCode())
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new RuntimeException("Товар не найден"));
 
         List<ItemEntity> items = cartEntity.getItems();
         List<ItemEntity> itemEntities = productEntity.getItemEntities();
@@ -114,7 +112,7 @@ public class CartService {
     }
 
     public void deleteCart(int cartId) {
-        CartEntity cartToDetach = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("cart wasn't found"));
+        CartEntity cartToDetach = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Корзина не было найдена"));
 
 
         cartToDetach.getItems().forEach(item -> {
@@ -127,6 +125,7 @@ public class CartService {
         cartRepository.deleteById(cartId);
     }
 
+    //quantities - is a number of products that customer is going to buy
     @Transactional
     public void updateQuantities(List<ItemQuantityUpdateRequest> listNewQuantities) {
         listNewQuantities.forEach(item -> {
@@ -134,5 +133,23 @@ public class CartService {
             itemToUpdate.setQuantity(item.getQuantity());
             itemRepository.saveAndFlush(itemToUpdate);
         });
+    }
+
+    private CartEntity createCart(int userId) {
+        return cartRepository.save(CartEntity.builder().userId(userId).items(new ArrayList<>()).build());
+    }
+
+    public static QuantityUpdateRequestsWrapper returnWrappedProductList(Collection<ItemEntity> items) {
+        List<ItemQuantityUpdateRequest> updatableProductList = items.stream().map(item -> ItemQuantityUpdateRequest.builder()
+                .id(item.getId())
+                .maxQuantity(item.getMaxQuantity())
+                .quantity(item.getQuantity())
+                .productEntity(item.getProductEntity())
+                .build()).collect(Collectors.toList());
+
+        return QuantityUpdateRequestsWrapper.builder()
+                .itemsWithNewQuantity(updatableProductList)
+                .userCustomName("")
+                .userNumber("").build();
     }
 }

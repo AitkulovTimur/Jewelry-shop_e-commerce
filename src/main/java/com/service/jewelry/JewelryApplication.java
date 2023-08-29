@@ -1,6 +1,6 @@
 package com.service.jewelry;
 
-import com.service.jewelry.model.UserRegistrationDto;
+import com.service.jewelry.model.dto.UserRegistrationDto;
 import com.service.jewelry.service.UserServiceImpl;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

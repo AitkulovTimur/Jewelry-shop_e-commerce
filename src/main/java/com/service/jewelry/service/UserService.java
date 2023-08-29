@@ -1,7 +1,7 @@
 package com.service.jewelry.service;
 
-import com.service.jewelry.model.User;
-import com.service.jewelry.model.UserRegistrationDto;
+import com.service.jewelry.model.entity.User;
+import com.service.jewelry.model.dto.UserRegistrationDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 

@@ -1,6 +1,6 @@
 package com.service.jewelry.service;
 
-import com.service.jewelry.model.User;
+import com.service.jewelry.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

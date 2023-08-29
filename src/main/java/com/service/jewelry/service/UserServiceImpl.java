@@ -1,8 +1,8 @@
 package com.service.jewelry.service;
 
-import com.service.jewelry.model.Role;
-import com.service.jewelry.model.User;
-import com.service.jewelry.model.UserRegistrationDto;
+import com.service.jewelry.model.entity.Role;
+import com.service.jewelry.model.entity.User;
+import com.service.jewelry.model.dto.UserRegistrationDto;
 import com.service.jewelry.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

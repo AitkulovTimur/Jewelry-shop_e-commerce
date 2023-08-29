@@ -1,12 +1,10 @@
 package com.service.jewelry.controller;
 
-import com.service.jewelry.model.ItemEntity;
-import com.service.jewelry.model.OrderEntity;
-import com.service.jewelry.model.OrderStatusUpdateRequest;
-import com.service.jewelry.model.OrderUpdateRequest;
-import com.service.jewelry.model.ProductCreateRequest;
-import com.service.jewelry.model.ProductEntity;
-import com.service.jewelry.model.ProductUpdateRequest;
+import com.service.jewelry.model.entity.OrderEntity;
+import com.service.jewelry.model.wrapper.OrderUpdateWrapper;
+import com.service.jewelry.model.dto.ProductCreateRequest;
+import com.service.jewelry.model.entity.ProductEntity;
+import com.service.jewelry.model.dto.ProductUpdateRequest;
 import com.service.jewelry.service.OrderService;
 import com.service.jewelry.service.ProductService;
 import jakarta.validation.Valid;
@@ -26,12 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("administration")
@@ -44,12 +37,14 @@ public class AdminController {
     OrderService orderService;
 
     public static final String SEPARATOR = System.getProperty("file.separator");
+    public static final String COMMON_REDIRECT_URL = "redirect:/administration/";
+    public static final String PRODUCT_STRING = "product";
 
-    public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + SEPARATOR + "src" +
+    public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + SEPARATOR + "src" +
             SEPARATOR + "main" + SEPARATOR + "resources" + SEPARATOR + "static" + SEPARATOR + "img";
 
     @GetMapping("all_products")
-    public String getAllProducts(Model model,
+    public String getAllProductsPage(Model model,
                                  @RequestParam(required = false, name = "vendor_code_error") String vendorCodeError,
                                  @RequestParam(required = false, name = "success_update_vendor") String vendorCodeUpdate,
                                  @RequestParam(required = false, name = "success_delete_vendor") String vendorCodeDelete
@@ -69,12 +64,12 @@ public class AdminController {
 
     @GetMapping("add_product")
     public String returnAddProductPage(Model model) {
-        model.addAttribute("product", new ProductEntity().withVendorCode(productService.getLastVendorCode() + 1));
+        model.addAttribute(PRODUCT_STRING, new ProductEntity().withVendorCode(productService.getLastVendorCode() + 1));
         return "new_product";
     }
 
     @PostMapping("add_product")
-    public String create(@Valid @ModelAttribute("product") ProductCreateRequest productToCreate,
+    public String addProductToCatalog(@Valid @ModelAttribute(PRODUCT_STRING) ProductCreateRequest productToCreate,
                          BindingResult result,
                          Model model) {
         if (productService.existByVendorCode(productToCreate.getVendorCode()))
@@ -85,12 +80,12 @@ public class AdminController {
                     "Продукт с таким именем уже существует");
 
         if (result.hasErrors()) {
-            model.addAttribute("product", productToCreate);
+            model.addAttribute(PRODUCT_STRING, productToCreate);
             return "new_product";
         }
 
         productService.createProduct(productToCreate);
-        return "redirect:/administration/all_products?success_create";
+        return COMMON_REDIRECT_URL + "all_products?success_create";
     }
 
     @GetMapping("update/{vendor_code}")
@@ -100,19 +95,18 @@ public class AdminController {
         if (successPhoto)
             model.addAttribute("msg", "Ваше фото было загружено, но появится позже");
 
-        model.addAttribute("product", productEntity);
+        model.addAttribute(PRODUCT_STRING, productEntity);
         return "update_product";
     }
 
     @PostMapping("update/{vendor_code}")
-    public String updateProduct(@Valid @ModelAttribute("product") ProductUpdateRequest request,
-                                BindingResult result,
-                                Model model, @PathVariable(name = "vendor_code") int vendorCode) {
-
+    public String updateProduct(@Valid @ModelAttribute(PRODUCT_STRING) ProductUpdateRequest request,
+                                BindingResult result, Model model,
+                                @PathVariable(name = "vendor_code") int vendorCode) {
         try {
-            ProductEntity productEntityRepo = productService.getProductByVendor(vendorCode);
+            productService.getProductByVendor(vendorCode);
         } catch (RuntimeException e) {
-            return String.format("redirect:/administration/all_products?vendor_code_error=%s", vendorCode);
+            return String.format(COMMON_REDIRECT_URL + "all_products?vendor_code_error=%s", vendorCode);
         }
 
         if (productService.existsByName(request.getName(), vendorCode))
@@ -120,63 +114,43 @@ public class AdminController {
                     "Продукт с таким именем уже существует");
 
         if (result.hasErrors()) {
-            model.addAttribute("product", request);
+            model.addAttribute(PRODUCT_STRING, request);
             return "update_product";
         }
 
         productService.updateProduct(request, vendorCode);
-        return String.format("redirect:/administration/all_products?success_update_vendor=%s", vendorCode);
+        return String.format(COMMON_REDIRECT_URL + "all_products?success_update_vendor=%s", vendorCode);
     }
 
     @PostMapping("delete/{vendor_code}")
     public String deleteProduct(@PathVariable(name = "vendor_code") int vendorCode) {
         try {
             productService.deleteProduct(vendorCode);
-            return String.format("redirect:/administration/all_products?success_delete_vendor=%s", vendorCode);
+            return String.format(COMMON_REDIRECT_URL + "all_products?success_delete_vendor=%s", vendorCode);
         } catch (RuntimeException e) {
-            return String.format("redirect:/administration/all_products?vendor_code_error=%s", vendorCode);
+            return String.format(COMMON_REDIRECT_URL + "all_products?vendor_code_error=%s", vendorCode);
         }
     }
 
     @PostMapping("upload/{vendor_code}")
     public String uploadImage(Model model, @RequestParam("image") MultipartFile file, @PathVariable("vendor_code") int vendorCode) throws IOException {
-        StringBuilder fileNames = new StringBuilder();
         Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, vendorCode + ".jpg");
-        fileNames.append(file.getOriginalFilename());
         Files.write(fileNameAndPath, file.getBytes());
-        return "redirect:/administration/update/" + vendorCode + "?success_photo=true";
+        return COMMON_REDIRECT_URL + "update/" + vendorCode + "?success_photo=true";
     }
 
     @GetMapping("orders")
-    public String showCart(Model model) {
-        List<OrderEntity> orderEntities;
+    public String showAllOrderForAdmin(Model model) {
+         OrderUpdateWrapper orderUpdateRequest;
         try {
-            orderEntities = orderService.getAllOrdersForAdmin();
+            List<OrderEntity> orderEntities = orderService.getAllOrdersForAdmin();
+            orderUpdateRequest = OrderService.returnAllOrdersWrapped(orderEntities);
         } catch (Exception e) {
-            return "redirect:/administration/all_products";
-         }
+            return COMMON_REDIRECT_URL + "all_products";
+        }
 
-        List<OrderStatusUpdateRequest> listForFilling = orderEntities.stream().map(order -> {
-                    List<ItemEntity> items = order.getItems();
-                    return  OrderStatusUpdateRequest.builder().id(order.getId())
-                            .user(order.getUser())
-                            .userPhoneNum(order.getUserPhoneNum())
-                            .userCustomName(order.getUserCustomName())
-                            .items(items == null || items.isEmpty() ? new ArrayList<>() : items)
-                            .orderTime(LocalDateTime.ofInstant(order.getOrderTime(), ZoneOffset.systemDefault()))
-                            .status(order.getStatus())
-                            .orderSum(order.getItems().stream().mapToDouble(item -> {
-                                double sum = item.getProductEntity().getPrice();
-                                return sum * item.getQuantity();
-                            }).sum()).build();}
-        ).collect(Collectors.toList());
-
-
-        OrderUpdateRequest orderUpdateRequest = OrderUpdateRequest.builder()
-                .ordersWithNewStatuses(listForFilling).build();
         model.addAttribute("wrapper", orderUpdateRequest);
 
         return "orders";
     }
-
 }

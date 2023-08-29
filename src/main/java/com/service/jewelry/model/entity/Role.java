@@ -1,4 +1,4 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

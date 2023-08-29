@@ -1,5 +1,6 @@
-package com.service.jewelry.model;
+package com.service.jewelry.model.entity;
 
+import com.service.jewelry.model.OrderStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +21,6 @@ import lombok.Setter;
 import lombok.With;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 
